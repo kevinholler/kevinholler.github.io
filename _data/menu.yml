@@ -1,0 +1,94 @@
+main:
+  - name: Home
+    url: /
+    weight: 1
+  - name: Projects
+    url: /projects/
+    weight: 2
+    child:
+      - name: "The Untapped Life"
+        fa_icon: fa-brands fa-youtube
+        description: "Video » Youtube"
+        url: /projects/the-untapped-life/
+      - name: "Rentalbuddy"
+        fa_icon: fa fa-building
+        description: "Startup » Property Management"
+        url: /projects/rentalbuddy/
+      - name: "Remindme"
+        fa_icon: fa fa-comment-sms
+        description: "Micro-SaaS » SMS"
+        url: /projects/remindme/
+      - name: "Grit, Sweat & Tears"
+        fa_icon: fa fa-microphone
+        description: "Audio » Podcast"
+        url: /projects/grit-sweat-tears/
+      - name: "Pluto"
+        fa_icon: fa fa-pen
+        description: "Prototype » ETL"
+        url: /projects/pluto/
+      - name: "Trackplan"
+        fa_icon: fa fa-magnifying-glass-chart
+        description: "Startup » Analytics"
+        url: /projects/trackplan/
+      - name: "Birch"
+        fa_icon: fa-solid fa-graduation-cap
+        description: "Startup » Recruitment"
+        url: /projects/birch/
+      - name: "Shake"
+        fa_icon: fa-solid fa-graduation-cap
+        description: "Startup » Recruitment"
+        url: /projects/shake/
+      - name: "Chasing Raindows"
+        fa_icon: fa fa-book
+        description: "Writing » Book"
+        url: /projects/chasing-rainbows/
+  - name: Blog
+    url: /blog/
+    weight: 2
+  - name: About
+    url: /about/
+    weight: 3
+  - name: Contact
+    url: mailto:hello@kevinholler.com
+    weight: 4
+  
+
+footer_primary:
+  - name: "The Untapped Life"
+    url: /projects/the-untapped-life/
+  - name: "Rentalbuddy"
+    url: /projects/rentalbuddy/
+  - name: "Remindme"
+    url: /projects/remindme/
+  - name: "Grit, Sweat & Tears"
+    url: /projects/grit-sweat-tears/
+
+footer_secondary:
+  - name: Projects
+    url: /projects/
+    weight: 2
+  - name: Blog
+    url: /blog/
+    weight: 2
+  - name: About
+    url: /about/
+    weight: 3
+  - name: Contact
+    url: mailto:hello@kevinholler.com
+    weight: 4
+
+footer_tertiary:
+  - name: Privacy Policy
+    url: /privacy-policy/
+    weight: 1
+  - name: Terms and Conditions
+    url: /terms-and-conditions/
+    weight: 2
+
+bottom:
+  - name: Privacy Policy
+    url: /privacy-policy/
+    weight: 3
+  - name: Terms and Conditions
+    url: /terms-and-conditions/
+    weight: 4

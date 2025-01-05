@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Github",
+    "fa_icon": "fab fa-github",
+    "url": "https://github.com/kevinholler"
+  },
+  {
+    "title": "Instagram",
+    "fa_icon": "fab fa-instagram-square",
+    "url": "https://www.instagram.com/theirishbavarian/"
+  },
+  {
+    "title": "Linkedin",
+    "fa_icon": "fab fa-linkedin",
+    "url": "https://www.linkedin.com/in/kevinholler/"
+  },
+  {
+    "title": "Certifications",
+    "fa_icon": "fa fa-certificate",
+    "url": "https://www.credential.net/profile/kevinholler15879/wallet"
+  },
+  {
+    "title": "Email",
+    "fa_icon": "fa fa-envelope",
+    "url": "mailto:hello@kevinholler.com"
+  }
+]

@@ -1,0 +1,86 @@
+---
+layout: default
+body_classes: page-project
+---
+
+{% assign limit = page.gallery_limit | default: 2 %}
+
+<div class="section">
+  <div class="container">
+    {% if page.gallery %}
+    <div class="row mb-6">
+      <div class="col">
+        <div class="gallery gallery-two-column">
+          {% for item in page.gallery limit: limit %}
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="{{ item.image | relative_url }}" /></div>
+            <div class="gallery-caption">{{ item.caption }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        {% if page.title %}
+        <div class="project-heading">
+          <h1>{{ page.title }}</h1>
+        </div>
+        {% endif %} {% if page.languages %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-language"></i></strong><span>{{ page.languages }}</span></div>
+        {% endif %} {% if page.education %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-university"></i></strong><span>{{ page.education }}</span></div>
+        {% endif %} {% if page.location %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-earth"></i></strong><span>{{ page.location }}</span></div>
+        {% endif %} {% if page.programming %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-code"></i></strong><span>{{ page.programming }}</span></div>
+        {% endif %} {% if page.data %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-code"></i></strong><span>{{ page.data }}</span></div>
+        {% endif %} {% if page.commercial %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-business"></i></strong><span>{{ page.commercial }}</span></div>
+        {% endif %} {% if page.certifications %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-certificate"></i></strong><span>{{ page.certifications }}</span></div>
+        {% endif %} {% if page.sales %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-toolbox"></i></strong><span>{{ page.sales }}</span></div>
+        {% endif %} {% if page.cloud %}
+        <div class="project-line-item"><strong><i class="fa-solid fa-cloud"></i></strong><span>{{ page.cloud }}</span></div>
+        {% endif %}
+
+        <div class="gallery gallery-single-column mt-5">
+
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="/assets/images/portrait/getting-started.jpg" width="90%"/></div>
+            <div class="gallery-caption">Learning python in my dad's office at home – 2004</div>
+          </div> 
+
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="/assets/images/portrait/linux-servers.jpg" width="90%"/></div>
+            <div class="gallery-caption">Building Gentoo Linux servers in my room – 2005</div>
+          </div> 
+
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="/assets/images/portrait/sf.png" width="90%"/></div>
+            <div class="gallery-caption">Raising funding in San Francisco – 2015</div>
+          </div> 
+
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="/assets/images/portrait/shake-office.jpg" width="90%"/></div>
+            <div class="gallery-caption">Our first office – 2014</div>
+          </div> 
+
+          <div class="gallery-item">
+            <div class="gallery-image"><img src="/assets/images/portrait/shake-team.jpg" width="90%"/></div>
+            <div class="gallery-caption">The Shake team – 2016</div>
+          </div> 
+          
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="content">{{ content }}</div>
+      </div>
+    </div>
+  </div>
+</div>

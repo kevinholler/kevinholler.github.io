@@ -1,0 +1,93 @@
+---
+layout: default
+body_classes: page-project
+---
+
+{% assign limit = page.gallery_limit | default: nil %}
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-12 col-md-6 mb-6 mb-md-0">
+        <div class="gallery gallery-single-column">
+          {% for item in page.video_gallery limit: limit %}
+          <div class="gallery-item">
+            <div class="gallery-video">
+              {% include framework/shortcodes/youtube.html id=item.video %}
+            </div>
+          </div>
+        {% endfor %}
+          {% for item in page.gallery limit: limit %}
+            <div class="gallery-item">
+              <div class="gallery-image"><img src="{{ item.image | relative_url }}"/></div>
+              <div class="gallery-caption">{{ item.caption }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+
+        {% if page.title %}
+          <div class="project-heading">
+            <h1>{{ page.title }}</h1>
+            <h2>{{ page.description }}</h2>
+            {% if page.status %}
+              <div class="page-categories">
+                <span class="status-badge">
+                  <i class="fa-solid {{page.fa_icon}}"></i>
+                  {{ page.status }}
+                </span>
+              </div>
+            {% endif %}
+              </div>
+        {% endif %}
+
+
+        {% if page.founded %}
+          <div class="project-date">
+            <strong>Founded: </strong><span>{{ page.founded }}</span>
+          </div>
+        {% endif %}
+
+        {% if page.team_size %}
+          <div class="project-client">
+            <strong>Employees: </strong><span>{{ page.team_size }}</span>
+          </div>
+        {% endif %}
+
+        {% if page.funding %}
+          <div class="project-role">
+            <strong>Funding: </strong><span>{{ page.funding }}</span>
+          </div>
+        {% endif %}
+
+        {% if page.type %}
+          <div class="project-role">
+            <strong>Tags: </strong><span>{{ page.type }}</span>
+          </div>
+        {% endif %}
+
+        {% if page.channel %}
+          <div class="project-role">
+            <strong>Youtube: </strong><a href="https://www.youtube.com/{{ page.channel }}">{{ page.channel }}</a></span>
+          </div>
+        {% endif %}
+
+        {% if page.website %}
+          <div class="project-role">
+            <strong>URL: </strong><span>{{ page.website }}</span>
+          </div>
+        {% endif %}
+
+      <hr />
+
+        <div class="content">
+          {{ content }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
