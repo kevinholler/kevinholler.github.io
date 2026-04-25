@@ -1,0 +1,181 @@
+/* About page styling */
+
+.about-hero {
+  padding: 96px 0 56px;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-meta {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 20px;
+}
+.about-meta dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px 20px;
+  margin: 0;
+}
+.about-meta dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 4px;
+}
+.about-meta dd {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.about-meta dd strong { color: var(--ink); font-weight: 600; }
+
+.about-portrait {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  background: var(--ink-2);
+}
+.about-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.prose {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.prose p { margin: 0 0 18px; color: var(--ink); max-width: 60ch; }
+.prose p + p { text-indent: 2em; }
+.prose a { color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
+.prose a:hover { color: var(--accent); border-color: var(--accent); }
+.prose strong { font-weight: 500; }
+.prose em { font-style: italic; }
+
+.prose-lede {
+  font-family: var(--serif);
+  font-size: 26px;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--rule);
+  max-width: 100% !important;
+}
+
+/* Chapter — two-column row: text left, images right */
+.chapter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 40px;
+  margin: 56px 0;
+  align-items: start;
+}
+.chapter h2 {
+  font-family: var(--serif);
+  font-size: 30px;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 18px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.chapter h2 .num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.chapter-text { min-width: 0; }
+.chapter-text p { max-width: none; }
+
+.chapter-media {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 96px;
+}
+.chapter-media .figure { margin: 0; }
+
+/* Reverse variant — image left, text right */
+.chapter.reverse .chapter-text { order: 2; }
+.chapter.reverse .chapter-media { order: 1; }
+
+/* Text-only chapter spans full width of prose */
+.chapter.full {
+  grid-template-columns: 1fr;
+}
+.chapter.full .chapter-text p { max-width: 60ch; }
+
+/* Inline editorial figure */
+.figure { margin: 0; }
+.figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  background: var(--ink-3);
+}
+.figure figcaption {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+}
+.figure figcaption::before {
+  content: "";
+  width: 18px; height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.about-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.about-eyebrow .line {
+  flex: 1; max-width: 80px;
+  height: 1px; background: var(--rule-strong);
+}
+
+.about-h1 {
+  font-family: var(--serif);
+  font-size: clamp(48px, 6vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+  margin: 0 0 24px;
+}
+
+@media (max-width: 920px) {
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-meta { position: static; }
+  .chapter { grid-template-columns: 1fr; gap: 24px; }
+  .chapter.reverse .chapter-text { order: 1; }
+  .chapter.reverse .chapter-media { order: 2; }
+  .chapter-media { position: static; }
+}

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Projects from '../../components/Projects.astro';
+---
+<BaseLayout
+  title="Projects — Kevin Holler"
+  description="A short list of things Kevin Holler has built or is currently working on — featuring suky.ai."
+  active="projects"
+>
+  <section class="hero" style="padding: 80px 0 32px;">
+    <div class="container">
+      <div class="eyebrow-accent">/ Projects</div>
+      <h1 style="font-family: var(--serif); font-size: clamp(48px, 6vw, 96px); line-height: 0.98; letter-spacing: -0.035em; margin: 16px 0 24px; font-weight: 400;">
+        A short list — kept<br />deliberately short.
+      </h1>
+      <p class="lede" style="max-width: 640px;">
+        The work I'd happily talk about for an hour. Older experiments and side projects live on my <a href="https://github.com/kevinholler" target="_blank" rel="noreferrer" class="link">GitHub</a>.
+      </p>
+    </div>
+  </section>
+  <Projects />
+</BaseLayout>

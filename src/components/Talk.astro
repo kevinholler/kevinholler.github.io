@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+---
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">/ 03 Speaking</div>
+        <h2 class="serif" style="margin-top: 12px;">On stage, on the mic.</h2>
+      </div>
+      <p>Talks, podcast appearances, and the occasional rant disguised as a meetup.</p>
+    </div>
+    <div class="talk-card">
+      <div class="talk-thumb" data-talk-thumb role="button" tabindex="0" aria-label="Play talk">
+        <img
+          src="https://img.youtube.com/vi/lrtkB5UjdEQ/maxresdefault.jpg"
+          alt="Kevin Holler · Talk thumbnail"
+          style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85;"
+        />
+        <div class="talk-thumb-overlay">
+          <div class="talk-play"><Icon name="play" size={28} /></div>
+        </div>
+      </div>
+      <div class="talk-meta">
+        <div class="eyebrow">Featured · Conference talk</div>
+        <h3>From idea to production: shipping AI features without breaking your users.</h3>
+        <p>A walkthrough of the patterns I've seen work in real teams — eval harnesses, dark launches, feature-flagged rollouts, and the unglamorous bits of putting LLMs in front of real customers.</p>
+        <div class="talk-stats">
+          <span>YouTube</span>
+          <span>·</span>
+          <span>~32 min</span>
+          <span>·</span>
+          <span>English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const thumb = document.querySelector<HTMLElement>('[data-talk-thumb]');
+  const load = () => {
+    if (!thumb || thumb.dataset.loaded) return;
+    thumb.dataset.loaded = '1';
+    thumb.innerHTML = `<iframe src="https://www.youtube.com/embed/lrtkB5UjdEQ?autoplay=1" title="Kevin Holler · Talk" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="border:0;width:100%;height:100%;aspect-ratio:16/9;"></iframe>`;
+  };
+  thumb?.addEventListener('click', load);
+  thumb?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      load();
+    }
+  });
+</script>

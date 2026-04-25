@@ -1,0 +1,191 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import portraitMain from '../assets/portrait/kevin-holler.jpg';
+import gettingStarted from '../assets/portrait/getting-started.jpg';
+import linuxServers from '../assets/portrait/linux-servers.jpg';
+import shakeTeam from '../assets/portrait/shake-team.jpg';
+import shakeOffice from '../assets/portrait/shake-office.jpg';
+import khSetup from '../assets/portrait/kh-setup.jpg';
+import landscaping from '../assets/portrait/landscaping.jpg';
+import portrait2 from '../assets/portrait/kevin-holler-2.jpg';
+import ccc from '../assets/portrait/ccc.jpg';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Kevin Holler',
+  url: 'https://kevinholler.com',
+  jobTitle: 'Staff Solutions Engineer',
+  worksFor: { '@type': 'Organization', name: 'LaunchDarkly', url: 'https://launchdarkly.com' },
+  alumniOf: { '@type': 'EducationalOrganization', name: 'IADT, Dublin' },
+  knowsLanguage: ['de', 'en'],
+  sameAs: [
+    'https://github.com/kevinholler',
+    'https://www.linkedin.com/in/kevinholler',
+  ],
+};
+---
+<BaseLayout
+  title="About — Kevin Holler"
+  description="Kevin Holler — Staff SE at LaunchDarkly, founder of suky.ai. A nonlinear career across engineering, sales, and product."
+  active="about"
+  jsonLd={personJsonLd}
+>
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-eyebrow">
+        <span class="line"></span>
+        <span class="eyebrow-accent">/ About — short version</span>
+      </div>
+      <h1 class="about-h1">A nonlinear career,<br />chosen on&nbsp;purpose.</h1>
+      <p class="lede" style="max-width: 720px;">
+        German-Irish, based in Würzburg. Spent the last 12 years moving between engineering, sales, product, and data — sometimes by plan, sometimes because the company was on fire and someone had to do it. These days I lead applied AI work at LaunchDarkly and build suky.ai on the side.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding: 56px 0;">
+    <div class="container">
+      <div class="about-grid">
+        <div class="prose">
+          <p class="prose-lede">
+            I write code, talk to customers, and try to be useful — usually in that order. The thread connecting every job I've held is a stubborn belief that the most interesting problems live in the seams between teams.
+          </p>
+
+          <div class="chapter">
+            <div class="chapter-text">
+              <h2><span class="num">/ 01 ORIGINS</span>How I got here</h2>
+              <p>
+                Born in Germany, raised in Ireland. My tech career began at 14 when I found Eric Raymond's "How to Become a Hacker" — that was the unlock. Python, Linux, building computers, freelancing as a product engineer while studying Creative Computing in Dublin.
+              </p>
+              <p>
+                The pivotal moment was joining <strong>Contrast</strong>, a boutique software shop run by the now co-founders of <strong>Intercom</strong>. That's where I first saw startup culture up close — the iteration, the conviction, the comfort with chaos. It set the trajectory for everything that came after.
+              </p>
+            </div>
+            <div class="chapter-media">
+              <figure class="figure">
+                <Image src={gettingStarted} alt="Kevin at 14, at his first computer setup, 2004." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>2004 · the first setup</figcaption>
+              </figure>
+              <figure class="figure">
+                <Image src={linuxServers} alt="Home Linux server setup, mid-2000s." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>Building Linux boxes</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="chapter reverse">
+            <div class="chapter-text">
+              <h2><span class="num">/ 02 ENGINEERING → ENTREPRENEURSHIP</span>The unconventional path</h2>
+              <p>
+                At <strong>Engine Yard</strong>, I made the unusual choice to join sales engineering instead of software development. Then to <strong>New Relic</strong> as the first SE on their EMEA founding team. That experience was rocket fuel for my first startup — <strong>Shake</strong> — a three-year journey that started with €50K from friends and family and grew to $250K from Silicon Valley investors.
+              </p>
+              <p>
+                Shake didn't make it. I took on €30K of personal debt to wind it down properly and not leave anyone holding the bag. The whole experience taught me more about myself, people, and business than any other point in my life.
+              </p>
+            </div>
+            <div class="chapter-media">
+              <figure class="figure">
+                <Image src={shakeTeam} alt="The Shake founding team." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>The Shake team · Dublin</figcaption>
+              </figure>
+              <figure class="figure">
+                <Image src={shakeOffice} alt="The empty Shake office on the last day." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>Last day · Shake office</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="chapter full">
+            <div class="chapter-text">
+              <h2><span class="num">/ 03 DATA &amp; PRODUCT</span>The middle years</h2>
+              <p>
+                Post-Shake I moved into product management at <strong>ChangeX</strong>, then to Munich as a Data Architect, building analytics systems for global enterprises (including Pampers' loyalty app). My third venture, <strong>Trackplan</strong>, came out of my own frustration with behavioral tracking. We had strong traction and commitments for $750K of a planned $2M round — and lost the lead investor in due diligence at the last hour.
+              </p>
+              <p>
+                The timing coincided with the birth of my son. What initially felt like a setback turned out to be a profound recalibration.
+              </p>
+            </div>
+          </div>
+
+          <div class="chapter">
+            <div class="chapter-text">
+              <h2><span class="num">/ 04 NOW</span>Applied AI, suky.ai, and what's next</h2>
+              <p>
+                Today I'm <strong>Staff Solutions Engineer</strong> at <strong>LaunchDarkly</strong>, where I lead our applied-AI motion across DACH — helping enterprise teams ship LLM features behind feature flags, with the experimentation and rollout discipline their other features get.
+              </p>
+              <p>
+                On the side, I'm building <a href="/projects/suky/">suky.ai</a> — a guardrail layer for behavioral event tracking. It's the tool I wish I'd had at every previous job that touched data.
+              </p>
+            </div>
+            <div class="chapter-media">
+              <figure class="figure">
+                <Image src={khSetup} alt="Workspace today." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>The desk, today</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="chapter reverse">
+            <div class="chapter-text">
+              <h2><span class="num">/ 05 OFF-KEYBOARD</span>The slow stuff</h2>
+              <p>
+                Sourdough, garden, landscaping. I take on a manual project every year that has nothing to do with screens. Last year it was a dry-stone wall. This year, a small orchard. The kitchen experiments have escalated to the point where I keep a tasting journal.
+              </p>
+              <p>
+                The other constant is community. <strong>Chaos Communication Camp</strong> every four years, a rotating dinner club, and the local Stammtisch — the people I've collected along the way are the part of the career I'm proudest of.
+              </p>
+            </div>
+            <div class="chapter-media">
+              <figure class="figure">
+                <Image src={landscaping} alt="Garden landscaping project — playhouse and bench." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>Garden project · Würzburg</figcaption>
+              </figure>
+              <figure class="figure">
+                <Image src={portrait2} alt="Cooking for friends at home." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>Sunday lunch · home</figcaption>
+              </figure>
+              <figure class="figure">
+                <Image src={ccc} alt="Chaos Communication Camp installation at dusk." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
+                <figcaption>CCC · the tribe</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <p style="margin-top: 48px; font-style: italic; color: var(--ink-2);">
+            If any of this sounds like a problem you have — or a problem I've had — <a href="/contact/">say hello</a>.
+          </p>
+        </div>
+
+        <aside class="about-meta">
+          <div class="about-portrait">
+            <Image src={portraitMain} alt="Kevin Holler portrait." widths={[320, 480, 640]} sizes="(max-width: 920px) 100vw, 320px" loading="eager" fetchpriority="high" />
+          </div>
+          <dl>
+            <dt>Role</dt>
+            <dd><strong>Staff Solutions Engineer</strong><br />LaunchDarkly · Applied AI lead, DACH</dd>
+
+            <dt>Building</dt>
+            <dd><strong>suky.ai</strong><br />Behavioral event contracts</dd>
+
+            <dt>Based</dt>
+            <dd>Würzburg, Germany</dd>
+
+            <dt>Languages</dt>
+            <dd>German &amp; English (native)</dd>
+
+            <dt>Previously</dt>
+            <dd>Trackplan · ChangeX · Pampers · New Relic · Engine Yard · Contrast · Shake</dd>
+
+            <dt>Stack</dt>
+            <dd>TypeScript · React · Next.js · Python · dbt · SQL · AWS · Postgres</dd>
+
+            <dt>Education</dt>
+            <dd>B.Sc. Creative Computing — IADT, Dublin</dd>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

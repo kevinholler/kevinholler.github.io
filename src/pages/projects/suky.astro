@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="suky.ai — case study · Kevin Holler"
+  description="Suky.ai — data contracts that catch tracking drift before it ships. A behavioral-event guardrail layer for product teams."
+  active="projects"
+>
+  <section class="case-hero">
+    <div class="container">
+      <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
+        <a href="/projects/" class="eyebrow" style="color: var(--ink-3);">← Back to projects</a>
+      </div>
+      <div class="case-grid">
+        <div>
+          <div class="eyebrow-accent">/ Case study · 2026</div>
+          <h1 class="case-h1">suky<span style="color: var(--accent);">.</span>ai</h1>
+          <p class="lede" style="max-width: 520px;">
+            Data contracts that catch tracking drift before it ships. A guardrail layer for product teams whose behavioral data is the foundation of everything downstream.
+          </p>
+        </div>
+        <div>
+          <div class="case-shot" style="margin: 0;">
+            <div class="row"><span class="ic ok">✓</span><span><span class="key">contract </span><span class="val">checkout.completed</span></span><span class="stat good">PASS</span></div>
+            <div class="row"><span class="ic ok">✓</span><span><span class="key">contract </span><span class="val">user.signup</span></span><span class="stat good">PASS</span></div>
+            <div class="row"><span class="ic err">✕</span><span><span class="key">contract </span><span class="val">trial.started</span> · plan_id missing on 14% of events</span><span class="stat bad">DRIFT</span></div>
+            <div class="row"><span class="ic ok">✓</span><span><span class="key">contract </span><span class="val">page.viewed</span></span><span class="stat good">PASS</span></div>
+            <div class="row"><span class="ic err">✕</span><span><span class="key">contract </span><span class="val">subscription.upgraded</span> · plan_tier value not in enum</span><span class="stat bad">SCHEMA</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-meta">
+        <div class="cell"><div class="label">Role</div><div class="value">Founder · Full-stack · 0→1</div></div>
+        <div class="cell"><div class="label">Status</div><div class="value">Pre-launch · private beta Q3 2026</div></div>
+        <div class="cell"><div class="label">Stack</div><div class="value">TypeScript · Postgres · ClickHouse · LaunchDarkly</div></div>
+        <div class="cell"><div class="label">Live at</div><div class="value"><a href="https://suky.ai" class="link">suky.ai</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="container">
+      <h2 class="h-2"><span class="eyebrow-accent" style="display: block; margin-bottom: 8px;">/ The problem</span>Behavioral data is the foundation, and nobody owns it.</h2>
+      <p class="prose-lede" style="max-width: 720px; margin-top: 24px;">
+        Every product team I've worked with treats event tracking as plumbing — until it breaks. Then it's a six-week archaeology project to figure out which deploy silently broke the funnel dashboard the CEO checks every morning.
+      </p>
+      <p class="lede" style="max-width: 720px;">
+        The frustrating part is that this isn't a hard problem. It's drift, schema evolution, and missing fields — three things we already know how to catch in API contracts and database migrations. We just don't do it for events.
+      </p>
+      <div class="callout">
+        "Tracking is the only part of our stack that ships to production with no tests, no review, and no rollback."
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section alt">
+    <div class="container">
+      <h2 class="h-2"><span class="eyebrow-accent" style="display: block; margin-bottom: 8px;">/ The approach</span>Three loops, one product.</h2>
+      <p class="lede" style="max-width: 720px; margin-top: 24px; margin-bottom: 32px;">
+        Suky watches the event stream and runs three loops continuously: schema enforcement, drift detection, and resolution workflows. Each loop has a different audience — engineers, analysts, and PMs respectively.
+      </p>
+      <div class="case-numbers">
+        <div class="num-cell">
+          <div class="big">01</div>
+          <div class="label">Detect</div>
+          <p style="margin-top: 12px; color: var(--ink-2);">Live schema diffing against a versioned contract. Catches missing fields, type mismatches, and out-of-enum values within seconds of an event flowing in.</p>
+        </div>
+        <div class="num-cell">
+          <div class="big">02</div>
+          <div class="label">Enforce</div>
+          <p style="margin-top: 12px; color: var(--ink-2);">CI checks that block PRs which would break a contract — generated typings keep producers honest at the source, before bad data ever hits the pipeline.</p>
+        </div>
+        <div class="num-cell">
+          <div class="big">03</div>
+          <div class="label">Resolve</div>
+          <p style="margin-top: 12px; color: var(--ink-2);">Drift gets routed as a Linear-style ticket to the team that owns the producer. With suggested patches, expected schemas, and one-click migration plans.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="container">
+      <h2 class="h-2"><span class="eyebrow-accent" style="display: block; margin-bottom: 8px;">/ Where AI fits</span>The interesting parts are the boring parts.</h2>
+      <p class="lede" style="max-width: 720px; margin-top: 24px;">
+        The temptation with a tool like this is to make the AI the headline. I went the other way. The LLM does three small, well-bounded jobs:
+      </p>
+      <ul class="prose" style="padding-left: 24px; margin-top: 24px;">
+        <li><strong>Suggesting contracts</strong> from existing event payloads — turning a year of unstructured tracking into a starting schema.</li>
+        <li><strong>Diagnosing drift</strong> in plain English — "the <code>plan_tier</code> field went from 3 unique values to 12 after the April 14th release."</li>
+        <li><strong>Writing migration patches</strong> for the producer code, with the user always in the loop. Suky proposes; humans approve.</li>
+      </ul>
+      <div class="callout" style="margin-top: 40px;">
+        The product is the discipline, not the model. The LLM is a sharper pencil — not the spreadsheet.
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section alt">
+    <div class="container">
+      <h2 class="h-2">What's next.</h2>
+      <p class="lede" style="max-width: 720px; margin-top: 24px;">
+        Private beta opens Q3 2026 with five design partners — all teams where I've personally felt this pain. If that sounds like you, <a href="mailto:hello@kevinholler.com" class="link">drop me a line</a>.
+      </p>
+      <div style="display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap;">
+        <a class="btn btn-primary" href="https://suky.ai" target="_blank" rel="noreferrer">Visit suky.ai →</a>
+        <a class="btn btn-ghost" href="/projects/">More projects</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

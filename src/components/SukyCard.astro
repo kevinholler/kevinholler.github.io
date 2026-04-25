@@ -1,0 +1,55 @@
+---
+import Icon from './Icon.astro';
+
+const events = [
+  { ev: 'checkout.completed', status: 'PASS', ok: true },
+  { ev: 'user.signup', status: 'PASS', ok: true },
+  { ev: 'trial.started', status: 'DRIFT', ok: false, note: 'missing plan_id' },
+  { ev: 'page.viewed', status: 'PASS', ok: true },
+  { ev: 'subscription.upgraded', status: 'PASS', ok: true },
+];
+---
+<a href="/projects/suky/" class="suky-card reveal" style="text-decoration: none;">
+  <div class="suky-head">
+    <div class="suky-logo">
+      <span class="dot"></span>
+      suky<span style="color: #FF4D4D;">.</span>ai
+    </div>
+    <div class="suky-tag">Currently building</div>
+  </div>
+  <h2 class="suky-headline">
+    Data contracts that <em>catch drift</em> before it ships.
+  </h2>
+  <p class="suky-sub">
+    A behavioral-event guardrail layer for product teams. Suky watches your event stream, enforces contracts in CI, and tells you the moment your tracking goes sideways.
+  </p>
+  <div class="suky-demo" aria-hidden="true" data-suky-demo>
+    {events.map((e, i) => (
+      <div class:list={['demo-row', i === 0 && 'flash']}>
+        <span class:list={['icon', e.ok && 'ok']}>{e.ok ? '✓' : '✕'}</span>
+        <span>
+          <span class="key">event </span>
+          <span class="val">{e.ev}</span>
+          {!e.ok && <span class="key"> · {e.note}</span>}
+        </span>
+        <span class:list={['status', e.ok && 'ok']}>{e.status}</span>
+      </div>
+    ))}
+  </div>
+  <span class="suky-cta">
+    Read the case study <Icon name="arrow" size={12} />
+  </span>
+</a>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-suky-demo]');
+  if (root) {
+    const rows = Array.from(root.querySelectorAll<HTMLElement>('.demo-row'));
+    let i = 0;
+    setInterval(() => {
+      rows.forEach((r) => r.classList.remove('flash'));
+      i = (i + 1) % rows.length;
+      rows[i]?.classList.add('flash');
+    }, 1800);
+  }
+</script>

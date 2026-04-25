@@ -1,0 +1,30 @@
+---
+const cells = [
+  { label: 'Day job', value: 'LaunchDarkly', meta: 'Staff SE · Applied AI lead, DACH' },
+  { label: 'Building', value: 'suky.ai', meta: 'Behavioral event contracts · pre-launch' },
+  { label: 'Reading / thinking', value: 'Eval-driven dev', meta: 'How shipping LLMs differs from shipping APIs' },
+  { label: 'Speaking', value: 'Feature flags + AI', meta: 'Munich Software Crafters · 2026' },
+  { label: 'Off-keyboard', value: 'Sourdough, garden', meta: 'Currently regretting the rosemary placement' },
+  { label: 'Based', value: 'Würzburg, DE', meta: 'DE / EN — open to remote' },
+];
+---
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">/ 01 Currently</div>
+        <h2 class="serif" style="margin-top: 12px;">What I'm into right now.</h2>
+      </div>
+      <p>A snapshot of the things consuming my brain this quarter — work, side projects, and the slow stuff.</p>
+    </div>
+    <div class="now-grid">
+      {cells.map((c) => (
+        <div class="now-cell">
+          <span class="label">{c.label}</span>
+          <span class="value">{c.value}</span>
+          <span class="meta">{c.meta}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

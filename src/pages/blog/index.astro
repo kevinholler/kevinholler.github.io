@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout
+  title="Writing — Kevin Holler"
+  description="Notes from the field on applied AI, feature flags, sales engineering, and founder lessons."
+  active="writing"
+>
+  <section class="hero" style="padding: 80px 0 32px;">
+    <div class="container">
+      <div class="eyebrow-accent">/ Writing</div>
+      <h1 style="font-family: var(--serif); font-size: clamp(48px, 6vw, 96px); line-height: 0.98; letter-spacing: -0.035em; margin: 16px 0 24px; font-weight: 400;">
+        Notes from<br />the field.
+      </h1>
+      <p class="lede" style="max-width: 640px;">
+        I write in fits and starts — usually after something breaks, or after I learn something the hard way. Topics: applied AI, feature flags, sales engineering, founder lessons.
+      </p>
+    </div>
+  </section>
+  <section style="padding: 0 0 96px;">
+    <div class="container">
+      <div class="post-list">
+        {posts.map((p) => (
+          <a href={`/blog/${p.slug}/`} class="post-row">
+            <span class="date">
+              {p.data.pubDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'short' })}
+            </span>
+            <span class="title">
+              {p.data.title}
+              <small>{p.data.description}</small>
+            </span>
+            <span class="cat">{p.data.tags[0] ?? 'Writing'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .post-list {
+    border-top: 1px solid var(--rule);
+    margin-top: 48px;
+  }
+  .post-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 200px;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    transition: padding-left 0.25s ease;
+  }
+  .post-row:hover {
+    padding-left: 16px;
+  }
+  .post-row .date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .post-row .title {
+    font-family: var(--serif);
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .post-row .title small {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-2);
+    letter-spacing: 0;
+  }
+  .post-row .cat {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-align: right;
+  }
+  @media (max-width: 720px) {
+    .post-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .post-row .cat {
+      text-align: left;
+    }
+  }
+</style>

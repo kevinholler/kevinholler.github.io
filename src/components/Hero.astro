@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import SukyCard from './SukyCard.astro';
+---
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-id reveal">
+      <div class="meta-row">
+        <span class="pill">
+          <span class="dot live"></span>
+          Staff SE · LaunchDarkly · Würzburg, DE
+        </span>
+      </div>
+      <h1>
+        Applied AI<br />
+        for the <span class="underline-accent">unglamorous</span><br />
+        middle of the&nbsp;stack.
+      </h1>
+      <p class="lede">
+        I'm Kevin — Staff Solutions Engineer at <a href="https://launchdarkly.com" target="_blank" rel="noreferrer">LaunchDarkly</a>, where I lead our applied-AI motion across DACH. I help teams ship LLM-powered features behind feature flags, with the experimentation, guardrails, and rollout discipline that keeps them on production.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">
+          See the work <Icon name="arrow" size={14} />
+        </a>
+        <a class="btn btn-ghost" href="/about/">
+          About me
+        </a>
+        <div class="socials">
+          <a href="https://github.com/kevinholler" aria-label="GitHub"><Icon name="github" /></a>
+          <a href="https://www.linkedin.com/in/kevinholler" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+          <a href="mailto:hello@kevinholler.com" aria-label="Email"><Icon name="mail" /></a>
+        </div>
+      </div>
+    </div>
+
+    <SukyCard />
+  </div>
+</section>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+}
+
+const { title, description, pubDate, tags } = Astro.props;
+const dateLabel = pubDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long' });
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Kevin Holler',
+    url: 'https://kevinholler.com',
+  },
+  keywords: tags.join(', '),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+};
+---
+<BaseLayout title={`${title} — Kevin Holler`} description={description} active="writing" jsonLd={articleJsonLd}>
+  <article style="padding: 64px 0 48px;">
+    <div class="container" style="max-width: 760px;">
+      <a href="/blog/" class="eyebrow" style="color: var(--ink-3);">← All writing</a>
+      <div style="margin-top: 24px; margin-bottom: 12px;">
+        <span class="eyebrow-accent">{tags[0] ?? 'Writing'} · {dateLabel}</span>
+      </div>
+      <h1 style="font-family: var(--serif); font-size: clamp(40px, 5vw, 72px); line-height: 1.02; letter-spacing: -0.035em; margin: 0 0 24px; font-weight: 400;">
+        {title}.
+      </h1>
+      <p class="prose-lede">{description}</p>
+      <div class="prose">
+        <slot />
+      </div>
+      <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <span class="eyebrow">/ Filed under · {tags.join(' · ')}</span>
+        <a href="/blog/" class="link">More writing →</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

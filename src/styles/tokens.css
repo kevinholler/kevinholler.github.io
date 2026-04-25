@@ -1,0 +1,219 @@
+/* ─────────────────────────────────────────────────────────────────────
+   kevinholler.com — warm editorial tokens
+   Personal-brand palette designed to be DISTINCT from suky.ai
+   so Suky still pops when featured.
+   ───────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Paper-and-ink palette. Subtly warm so it reads "personal site",
+     not "marketing landing". */
+  --paper:        oklch(0.965 0.012 78);   /* warm off-white */
+  --paper-2:      oklch(0.945 0.014 78);   /* card / sunken */
+  --paper-3:      oklch(0.915 0.018 78);   /* edge / divider tint */
+  --ink:          oklch(0.22 0.018 60);    /* primary text */
+  --ink-2:        oklch(0.40 0.014 60);    /* secondary text */
+  --ink-3:        oklch(0.50 0.014 60);    /* tertiary / meta — WCAG AA on paper */
+  --rule:         oklch(0.85 0.014 70);    /* hairline rule */
+  --rule-strong:  oklch(0.78 0.014 70);
+
+  /* Single warm accent — rust/amber — vary in lightness only. */
+  --accent:       oklch(0.50 0.16 45);     /* rust — WCAG AA on paper */
+  --accent-soft:  oklch(0.92 0.06 70);     /* rust tint background */
+  --accent-deep:  oklch(0.40 0.14 45);     /* hover / pressed */
+
+  /* Brief secondary used sparingly (Suky featured card uses Suky red) */
+  --suky-red:     #FF4D4D;
+  --suky-bg:      #0F0F0F;
+
+  /* Type */
+  --serif: "Newsreader Variable", "Newsreader", "Source Serif Pro", "Iowan Old Style", Georgia, serif;
+  --sans:  "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:  "JetBrains Mono Variable", "JetBrains Mono", "SF Mono", "Fira Code", Consolas, monospace;
+
+  /* Type scale — editorial, larger contrast between display and body */
+  --fs-mono:   12px;
+  --fs-meta:   13px;
+  --fs-body:   17px;
+  --fs-lead:   20px;
+  --fs-h4:     22px;
+  --fs-h3:     28px;
+  --fs-h2:     40px;
+  --fs-h1:     clamp(44px, 6.4vw, 88px);
+  --fs-display:clamp(56px, 9vw, 132px);
+
+  --lh-tight:   1.02;
+  --lh-snug:    1.12;
+  --lh-body:    1.55;
+  --lh-relaxed: 1.7;
+
+  /* Spacing — 8pt scale with editorial gutters */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --s-9: 96px; --s-10: 128px; --s-11: 192px;
+
+  /* Radii (kept small — editorial, not pill-y) */
+  --r-1: 2px; --r-2: 4px; --r-3: 8px; --r-4: 14px;
+
+  /* Container */
+  --container: 1280px;
+  --gutter: 40px;
+
+  /* Shadows — soft, paper-like */
+  --shadow-sm: 0 1px 0 oklch(0.78 0.014 70 / 0.4);
+  --shadow:    0 1px 0 oklch(0.78 0.014 70 / 0.5), 0 8px 24px -12px oklch(0.20 0.02 60 / 0.18);
+  --shadow-lg: 0 1px 0 oklch(0.78 0.014 70 / 0.6), 0 24px 60px -24px oklch(0.20 0.02 60 / 0.22);
+}
+
+/* Dark mode — used by Tweaks toggle. Inverts paper to deep ink. */
+.theme-dark {
+  --paper:        oklch(0.18 0.012 60);
+  --paper-2:      oklch(0.22 0.012 60);
+  --paper-3:      oklch(0.27 0.014 60);
+  --ink:          oklch(0.96 0.010 78);
+  --ink-2:        oklch(0.78 0.012 78);
+  --ink-3:        oklch(0.62 0.012 78);
+  --rule:         oklch(0.32 0.014 60);
+  --rule-strong:  oklch(0.42 0.014 60);
+  --accent:       oklch(0.72 0.15 55);
+  --accent-soft:  oklch(0.30 0.06 55);
+  --accent-deep:  oklch(0.82 0.14 55);
+}
+
+/* Reset + base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-feature-settings: "ss01", "cv11";
+  transition: background .35s ease, color .35s ease;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--accent); color: var(--paper); }
+
+/* Type primitives */
+.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.015em; }
+.mono  { font-family: var(--mono); font-feature-settings: "ss01"; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.eyebrow-accent {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+}
+.h-display {
+  font-family: var(--serif);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.035em;
+  font-weight: 400;
+  margin: 0;
+}
+.h-1 {
+  font-family: var(--serif);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin: 0;
+}
+.h-2 {
+  font-family: var(--serif);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.025em;
+  font-weight: 400;
+  margin: 0;
+}
+.h-3 {
+  font-family: var(--serif);
+  font-size: var(--fs-h3);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 0;
+}
+.lede {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--ink-2);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+em, .italic { font-style: italic; }
+
+/* Layout */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+@media (max-width: 720px) {
+  :root { --gutter: 20px; }
+}
+
+/* Hairline rule */
+.rule { height: 1px; background: var(--rule); width: 100%; }
+
+/* Utility — link with underline rhythm */
+.link {
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule-strong);
+  transition: border-color .15s ease, color .15s ease;
+}
+.link:hover { color: var(--accent); border-color: var(--accent); }
+.link-accent {
+  color: var(--accent);
+  border-bottom: 1px solid currentColor;
+}
+.link-accent:hover { color: var(--accent-deep); }
+
+/* Pill */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  background: var(--paper-2);
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.pill .dot.live { background: #10b981; box-shadow: 0 0 0 0 #10b981; animation: pulse 2.4s infinite; }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+
+/* Reveal */
+.reveal { opacity: 1; transform: none; transition: opacity .8s ease, transform .8s ease; }
+.reveal.pending { opacity: 0; transform: translateY(8px); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal, * { transition: none !important; animation: none !important; }
+}
+
+/* Page chrome — thin top stripe in accent */
+.page-edge {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 200;
+  transform-origin: left;
+}
