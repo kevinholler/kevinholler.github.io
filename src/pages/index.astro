@@ -5,11 +5,36 @@ import Now from '../components/Now.astro';
 import Projects from '../components/Projects.astro';
 import Talk from '../components/Talk.astro';
 import Writing from '../components/Writing.astro';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Kevin Holler',
+  url: 'https://kevinholler.com',
+  jobTitle: 'Staff Solutions Engineer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'LaunchDarkly',
+    url: 'https://launchdarkly.com',
+  },
+  sameAs: [
+    'https://github.com/kevinholler',
+    'https://www.linkedin.com/in/kevinholler',
+    'https://www.youtube.com/watch?v=lrtkB5UjdEQ',
+  ],
+  description: 'Staff Solutions Engineer at LaunchDarkly leading applied AI for DACH, founder of suky.ai.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Würzburg',
+    addressCountry: 'DE',
+  },
+};
 ---
 <BaseLayout
   title="Kevin Holler — Applied AI · Staff Solutions Engineer"
   description="Kevin Holler — Staff Solutions Engineer at LaunchDarkly, building suky.ai. Notes on applied AI, feature flags, and shipping LLM features safely."
   active="home"
+  jsonLd={personJsonLd}
 >
   <Hero />
   <Now />

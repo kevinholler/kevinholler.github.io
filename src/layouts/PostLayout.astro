@@ -10,8 +10,23 @@ interface Props {
 
 const { title, description, pubDate, tags } = Astro.props;
 const dateLabel = pubDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long' });
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Kevin Holler',
+    url: 'https://kevinholler.com',
+  },
+  keywords: tags.join(', '),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+};
 ---
-<BaseLayout title={`${title} — Kevin Holler`} description={description} active="writing">
+<BaseLayout title={`${title} — Kevin Holler`} description={description} active="writing" jsonLd={articleJsonLd}>
   <article style="padding: 64px 0 48px;">
     <div class="container" style="max-width: 760px;">
       <a href="/blog/" class="eyebrow" style="color: var(--ink-3);">← All writing</a>

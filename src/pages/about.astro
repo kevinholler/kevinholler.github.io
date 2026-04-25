@@ -1,10 +1,36 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import portraitMain from '../assets/portrait/kevin-holler.jpg';
+import gettingStarted from '../assets/portrait/getting-started.jpg';
+import linuxServers from '../assets/portrait/linux-servers.jpg';
+import shakeTeam from '../assets/portrait/shake-team.jpg';
+import shakeOffice from '../assets/portrait/shake-office.jpg';
+import khSetup from '../assets/portrait/kh-setup.jpg';
+import landscaping from '../assets/portrait/landscaping.jpg';
+import portrait2 from '../assets/portrait/kevin-holler-2.jpg';
+import ccc from '../assets/portrait/ccc.jpg';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Kevin Holler',
+  url: 'https://kevinholler.com',
+  jobTitle: 'Staff Solutions Engineer',
+  worksFor: { '@type': 'Organization', name: 'LaunchDarkly', url: 'https://launchdarkly.com' },
+  alumniOf: { '@type': 'EducationalOrganization', name: 'IADT, Dublin' },
+  knowsLanguage: ['de', 'en'],
+  sameAs: [
+    'https://github.com/kevinholler',
+    'https://www.linkedin.com/in/kevinholler',
+  ],
+};
 ---
 <BaseLayout
   title="About — Kevin Holler"
   description="Kevin Holler — Staff SE at LaunchDarkly, founder of suky.ai. A nonlinear career across engineering, sales, and product."
   active="about"
+  jsonLd={personJsonLd}
 >
   <section class="about-hero">
     <div class="container">
@@ -39,11 +65,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="chapter-media">
               <figure class="figure">
-                <img src="/portrait/getting-started.jpg" alt="Kevin at 14, at his first computer setup, 2004." />
+                <Image src={gettingStarted} alt="Kevin at 14, at his first computer setup, 2004." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>2004 · the first setup</figcaption>
               </figure>
               <figure class="figure">
-                <img src="/portrait/linux-servers.jpg" alt="Home Linux server setup, mid-2000s." />
+                <Image src={linuxServers} alt="Home Linux server setup, mid-2000s." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>Building Linux boxes</figcaption>
               </figure>
             </div>
@@ -61,11 +87,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="chapter-media">
               <figure class="figure">
-                <img src="/portrait/shake-team.jpg" alt="The Shake founding team." />
+                <Image src={shakeTeam} alt="The Shake founding team." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>The Shake team · Dublin</figcaption>
               </figure>
               <figure class="figure">
-                <img src="/portrait/shake-office.jpg" alt="The empty Shake office on the last day." />
+                <Image src={shakeOffice} alt="The empty Shake office on the last day." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>Last day · Shake office</figcaption>
               </figure>
             </div>
@@ -95,7 +121,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="chapter-media">
               <figure class="figure">
-                <img src="/portrait/kh-setup.jpg" alt="Workspace today." />
+                <Image src={khSetup} alt="Workspace today." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>The desk, today</figcaption>
               </figure>
             </div>
@@ -113,15 +139,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="chapter-media">
               <figure class="figure">
-                <img src="/portrait/landscaping.jpg" alt="Garden landscaping project — playhouse and bench." />
+                <Image src={landscaping} alt="Garden landscaping project — playhouse and bench." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>Garden project · Würzburg</figcaption>
               </figure>
               <figure class="figure">
-                <img src="/portrait/kevin-holler-2.jpg" alt="Cooking for friends at home." />
+                <Image src={portrait2} alt="Cooking for friends at home." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>Sunday lunch · home</figcaption>
               </figure>
               <figure class="figure">
-                <img src="/portrait/ccc.jpg" alt="Chaos Communication Camp installation at dusk." />
+                <Image src={ccc} alt="Chaos Communication Camp installation at dusk." widths={[400, 700]} sizes="(max-width: 920px) 100vw, 400px" loading="lazy" />
                 <figcaption>CCC · the tribe</figcaption>
               </figure>
             </div>
@@ -134,7 +160,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <aside class="about-meta">
           <div class="about-portrait">
-            <img src="/portrait/kevin-holler.jpg" alt="Kevin Holler portrait." />
+            <Image src={portraitMain} alt="Kevin Holler portrait." widths={[320, 480, 640]} sizes="(max-width: 920px) 100vw, 320px" loading="eager" fetchpriority="high" />
           </div>
           <dl>
             <dt>Role</dt>
