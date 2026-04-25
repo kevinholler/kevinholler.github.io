@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  active?: 'home' | 'projects' | 'writing' | 'about' | 'contact';
+}
+const { active = 'home' } = Astro.props;
+
+const links = [
+  { id: 'home', label: 'Index', href: '/' },
+  { id: 'projects', label: 'Projects', href: '/projects/' },
+  { id: 'writing', label: 'Writing', href: '/blog/' },
+  { id: 'about', label: 'About', href: '/about/' },
+  { id: 'contact', label: 'Contact', href: '/contact/' },
+];
+---
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">
+      <span>Kevin Holler</span>
+      <span class="dot">.</span>
+      <span class="role">Staff SE · LaunchDarkly</span>
+    </a>
+    <div class="nav-links">
+      {links.map((l) => (
+        <a href={l.href} class={active === l.id ? 'active' : ''}>
+          {l.label}
+        </a>
+      ))}
+    </div>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon-light"><Icon name="moon" size={16} /></span>
+        <span class="theme-icon-dark" hidden><Icon name="sun" size={16} /></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const lightIcon = btn?.querySelector<HTMLElement>('.theme-icon-light');
+  const darkIcon = btn?.querySelector<HTMLElement>('.theme-icon-dark');
+
+  const sync = () => {
+    const dark = root.classList.contains('theme-dark');
+    if (lightIcon) lightIcon.hidden = dark;
+    if (darkIcon) darkIcon.hidden = !dark;
+  };
+  sync();
+
+  btn?.addEventListener('click', () => {
+    const next = !root.classList.contains('theme-dark');
+    root.classList.toggle('theme-dark', next);
+    try {
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+    } catch {}
+    sync();
+  });
+</script>

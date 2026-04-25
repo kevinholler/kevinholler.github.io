@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Contact — Kevin Holler"
+  description="Drop Kevin Holler a line — open to conversations about applied AI, feature flags, suky.ai, and sales engineering."
+  active="contact"
+>
+  <section class="hero" style="padding: 80px 0 32px;">
+    <div class="container">
+      <div class="eyebrow-accent">/ Get in touch</div>
+      <h1 style="font-family: var(--serif); font-size: clamp(48px, 6vw, 96px); line-height: 0.98; letter-spacing: -0.035em; margin: 16px 0 24px; font-weight: 400;">
+        Drop me a line.
+      </h1>
+      <p class="lede" style="max-width: 640px;">
+        I read everything that lands in my inbox and try to reply within a few days. The honest version of my "office hours" is: nights after the kid is asleep.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding: 32px 0 96px;">
+    <div class="container" style="display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start;">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;">/ Direct channels</div>
+        <div style="display: grid; gap: 12px; max-width: 560px;">
+          <a class="contact-channel" href="mailto:hello@kevinholler.com">
+            <span>hello@kevinholler.com</span><span class="arrow">→</span>
+          </a>
+          <a class="contact-channel" href="https://www.linkedin.com/in/kevinholler" target="_blank" rel="noreferrer">
+            <span>linkedin.com/in/kevinholler</span><span class="arrow">→</span>
+          </a>
+          <a class="contact-channel" href="https://github.com/kevinholler" target="_blank" rel="noreferrer">
+            <span>github.com/kevinholler</span><span class="arrow">→</span>
+          </a>
+        </div>
+        <div style="margin-top: 32px; padding: 24px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 14px; max-width: 560px;">
+          <div class="eyebrow" style="margin-bottom: 12px;">/ Best topics</div>
+          <ul style="margin: 0; padding-left: 20px; color: var(--ink-2); line-height: 1.7;">
+            <li>Shipping LLM features in production-grade systems</li>
+            <li>Feature flags, experimentation, and progressive rollouts</li>
+            <li>Behavioral data quality &amp; tracking architecture</li>
+            <li>Sales engineering at growth-stage SaaS</li>
+            <li>Founding, failing, and trying again</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

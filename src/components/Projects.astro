@@ -1,0 +1,61 @@
+---
+const projects = [
+  {
+    num: '01',
+    slug: '/projects/suky/',
+    title: 'suky.ai',
+    pill: 'Featured',
+    desc: 'Data contracts for behavioral events. Catches tracking drift in CI before bad data reaches your warehouse.',
+    year: '2026 — now',
+    featured: true,
+  },
+  {
+    num: '02',
+    slug: 'https://launchdarkly.com',
+    title: 'LaunchDarkly · Applied AI',
+    desc: 'Reference architectures for shipping LLM features safely — feature-flagged rollouts, prompt versioning, runtime guardrails.',
+    year: '2024 — now',
+    featured: false,
+  },
+  {
+    num: '03',
+    slug: '#',
+    title: 'Eval Harness Patterns',
+    desc: 'Open notes on building product-specific eval suites: from golden sets to LLM-as-judge to live shadow traffic.',
+    year: '2025',
+    featured: false,
+  },
+  {
+    num: '04',
+    slug: 'https://www.youtube.com/watch?v=lrtkB5UjdEQ',
+    title: 'Feature flags × Generative AI',
+    desc: 'A talk and accompanying demo repo on using flags to safely expose LLM features to real users.',
+    year: '2025',
+    featured: false,
+  },
+];
+---
+<section class="section" id="projects">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">/ 02 Selected work</div>
+        <h2 class="serif" style="margin-top: 12px;">The things I'm proudest of building.</h2>
+      </div>
+      <p>A short list. I'd rather have four projects I can talk about for an hour each than forty I half-remember.</p>
+    </div>
+    <div class="proj-list">
+      {projects.map((p) => (
+        <a href={p.slug} class:list={['proj-row', p.featured && 'featured']}>
+          <span class="num">{p.num}</span>
+          <span class="title">
+            {p.title}
+            {p.pill && <span class="pill-mini">{p.pill}</span>}
+          </span>
+          <span class="desc">{p.desc}</span>
+          <span class="year">{p.year}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
