@@ -243,8 +243,19 @@ pre code {
 .still {
   position: relative;
   display: block;
+  width: fit-content;
+  max-width: 100%;
   border-bottom: 0;
   padding-bottom: 0;
+}
+
+/* A still narrower than the column keeps its own size instead of being
+   stretched soft. Shrink-wrapping the link too, so the play mark stays
+   centred on the image rather than on the empty column. */
+.still img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .play {
