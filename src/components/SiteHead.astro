@@ -16,18 +16,20 @@ const links = [
 ];
 ---
 <header class="site-head">
-  <div class="bar head-inner">
-    <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
-      Kevin Holler
-    </a>
-    <nav class="head-nav" aria-label="Primary">
-      {
-        links.map((l) => (
-          <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
-            {l.label}
-          </a>
-        ))
-      }
-    </nav>
+  <div class="bar">
+    <div class="head-inner">
+      <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
+        Kevin Holler
+      </a>
+      <nav class="head-nav" aria-label="Primary">
+        {
+          links.map((l) => (
+            <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
   </div>
 </header>

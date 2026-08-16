@@ -7,9 +7,11 @@ const elsewhere = [
 ];
 ---
 <footer class="site-foot">
-  <div class="bar foot-inner">
-    <nav aria-label="Elsewhere">
-      {elsewhere.map((l) => <a href={l.href}>{l.label}</a>)}
-    </nav>
+  <div class="bar">
+    <div class="foot-inner">
+      <nav aria-label="Elsewhere">
+        {elsewhere.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
   </div>
 </footer>

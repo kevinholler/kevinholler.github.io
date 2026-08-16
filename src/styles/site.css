@@ -423,11 +423,19 @@ pre code {
 
 /* ── Header and footer ────────────────────────────────── */
 
-/* Header and footer share the column's width so their hairlines line up
-   with the figures below them, not with the narrower text measure. */
+/* The bar is centred at the column's width so it shares the reading
+   column's left edge — two centred boxes of different widths would not.
+   Its contents are then capped at the measure, so the header and footer
+   rules sit on the text block like a running head, and figures stay the
+   one element allowed past the measure. */
 .bar {
   max-width: var(--wide);
   margin-inline: auto;
+}
+
+.head-inner,
+.foot-inner {
+  max-width: var(--measure);
 }
 
 .site-head {
