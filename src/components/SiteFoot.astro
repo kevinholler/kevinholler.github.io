@@ -1,25 +1,17 @@
 ---
-// The site's only navigation. It sits after the reading, not before it.
-interface Props {
-  here?: 'index' | 'writing' | 'projects' | 'talks' | 'about';
-}
-
-const { here } = Astro.props;
-
-const links = [
-  { id: 'index', label: 'Index', href: '/new/' },
-  { id: 'writing', label: 'Writing', href: '/new/writing/' },
-  { id: 'projects', label: 'Projects', href: '/new/projects/' },
-  { id: 'talks', label: 'Talks', href: '/new/talks/' },
-  { id: 'about', label: 'About', href: '/new/about/' },
-];
-
+// Everything that leaves the site. Page navigation lives in the header now,
+// so this row is only the ways to reach me elsewhere.
 const elsewhere = [
   { label: 'Email', href: 'mailto:hello@kevinholler.com' },
   { label: 'GitHub', href: 'https://github.com/kevinholler' },
 ];
 ---
-<nav class="site-foot">
-  {links.filter((l) => l.id !== here).map((l) => <a href={l.href}>{l.label}</a>)}
-  {elsewhere.map((l) => <a href={l.href}>{l.label}</a>)}
-</nav>
+<footer class="site-foot">
+  <div class="bar">
+    <div class="foot-inner">
+      <nav aria-label="Elsewhere">
+        {elsewhere.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
+  </div>
+</footer>

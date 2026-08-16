@@ -2,6 +2,7 @@
 import '@fontsource-variable/newsreader/wght.css';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/site.css';
+import SiteHead from '../components/SiteHead.astro';
 import SiteFoot from '../components/SiteFoot.astro';
 
 interface Props {
@@ -34,11 +35,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <main>
+    <a class="skip" href="#main">Skip to content</a>
+    <SiteHead here={here} />
+    <main id="main">
       <div class="col">
         <slot />
-        <SiteFoot here={here} />
       </div>
     </main>
+    <SiteFoot />
   </body>
 </html>

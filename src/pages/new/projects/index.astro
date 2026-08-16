@@ -17,7 +17,7 @@ import { projects } from '../../../data/projects';
         <li>
           <div class="row">
             <span class="name">{project.name}</span>
-            <span class="years">{project.years}</span>
+            {project.years && <span class="years">{project.years}</span>}
           </div>
 
           <p>{project.description}</p>

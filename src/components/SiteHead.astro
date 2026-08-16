@@ -1,0 +1,35 @@
+---
+// One quiet line at the top of every page. The name is the link home, so
+// there's no separate "Index" item, and the page you're on is shown rather
+// than removed — the row stays the same length everywhere.
+interface Props {
+  here?: 'index' | 'writing' | 'projects' | 'talks' | 'about';
+}
+
+const { here } = Astro.props;
+
+const links = [
+  { id: 'writing', label: 'Writing', href: '/new/writing/' },
+  { id: 'projects', label: 'Projects', href: '/new/projects/' },
+  { id: 'talks', label: 'Talks', href: '/new/talks/' },
+  { id: 'about', label: 'About', href: '/new/about/' },
+];
+---
+<header class="site-head">
+  <div class="bar">
+    <div class="head-inner">
+      <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
+        Kevin Holler
+      </a>
+      <nav class="head-nav" aria-label="Primary">
+        {
+          links.map((l) => (
+            <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </div>
+</header>

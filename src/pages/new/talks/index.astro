@@ -2,6 +2,15 @@
 import { Image } from 'astro:assets';
 import Reading from '../../../layouts/Reading.astro';
 import { talks } from '../../../data/talks';
+
+// Never ask for a width the source can't supply. A still smaller than the
+// 44rem figure renders sharp at its own size rather than upscaled and soft.
+// The source's own width is always offered, so a high-DPR screen still gets
+// every pixel the file actually has.
+const widthsFor = (width: number) => {
+  const candidates = [560, 704, 1408].filter((w) => w < width);
+  return [...new Set([...candidates, width])];
+};
 ---
 <Reading
   title="Talks — Kevin Holler"
@@ -26,10 +35,15 @@ import { talks } from '../../../data/talks';
           {talk.still && talk.video && (
             <figure class="figure">
               <a class="still" href={talk.video} rel="noreferrer">
-                <Image src={talk.still} alt={`${talk.title} — still from the recording`} widths={[560, 704, 1408]} sizes="(max-width: 44rem) 100vw, 44rem" />
+                <Image
+                  src={talk.still}
+                  alt={`${talk.title} — title card from the recording`}
+                  widths={widthsFor(talk.still.width)}
+                  sizes={`(max-width: 44rem) 100vw, ${Math.min(talk.still.width, 704)}px`}
+                />
                 <span class="play" aria-hidden="true" />
               </a>
-              <figcaption>Watch the recording — opens on the event's site.</figcaption>
+              <figcaption>Watch the recording — opens on YouTube.</figcaption>
             </figure>
           )}
 
