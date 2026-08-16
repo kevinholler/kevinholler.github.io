@@ -190,6 +190,53 @@ pre code {
   color: var(--ink-soft);
 }
 
+/* Two photographs that belong together read as one figure. Sharing the
+   width keeps a photo essay from turning into a column of billboards.
+
+   The inner figures go `display: contents` so the images land in one grid
+   row and the captions in the next: photos of different proportions sit on
+   a shared baseline and their captions line up, without cropping either
+   one to a common aspect ratio. */
+.figure.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px 16px;
+}
+
+.figure.pair > figure {
+  display: contents;
+}
+
+/* Pin the rows explicitly. Left to auto-placement, the grid fills
+   img/caption/img/caption across the columns instead of down them. */
+.figure.pair img {
+  grid-row: 1;
+  align-self: end;
+}
+
+.figure.pair figcaption {
+  grid-row: 2;
+  margin-top: 0;
+}
+
+@media (max-width: 620px) {
+  .figure.pair {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .figure.pair > figure {
+    display: block;
+    margin: 0;
+  }
+
+  .figure.pair figcaption {
+    margin-top: 8px;
+  }
+}
+
 /* A video still links out; the hairline play mark is the one
    piece of interface chrome on the site, and it earns its place
    by being the difference between a picture and a recording. */
@@ -324,6 +371,37 @@ pre code {
 
 .coverage a {
   border-bottom-color: var(--rule);
+}
+
+/* ── The facts, at the end of the about page ──────────── */
+.facts {
+  margin: 48px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 14px 24px;
+  font-size: 1rem;
+}
+
+.facts dt {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+@media (max-width: 620px) {
+  .facts {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+
+  .facts dd {
+    margin-bottom: 12px;
+  }
 }
 
 /* ── Footer: the site's only navigation ───────────────── */
