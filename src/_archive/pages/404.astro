@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found — Kevin Holler" description="The page you were looking for doesn't exist.">
+  <section class="hero" style="padding: 96px 0 64px;">
+    <div class="container" style="max-width: 720px;">
+      <div class="eyebrow-accent">/ 404</div>
+      <h1 style="font-family: var(--serif); font-size: clamp(56px, 8vw, 120px); line-height: 0.98; letter-spacing: -0.04em; margin: 16px 0 24px; font-weight: 400;">
+        That page<br />wandered off.
+      </h1>
+      <p class="lede" style="max-width: 560px;">
+        The link you followed is either broken, retired, or never existed in the first place. The site got a refresh recently — a few old project pages went away on purpose.
+      </p>
+      <div style="display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap;">
+        <a class="btn btn-primary" href="/">Back to home →</a>
+        <a class="btn btn-ghost" href="/projects/">See current projects</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
