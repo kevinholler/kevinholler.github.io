@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Reading from '../../../layouts/Reading.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Grouped by year, because that's the only grouping a date gives you.
+const byYear = posts.reduce<Map<number, typeof posts>>((acc, post) => {
+  const year = post.data.pubDate.getFullYear();
+  acc.set(year, [...(acc.get(year) ?? []), post]);
+  return acc;
+}, new Map());
+
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
+---
+<Reading title="Writing — Kevin Holler" description="Everything Kevin Holler has written, newest first." here="writing">
+  <h1>Writing</h1>
+  <p class="stamp">Everything, newest first.</p>
+
+  {
+    years.map((year) => (
+      <>
+        <h2 style="margin-top: 36px;">{year}</h2>
+        <ul class="entries" style="margin-top: 12px;">
+          {byYear.get(year)!.map((post) => (
+            <li>
+              <div class="row">
+                <a href={`/new/writing/${post.slug}/`}>{post.data.title}</a>
+                <span class="when">{fmt.format(post.data.pubDate)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</Reading>

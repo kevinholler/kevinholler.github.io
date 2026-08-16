@@ -1,0 +1,44 @@
+---
+import '@fontsource-variable/newsreader/wght.css';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '../styles/site.css';
+import SiteFoot from '../components/SiteFoot.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Which footer link to omit — you're already on it. */
+  here?: 'index' | 'writing' | 'projects' | 'talks';
+}
+
+const { title, description, here } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+
+    <!-- Work in progress. Nothing under /new/ should be indexed
+         or crawled until it replaces the site at the root. -->
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <main>
+      <div class="col">
+        <slot />
+        <SiteFoot here={here} />
+      </div>
+    </main>
+  </body>
+</html>

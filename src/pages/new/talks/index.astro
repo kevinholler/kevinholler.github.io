@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../../layouts/Reading.astro';
+import { talks } from '../../../data/talks';
+---
+<Reading
+  title="Talks — Kevin Holler"
+  description="Talks by Kevin Holler, with recordings where they exist."
+  here="talks"
+>
+  <h1>Talks</h1>
+  <p class="stamp">Recordings where they exist.</p>
+
+  <ul class="work">
+    {
+      talks.map((talk) => (
+        <li>
+          <div class="row">
+            <span class="name">{talk.title}</span>
+            <span class="years">
+              {talk.event}
+              {talk.year && ` · ${talk.year}`}
+            </span>
+          </div>
+
+          {talk.still && talk.video && (
+            <figure class="figure">
+              <a class="still" href={talk.video} rel="noreferrer">
+                <Image src={talk.still} alt={`${talk.title} — still from the recording`} widths={[560, 704, 1408]} sizes="(max-width: 44rem) 100vw, 44rem" />
+                <span class="play" aria-hidden="true" />
+              </a>
+              <figcaption>Watch the recording — opens on the event's site.</figcaption>
+            </figure>
+          )}
+
+          <p>{talk.description}</p>
+
+          {talk.video && !talk.still && (
+            <p class="links">
+              <a href={talk.video} rel="noreferrer">Watch the recording</a>
+            </p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Reading>

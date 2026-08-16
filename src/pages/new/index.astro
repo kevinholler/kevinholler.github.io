@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Reading from '../../layouts/Reading.astro';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+
+const fmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+<Reading title="Kevin Holler" description="Kevin Holler — writing, projects, and talks." here="index">
+  <h1>Kevin Holler</h1>
+
+  <!-- TODO: replace with two or three sentences in your own words. -->
+  <p>
+    Two or three sentences about what you work on and what you write about here.
+    Long enough to say something, short enough that nobody scrolls past it.
+  </p>
+
+  <hr />
+
+  <ul class="entries" style="margin-top: 32px;">
+    {
+      posts.map((post) => (
+        <li>
+          <div class="row">
+            <a href={`/new/writing/${post.slug}/`}>{post.data.title}</a>
+            <span class="when">{fmt.format(post.data.pubDate)}</span>
+          </div>
+          {post.data.description && <p class="blurb">{post.data.description}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</Reading>
