@@ -1,0 +1,29 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Reading from '../../../layouts/Reading.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const fmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+<Reading title={`${post.data.title} — Kevin Holler`} description={post.data.description} here="writing">
+  <article class="prose">
+    <h1>{post.data.title}</h1>
+    <p class="stamp">{fmt.format(post.data.pubDate)}</p>
+    <Content />
+  </article>
+</Reading>

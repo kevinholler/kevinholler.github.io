@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../../layouts/Reading.astro';
+import { projects } from '../../../data/projects';
+---
+<Reading
+  title="Projects — Kevin Holler"
+  description="What Kevin Holler has built, and what happened to it."
+  here="projects"
+>
+  <h1>Projects</h1>
+  <p class="stamp">What I've built, and what happened to it.</p>
+
+  <ul class="work">
+    {
+      projects.map((project) => (
+        <li>
+          <div class="row">
+            <span class="name">{project.name}</span>
+            <span class="years">{project.years}</span>
+          </div>
+
+          <p>{project.description}</p>
+
+          {project.image && (
+            <figure class="figure">
+              <Image src={project.image} alt={`${project.name} — product screenshot`} widths={[560, 704, 1408]} sizes="(max-width: 44rem) 100vw, 44rem" />
+              {project.imageCaption && <figcaption>{project.imageCaption}</figcaption>}
+            </figure>
+          )}
+
+          {project.links && project.links.length > 0 && (
+            <p class="links">
+              {project.links.map((link) => (
+                <a href={link.href}>{link.label}</a>
+              ))}
+            </p>
+          )}
+
+          {project.coverage && project.coverage.length > 0 && (
+            <p class="coverage">
+              <em>Written about:</em>{' '}
+              {project.coverage.map((item, i) => (
+                <>
+                  {i > 0 && ' · '}
+                  <a href={item.href}>{item.publication}</a>, {item.year}
+                </>
+              ))}
+            </p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Reading>

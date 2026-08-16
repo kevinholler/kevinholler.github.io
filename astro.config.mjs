@@ -28,5 +28,10 @@ export default defineConfig({
     format: 'directory',
   },
   redirects: Object.fromEntries(retiredPaths.map((path) => [path, '/'])),
-  integrations: [sitemap()],
+  integrations: [
+    // /new/ is the rebuild in progress. It ships so it can be looked at,
+    // but it stays out of the sitemap and carries noindex until it moves
+    // to the root.
+    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/new/') }),
+  ],
 });

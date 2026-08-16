@@ -1,0 +1,24 @@
+---
+// The site's only navigation. It sits after the reading, not before it.
+interface Props {
+  here?: 'index' | 'writing' | 'projects' | 'talks';
+}
+
+const { here } = Astro.props;
+
+const links = [
+  { id: 'index', label: 'Index', href: '/new/' },
+  { id: 'writing', label: 'Writing', href: '/new/writing/' },
+  { id: 'projects', label: 'Projects', href: '/new/projects/' },
+  { id: 'talks', label: 'Talks', href: '/new/talks/' },
+];
+
+const elsewhere = [
+  { label: 'Email', href: 'mailto:hello@kevinholler.com' },
+  { label: 'GitHub', href: 'https://github.com/kevinholler' },
+];
+---
+<nav class="site-foot">
+  {links.filter((l) => l.id !== here).map((l) => <a href={l.href}>{l.label}</a>)}
+  {elsewhere.map((l) => <a href={l.href}>{l.label}</a>)}
+</nav>
