@@ -35,18 +35,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 
 <style is:global>
   :root {
-    --paper: #faf8f4;
-    --ink: #1b1a17;
-    --ink-soft: #6b6760;
-    --rule: #ded9d0;
+    --paper: #f4f5f6;
+    --ink: #14161a;
+    --ink-soft: #5a6069;
+    --rule: #cfd3d8;
+    --link: #1f4e79;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #121110;
-      --ink: #ece8e1;
-      --ink-soft: #918b81;
-      --rule: #2e2c28;
+      --paper: #16181a;
+      --ink: #e8eaec;
+      --ink-soft: #979ca3;
+      --rule: #2c3034;
+      --link: #93b8dc;
     }
   }
 
@@ -104,13 +106,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   a {
     color: var(--ink);
     text-decoration: none;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--link);
     padding-bottom: 1px;
   }
 
   a:hover,
   a:focus-visible {
-    border-bottom-color: var(--ink);
+    border-bottom-width: 2px;
   }
 
   a:focus-visible {
