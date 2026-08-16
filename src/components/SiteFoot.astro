@@ -1,7 +1,7 @@
 ---
 // The site's only navigation. It sits after the reading, not before it.
 interface Props {
-  here?: 'index' | 'writing' | 'projects' | 'talks';
+  here?: 'index' | 'writing' | 'projects' | 'talks' | 'about';
 }
 
 const { here } = Astro.props;
@@ -11,6 +11,7 @@ const links = [
   { id: 'writing', label: 'Writing', href: '/new/writing/' },
   { id: 'projects', label: 'Projects', href: '/new/projects/' },
   { id: 'talks', label: 'Talks', href: '/new/talks/' },
+  { id: 'about', label: 'About', href: '/new/about/' },
 ];
 
 const elsewhere = [
