@@ -24,22 +24,41 @@
   --measure: 34rem;
   --wide: 44rem;
 
+  /* Two-column pages: 57rem split 2fr / 1fr with a 3rem gap puts the main
+     column at 36rem — still inside a comfortable measure — and the side at
+     18rem. */
+  --page: 57rem;
+
   /* Shared by the header, the reading column, and the footer, so all
      three sit on the same left edge. */
   --gutter: clamp(24px, 5vw, 72px);
+
+  /* Per-layout widths. Single column by default; a spread page overrides
+     these on the root element. --frame is the centring container, --rule-w
+     is what the header and footer hairlines span, --col-cap is how far a
+     direct child of .col may run. */
+  --frame: var(--wide);
+  --rule-w: var(--measure);
+  --col-cap: var(--measure);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+/* Light is the default, whatever the operating system says. Dark is opted
+   into with the toggle and remembered in localStorage. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
 
-    --paper: #16181a;
-    --paper-in: #1d2023;
-    --ink: #e8eaec;
-    --ink-soft: #979ca3;
-    --rule: #2c3034;
-    --link: #93b8dc;
-  }
+  --paper: #16181a;
+  --paper-in: #1d2023;
+  --ink: #e8eaec;
+  --ink-soft: #979ca3;
+  --rule: #2c3034;
+  --link: #93b8dc;
+}
+
+:root[data-layout='spread'] {
+  --frame: var(--page);
+  --rule-w: var(--page);
+  --col-cap: none;
 }
 
 * {
@@ -70,14 +89,55 @@ main {
 
 /* The column is --wide, but only figures are allowed to use it. */
 .col {
-  max-width: var(--wide);
+  max-width: var(--frame);
   margin-inline: auto;
   display: flex;
   flex-direction: column;
 }
 
 .col > *:not(.figure) {
-  max-width: var(--measure);
+  max-width: var(--col-cap);
+}
+
+/* ── Spread: main column left, supporting material right ──
+   Used where a page has something genuinely supplementary to show
+   alongside the text. Reading pages stay single-column: an essay has
+   nothing to put in a side column, and a half-empty one is worse than
+   none. */
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 0 3rem;
+  align-items: start;
+}
+
+.spread + .spread {
+  margin-top: 44px;
+}
+
+.spread-main > :first-child {
+  margin-top: 0;
+}
+
+.spread-side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Side figures sit flush with the top of the section they belong to. */
+.spread-side .figure {
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .spread {
+    grid-template-columns: 1fr;
+  }
+
+  .spread-side {
+    margin-top: 28px;
+  }
 }
 
 /* ── Type ─────────────────────────────────────────────── */
@@ -429,13 +489,13 @@ pre code {
    rules sit on the text block like a running head, and figures stay the
    one element allowed past the measure. */
 .bar {
-  max-width: var(--wide);
+  max-width: var(--frame);
   margin-inline: auto;
 }
 
 .head-inner,
 .foot-inner {
-  max-width: var(--measure);
+  max-width: var(--rule-w);
 }
 
 .site-head {
@@ -484,6 +544,31 @@ pre code {
 .head-nav a[aria-current='page'],
 .wordmark[aria-current='page'] {
   color: var(--ink);
+}
+
+/* A control, not a link — so no underline, and it moves on press rather
+   than on hover-underline like the nav does. */
+.theme-toggle {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted var(--rule);
+  padding: 0 0 1px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink-soft);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .site-foot {

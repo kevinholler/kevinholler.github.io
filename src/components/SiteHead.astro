@@ -29,6 +29,33 @@ const links = [
             </a>
           ))
         }
+        <button class="theme-toggle" id="theme-toggle" type="button">Dark</button>
+        <script is:inline>
+          // Runs while the header is still parsing, so the label is correct
+          // on first paint rather than corrected a moment later.
+          (function () {
+            var root = document.documentElement;
+            var btn = document.getElementById('theme-toggle');
+            function sync() {
+              var dark = root.dataset.theme === 'dark';
+              btn.textContent = dark ? 'Light' : 'Dark';
+              btn.setAttribute(
+                'aria-label',
+                dark ? 'Switch to light theme' : 'Switch to dark theme',
+              );
+            }
+            sync();
+            btn.addEventListener('click', function () {
+              var dark = root.dataset.theme === 'dark';
+              if (dark) delete root.dataset.theme;
+              else root.dataset.theme = 'dark';
+              try {
+                localStorage.setItem('theme', dark ? 'light' : 'dark');
+              } catch (e) {}
+              sync();
+            });
+          })();
+        </script>
       </nav>
     </div>
   </div>
