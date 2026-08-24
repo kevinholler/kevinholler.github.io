@@ -3,8 +3,11 @@
 // item, and the page you're on is shown rather than removed — the row stays
 // the same length everywhere.
 //
-// The sections themselves live in src/data/nav.ts, grouped. A wider gap
-// between groups is the only thing marking them.
+// The sections themselves live in src/data/nav.ts, grouped. A wider gap used
+// to be the only thing marking a group boundary — it read as uneven spacing
+// rather than structure, and left "About" looking stranded off on its own.
+// A middot marks it instead: the same device the rest of the site already
+// uses to join short related fragments ("Trackplan · ChangeX · Pampers").
 import { navGroups, type NavId } from '../data/nav';
 
 interface Props {
@@ -64,14 +67,15 @@ const { here } = Astro.props;
       </div>
       <nav class="head-nav" aria-label="Primary">
         {
-          navGroups.map((group) => (
-            <span class="nav-group">
+          navGroups.map((group, i) => (
+            <>
+              {i > 0 && <span class="nav-sep" aria-hidden="true">·</span>}
               {group.map((l) => (
                 <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
                   {l.label}
                 </a>
               ))}
-            </span>
+            </>
           ))
         }
       </nav>

@@ -2,9 +2,10 @@
   The sections of the site, in the order they appear in the masthead.
 
   They're grouped: what I write, what I've built, what I do away from a
-  screen, and then about. The groups aren't labelled anywhere — a wider gap
-  between them in the header is the whole treatment. Labelling four groups
-  of two or three items would be more furniture than the sections.
+  screen, and then about. The groups aren't labelled — the header marks a
+  boundary with a middot rather than a heading, the same device the rest of
+  the site uses to join short related fragments. A label on four groups of
+  two or three items would be more furniture than the sections themselves.
 
   Adding a section means adding it here and adding the page. Nothing else
   reads this list.
