@@ -1,0 +1,33 @@
+---
+import Reading from '../../../layouts/Reading.astro';
+import ProjectList from '../../../components/ProjectList.astro';
+import { projectsOfKind } from '../../../data/projects';
+
+const startups = projectsOfKind('startup');
+---
+<Reading
+  title="Startups — Kevin Holler"
+  description="The three companies Kevin Holler has started: Shake, Trackplan, and Suky."
+  here="startups"
+>
+  <h1>Startups</h1>
+  <p class="stamp">Three companies. Two of them are over.</p>
+
+  <p class="lede">
+    Shake, Trackplan, Suky — in reverse order, which is also the order in
+    which I knew what I was doing. Each has a page with what it was, what
+    happened, and what I took from it.
+  </p>
+
+  <p>
+    Two of the three did not work, and both of those pages say so at the top
+    rather than in a paragraph near the bottom. When my first company failed I
+    wrote the shutdown post publicly, and what came back — job offers,
+    interview requests, founders emailing to say the same thing had happened
+    to them — taught me that the thing I was most afraid to say out loud was
+    the thing other people most needed to hear. That is still the standard
+    these pages are held to.
+  </p>
+
+  <ProjectList entries={startups} />
+</Reading>

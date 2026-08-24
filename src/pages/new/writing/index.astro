@@ -24,8 +24,8 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' })
   {
     years.map((year) => (
       <>
-        <h2 style="margin-top: 36px;">{year}</h2>
-        <ul class="entries" style="margin-top: 12px;">
+        <h2 class="group wide">{year}</h2>
+        <ul class="entries wide">
           {byYear.get(year)!.map((post) => (
             <li>
               <div class="row">

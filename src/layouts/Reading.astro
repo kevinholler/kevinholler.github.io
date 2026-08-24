@@ -4,12 +4,13 @@ import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/site.css';
 import SiteHead from '../components/SiteHead.astro';
 import SiteFoot from '../components/SiteFoot.astro';
+import type { NavId } from '../data/nav';
 
 interface Props {
   title: string;
   description: string;
   /** Which nav item to mark as the current page. */
-  here?: 'index' | 'writing' | 'projects' | 'talks' | 'about';
+  here?: NavId;
   /** 'spread' widens the page and turns on the two-column grid. Reading
    *  pages stay 'single' — an essay has nothing to put beside itself. */
   layout?: 'single' | 'spread';

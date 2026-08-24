@@ -1,0 +1,40 @@
+---
+// The listing used by Projects, Startups, and Ideas. One row per entry:
+// name, dates, a line, and the way in. The paragraph that used to sit here
+// moved to the entry's own page — a listing that reproduces the whole
+// description gives you no reason to open anything.
+import { projectPath, type Project } from '../data/projects';
+
+interface Props {
+  entries: Project[];
+  /** Show which shelf each entry sits on. Off on the Startups and Ideas
+   *  pages, where every row is the same kind and the label says nothing. */
+  showKind?: boolean;
+}
+
+const { entries, showKind = false } = Astro.props;
+
+const kindLabels: Record<Project['kind'], string> = {
+  startup: 'Startup',
+  idea: 'Idea',
+};
+---
+<ul class="work">
+  {
+    entries.map((project) => (
+      <li>
+        <div class="row">
+          <span class="name">
+            <a href={projectPath(project)}>{project.name}</a>
+          </span>
+          <span class="years">
+            {showKind && <span class="tag">{kindLabels[project.kind]}</span>}
+            {showKind && project.years && ' · '}
+            {project.years}
+          </span>
+        </div>
+        <p>{project.summary}</p>
+      </li>
+    ))
+  }
+</ul>

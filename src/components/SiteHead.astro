@@ -1,34 +1,25 @@
 ---
-// One quiet line at the top of every page. The name is the link home, so
-// there's no separate "Index" item, and the page you're on is shown rather
-// than removed — the row stays the same length everywhere.
+// The masthead. The name is the link home, so there's no separate "Index"
+// item, and the page you're on is shown rather than removed — the row stays
+// the same length everywhere.
+//
+// The sections themselves live in src/data/nav.ts, grouped. A wider gap
+// between groups is the only thing marking them.
+import { navGroups, type NavId } from '../data/nav';
+
 interface Props {
-  here?: 'index' | 'writing' | 'projects' | 'talks' | 'about';
+  here?: NavId;
 }
 
 const { here } = Astro.props;
-
-const links = [
-  { id: 'writing', label: 'Writing', href: '/new/writing/' },
-  { id: 'projects', label: 'Projects', href: '/new/projects/' },
-  { id: 'talks', label: 'Talks', href: '/new/talks/' },
-  { id: 'about', label: 'About', href: '/new/about/' },
-];
 ---
 <header class="site-head">
   <div class="bar">
     <div class="head-inner">
-      <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
-        Kevin Holler
-      </a>
-      <nav class="head-nav" aria-label="Primary">
-        {
-          links.map((l) => (
-            <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
-              {l.label}
-            </a>
-          ))
-        }
+      <div class="head-top">
+        <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
+          Kevin Holler
+        </a>
         <button class="theme-toggle" id="theme-toggle" type="button">Dark</button>
         <script is:inline>
           // Runs while the header is still parsing, so the label is correct
@@ -56,6 +47,19 @@ const links = [
             });
           })();
         </script>
+      </div>
+      <nav class="head-nav" aria-label="Primary">
+        {
+          navGroups.map((group) => (
+            <span class="nav-group">
+              {group.map((l) => (
+                <a href={l.href} aria-current={here === l.id ? 'page' : undefined}>
+                  {l.label}
+                </a>
+              ))}
+            </span>
+          ))
+        }
       </nav>
     </div>
   </div>

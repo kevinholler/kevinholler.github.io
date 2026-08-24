@@ -19,26 +19,29 @@
 
   --serif: 'Newsreader Variable', Newsreader, Georgia, 'Times New Roman', serif;
 
-  /* The measure is the whole design. Everything you read sits
-     at --measure; only figures get --wide. */
-  --measure: 34rem;
-  --wide: 44rem;
+  /* The measure is the whole design. Everything you read sits at --measure.
+     --wide is for the things that aren't read a line at a time: figures, and
+     listings where the dates want to clear the titles. It also has to be
+     wide enough to hold the masthead's ten sections on one line — a nav that
+     wraps on some pages and not others stops being furniture. */
+  --measure: 36rem;
+  --wide: 56rem;
 
-  /* Two-column pages: 57rem split 2fr / 1fr with a 3rem gap puts the main
-     column at 36rem — still inside a comfortable measure — and the side at
-     18rem. */
-  --page: 57rem;
+  /* Two-column pages: 64rem split 3fr / 2fr with a 4rem gap puts the main
+     column at exactly --measure (36rem) and the side at 24rem — wide enough
+     for a photograph to be looked at rather than acknowledged. */
+  --page: 64rem;
 
   /* Shared by the header, the reading column, and the footer, so all
      three sit on the same left edge. */
   --gutter: clamp(24px, 5vw, 72px);
 
   /* Per-layout widths. Single column by default; a spread page overrides
-     these on the root element. --frame is the centring container, --rule-w
-     is what the header and footer hairlines span, --col-cap is how far a
-     direct child of .col may run. */
+     these on the root element. --frame is the centring container — the
+     header rule, the footer rule, and the widest thing on the page all sit
+     on it. --col-cap is how far a direct child of .col may run, and it stays
+     at the measure so prose is prose whatever the frame is doing. */
   --frame: var(--wide);
-  --rule-w: var(--measure);
   --col-cap: var(--measure);
 }
 
@@ -57,7 +60,6 @@
 
 :root[data-layout='spread'] {
   --frame: var(--page);
-  --rule-w: var(--page);
   --col-cap: none;
 }
 
@@ -99,6 +101,13 @@ main {
   max-width: var(--col-cap);
 }
 
+/* The one opt-out. A listing of titles and dates is not prose, and reading
+   it at the measure leaves the dates crowding the titles. Same specificity
+   as the cap above, so it only wins by sitting after it — keep it here. */
+.col > .wide {
+  max-width: var(--wide);
+}
+
 /* ── Spread: main column left, supporting material right ──
    Used where a page has something genuinely supplementary to show
    alongside the text. Reading pages stay single-column: an essay has
@@ -106,8 +115,8 @@ main {
    none. */
 .spread {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 0 3rem;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 0 4rem;
   align-items: start;
 }
 
@@ -130,9 +139,16 @@ main {
   margin: 0;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .spread {
     grid-template-columns: 1fr;
+  }
+
+  /* Once the columns stack, the main column is as wide as the page and the
+     grid is no longer holding the text to a measure. Put the cap back, or a
+     tablet gets 90-character lines. Figures still run full width. */
+  .spread-main > *:not(.figure) {
+    max-width: var(--measure);
   }
 
   .spread-side {
@@ -387,6 +403,12 @@ pre code {
   margin: 2px 0 0;
 }
 
+/* A listing may run past the measure so the dates clear the titles, but the
+   note under an entry is still prose and still sets at the measure. */
+.entries .blurb {
+  max-width: var(--measure);
+}
+
 /* ── Listings: projects and talks ─────────────────────── */
 .work {
   list-style: none;
@@ -406,6 +428,13 @@ pre code {
 
 .work > li > *:not(.figure) {
   max-width: var(--measure);
+}
+
+/* The title line is not prose. Letting it run the full width is the whole
+   reason the page got wider: the dates end up at the right edge instead of
+   crowding the title. What follows still sets at the measure. */
+.work > li > .row {
+  max-width: var(--wide);
 }
 
 .name {
@@ -483,33 +512,39 @@ pre code {
 
 /* ── Header and footer ────────────────────────────────── */
 
-/* The bar is centred at the column's width so it shares the reading
-   column's left edge — two centred boxes of different widths would not.
-   Its contents are then capped at the measure, so the header and footer
-   rules sit on the text block like a running head, and figures stay the
-   one element allowed past the measure. */
+/* The bar is centred at the frame so it shares the column's left edge —
+   two centred boxes of different widths would not.
+
+   The rules used to stop at the measure, sitting on the text block like a
+   running head. They span the frame now. Once figures and listings both run
+   to the frame, a rule at the measure is no longer marking the edge of the
+   page's content — it's marking the edge of one kind of it, and stopping
+   short of the photograph directly beneath it. */
 .bar {
   max-width: var(--frame);
   margin-inline: auto;
-}
-
-.head-inner,
-.foot-inner {
-  max-width: var(--rule-w);
 }
 
 .site-head {
   padding: 24px var(--gutter) 0;
 }
 
+/* Two rows, not one. Ten sections will not share a line with the name
+   without either wrapping into a shape that changes on every page or
+   shrinking to a size nobody reads. So the name and the one control take
+   the top line, and the sections get a line of their own underneath —
+   a masthead and its section list. */
 .head-inner {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.head-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 6px 32px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--rule);
 }
 
 /* The name is the link home, which is why there's no "Index" item. */
@@ -520,11 +555,33 @@ pre code {
   padding-bottom: 0;
 }
 
+/* Sections come in groups — what I write, what I've built, what I do with
+   my hands. The wider gap between groups is the only thing marking them;
+   a row of ten evenly spaced items is a list, not a structure. */
 .head-nav {
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 22px;
+  gap: 4px 36px;
   font-size: 0.9375rem;
+}
+
+.nav-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+/* Once the groups wrap onto separate lines the wide gap has nothing left to
+   separate, so the grouping goes and the row reads as one list again. */
+@media (max-width: 620px) {
+  .head-nav {
+    gap: 4px 18px;
+  }
+
+  .nav-group {
+    gap: 4px 18px;
+  }
 }
 
 /* Navigation is set roman. Italic is this site's voice for metadata —
@@ -630,6 +687,148 @@ pre code {
 .skip:focus {
   left: 8px;
   top: 8px;
+}
+
+/* ── Section pages and project entries ────────────────── */
+
+/* The opening paragraph of a section page. One step up in size, still ink
+   rather than grey — it's the first thing you read, not a caption. */
+.lede {
+  font-size: 1.125rem;
+  margin: 18px 0 0;
+}
+
+/* Up and out of a detail page. Set like the other metadata on the site so
+   it reads as an address rather than as the first sentence. */
+.back {
+  display: inline-block;
+  margin: 0 0 18px;
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  border-bottom-color: transparent;
+}
+
+.back:hover {
+  color: var(--ink);
+  border-bottom-color: var(--link);
+}
+
+/* A project's name links to its page. The underline goes on the whole name,
+   which is already the largest thing in the entry, so it's drawn in the rule
+   colour rather than the link colour — otherwise every listing turns blue. */
+.name a {
+  border-bottom-color: var(--rule);
+}
+
+.name a:hover {
+  border-bottom-color: var(--link);
+}
+
+/* Which shelf an entry sits on, next to the years. Not a badge: no box, no
+   fill, no colour — this site has one accent and it belongs to links. */
+.tag {
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+/* The facts beside a detail page. `.facts` is a two-column grid for the
+   bottom of a page; this is the same information stacked for a 24rem side
+   column. */
+.notes {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.notes dt {
+  margin-top: 14px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.notes dt:first-child {
+  margin-top: 0;
+}
+
+.notes dd {
+  margin: 2px 0 0;
+}
+
+/* A heading over a group of entries — a year, a shelf, a season. Smaller
+   than h2 and set in the metadata voice, because it labels a list rather
+   than opening an argument. */
+.group {
+  margin: 40px 0 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft);
+  letter-spacing: 0;
+}
+
+.group + .entries {
+  margin-top: 4px;
+}
+
+/* Where the group has a line under the heading as well. The rule moves to
+   the wrapper so it closes the whole heading block — left on the heading
+   itself, the line would read as belonging to the first entry. */
+.group-head {
+  margin: 40px 0 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.group-head .group {
+  margin: 0;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.group-head + .entries {
+  margin-top: 4px;
+}
+
+/* A title in a listing is a line in a list, not the heading of an entry the
+   way it is in `.work`. */
+.entries .name {
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+/* Photographs that are the point of the page rather than an illustration of
+   a paragraph. Two up, and they keep their own proportions. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 20px;
+  margin: 32px 0 0;
+}
+
+.col > .gallery {
+  max-width: var(--wide);
+}
+
+.gallery .figure {
+  margin: 0;
+}
+
+@media (max-width: 620px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* An entry that is a link out with nothing else to say — a reading list is
+   mostly these. Author and year sit where a date sits in the writing index. */
+.by {
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 /* ── Prose from markdown ──────────────────────────────── */
