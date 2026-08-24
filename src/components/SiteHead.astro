@@ -20,16 +20,30 @@ const { here } = Astro.props;
         <a class="wordmark" href="/new/" aria-current={here === 'index' ? 'page' : undefined}>
           Kevin Holler
         </a>
-        <button class="theme-toggle" id="theme-toggle" type="button">Dark</button>
+        <!-- Both marks ship; CSS shows the one that matches the current
+             theme, so the icon is right on first paint with no JS. Each is
+             the destination, not the current state: a moon means "go dark".
+             Drawn as hairlines, like the play mark on the talks page — the
+             only other piece of interface chrome on the site. -->
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <svg class="mark moon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" />
+          </svg>
+          <svg class="mark sun" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <circle cx="10" cy="10" r="3.9" />
+            <path d="M10 1.6v2.1M10 16.3v2.1M18.4 10h-2.1M3.7 10H1.6M15.9 4.1l-1.5 1.5M5.6 14.4l-1.5 1.5M15.9 15.9l-1.5-1.5M5.6 5.6 4.1 4.1" />
+          </svg>
+        </button>
         <script is:inline>
           // Runs while the header is still parsing, so the label is correct
           // on first paint rather than corrected a moment later.
           (function () {
             var root = document.documentElement;
             var btn = document.getElementById('theme-toggle');
+            // Which mark is visible is CSS's job now. All this has to keep
+            // in step is the label the button announces.
             function sync() {
               var dark = root.dataset.theme === 'dark';
-              btn.textContent = dark ? 'Light' : 'Dark';
               btn.setAttribute(
                 'aria-label',
                 dark ? 'Switch to light theme' : 'Switch to dark theme',
