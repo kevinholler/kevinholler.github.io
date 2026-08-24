@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../../layouts/Reading.astro';
+
+// The two photographs that already exist in the repo and belong here. Both
+// were shot for the about page; a page about cooking that shows the cooking
+// is worth more than a page about cooking that shows nothing.
+import sundayLunch from '../../../assets/portrait/kevin-holler-2.jpg';
+import theGarden from '../../../assets/portrait/landscaping.jpg';
+
+// The side column is 24rem (384px) at full page width.
+const sideWidths = [384, 768];
+const sideSizes = '(max-width: 960px) 100vw, 384px';
+---
+<Reading
+  title="Food & Wine — Kevin Holler"
+  description="Cooking, sourdough, growing, and winemaking — the part of Kevin Holler's week that has nothing to do with a screen."
+  here="food"
+  layout="spread"
+>
+  <div class="spread">
+    <div class="spread-main">
+      <h1>Food &amp; wine</h1>
+      <p class="stamp">Cooking, sourdough, growing, and a first go at wine.</p>
+
+      <p class="lede">
+        The kitchen experiments have escalated to the point where I keep a
+        tasting journal. That is either a hobby or a diagnosis, and I have
+        stopped trying to work out which.
+      </p>
+
+      <p>
+        All of this is the same instinct that makes the rest of the site what
+        it is: take something you do not understand, do it badly, write down
+        what happened, and do it again. It is just that the feedback loop is
+        measured in hours or seasons rather than in deploys, and you can feed
+        the result to people you like.
+      </p>
+    </div>
+
+    <div class="spread-side">
+      <figure class="figure">
+        <Image
+          src={sundayLunch}
+          alt="Cooking for friends at home."
+          widths={sideWidths}
+          sizes={sideSizes}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption>Sunday lunch · home</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="spread">
+    <div class="spread-main">
+      <h2>Sourdough</h2>
+      <p>
+        A starter, a scale, and several years of arguing with the same loaf.
+        Bread is the most honest thing I make: the variables are few enough to
+        hold in your head and unforgiving enough that you cannot bluff a bad
+        one. Hydration, temperature, time, and the fact that the kitchen in
+        February is a different kitchen than the one in August.
+      </p>
+      <p>
+        TODO — your actual formula, the starter's age and name if it has one,
+        and the one thing you would tell someone on their first loaf. That
+        last one is the paragraph people will screenshot.
+      </p>
+
+      <h2>Cooking</h2>
+      <p>
+        Mostly for other people. There is a rotating dinner club, a Sunday
+        lunch habit, and a tasting journal that started as a way to stop
+        making the same mistake twice and turned into a record of what a year
+        actually tasted like.
+      </p>
+      <p>
+        TODO — the handful of dishes you would cook for anyone, and where the
+        German-Irish household lands on a menu. Specifics beat adjectives
+        here: one dish described properly is worth a paragraph of
+        "seasonal".
+      </p>
+    </div>
+    <div class="spread-side"></div>
+  </div>
+
+  <div class="spread">
+    <div class="spread-main">
+      <h2>Growing</h2>
+      <p>
+        What the garden produces mostly decides what gets cooked, which is a
+        better constraint than any recipe book. This year's project is a small
+        orchard — which means the interesting part of it is four years away,
+        and that is fine.
+      </p>
+      <p>
+        The beds and the built work are on
+        <a href="/new/gardening/">gardening &amp; landscaping</a>. This page is
+        only what comes out of them.
+      </p>
+      <p>TODO — what is actually in the ground, and what has reliably failed.</p>
+
+      <h2>Wine</h2>
+      <p>
+        The newest of the four and the one I am worst at. Fermentation is the
+        same problem as sourdough with a much longer feedback loop and no
+        chance to try again until next autumn, which makes the notes matter
+        more than the technique.
+      </p>
+      <p>
+        TODO — what you have pressed, how much of it, what went wrong, and
+        whether any of it is drinkable. A first vintage described honestly is
+        a far better page than a second vintage described well.
+      </p>
+    </div>
+    <div class="spread-side">
+      <figure class="figure">
+        <Image
+          src={theGarden}
+          alt="The garden at home, with a playhouse and a bench."
+          widths={sideWidths}
+          sizes={sideSizes}
+          loading="lazy"
+        />
+        <figcaption>Where most of it starts · Würzburg</figcaption>
+      </figure>
+    </div>
+  </div>
+</Reading>

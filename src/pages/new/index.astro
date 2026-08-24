@@ -11,8 +11,28 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
   month: 'short',
   year: 'numeric',
 });
+
+/*
+  The site is nine sections wide now, and the header alone is a poor
+  introduction to nine things — it can say what they are called and nothing
+  about what is in them. So the front page says it once, in a line each.
+
+  This duplicates the header on purpose. The header is for someone who
+  already knows where they are going; this is for someone who has just
+  arrived.
+*/
+const sections = [
+  { label: 'Writing', href: '/new/writing/', line: 'Essays, mostly about startups and the parts nobody posts about.' },
+  { label: 'Book', href: '/new/book/', line: 'Chasing Rainbows — three companies, two of them failed. In progress.' },
+  { label: 'Reading', href: '/new/reading/', line: 'Books, essays, and the people I read every week, with reasons.' },
+  { label: 'Startups', href: '/new/startups/', line: 'Shake, Trackplan, Suky — what each was and what happened to it.' },
+  { label: 'Ideas', href: '/new/ideas/', line: "What I've built that never became a company." },
+  { label: 'Talks', href: '/new/talks/', line: 'Recordings where they exist.' },
+  { label: 'Food & Wine', href: '/new/food-and-wine/', line: 'Cooking, sourdough, growing, and a first go at wine.' },
+  { label: 'Gardening & Landscaping', href: '/new/gardening/', line: 'One manual project a year. Last year a wall, this year an orchard.' },
+];
 ---
-<Reading title="Kevin Holler" description="Kevin Holler — writing, projects, and talks." here="index">
+<Reading title="Kevin Holler" description="Kevin Holler — writing, a book in progress, startups, and the work that happens away from a screen." here="index">
   <!-- The header wordmark already says the name; repeating it as a visible
        title just stutters. Kept for screen readers and search. -->
   <h1 class="vh">Kevin Holler</h1>
@@ -23,9 +43,10 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
     Long enough to say something, short enough that nobody scrolls past it.
   </p>
 
-  <hr />
+  <hr class="wide" />
 
-  <ul class="entries" style="margin-top: 32px;">
+  <h2 class="group wide">Latest writing</h2>
+  <ul class="entries wide" style="margin-top: 4px;">
     {
       posts.map((post) => (
         <li>
@@ -34,6 +55,20 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
             <span class="when">{fmt.format(post.data.pubDate)}</span>
           </div>
           {post.data.description && <p class="blurb">{post.data.description}</p>}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="group wide">The rest of it</h2>
+  <ul class="entries wide" style="margin-top: 4px;">
+    {
+      sections.map((section) => (
+        <li>
+          <div class="row">
+            <a href={section.href}>{section.label}</a>
+          </div>
+          <p class="blurb">{section.line}</p>
         </li>
       ))
     }

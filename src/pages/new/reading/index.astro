@@ -1,0 +1,45 @@
+---
+import Reading from '../../../layouts/Reading.astro';
+import { shelves } from '../../../data/reading';
+---
+<Reading
+  title="Reading — Kevin Holler"
+  description="Books, essays, and blogs Kevin Holler recommends, and why."
+  here="reading"
+>
+  <h1>Reading</h1>
+  <p class="stamp">Books, essays, and the people I read every week.</p>
+
+  <p class="lede">
+    Not everything I have read — the things I have pressed on someone else.
+    Each one has a line saying why, because a list of titles is something
+    anyone could have assembled.
+  </p>
+
+  {
+    shelves.map((shelf) => (
+      <>
+        <div class="group-head wide">
+          <h2 class="group">{shelf.name}</h2>
+          {shelf.blurb && <p class="blurb">{shelf.blurb}</p>}
+        </div>
+        <ul class="entries wide">
+          {shelf.entries.map((entry) => (
+            <li>
+              <div class="row">
+                <span class="name">
+                  {entry.href ? <a href={entry.href}>{entry.title}</a> : entry.title}
+                </span>
+                <span class="by">
+                  {entry.by}
+                  {entry.year && ` · ${entry.year}`}
+                </span>
+              </div>
+              {entry.note && <p class="blurb">{entry.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</Reading>

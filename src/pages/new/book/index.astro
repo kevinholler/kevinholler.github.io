@@ -1,0 +1,119 @@
+---
+import Reading from '../../../layouts/Reading.astro';
+import { commitments, facts, parts } from '../../../data/book';
+---
+<Reading
+  title="Chasing Rainbows — Kevin Holler"
+  description="Chasing Rainbows — a book Kevin Holler is writing about starting three companies, two of which failed."
+  here="book"
+  layout="spread"
+>
+  <div class="spread">
+    <div class="spread-main">
+      <h1>Chasing Rainbows</h1>
+      <p class="stamp">A book I am writing. Unfinished, and said so on purpose.</p>
+
+      <p class="lede">
+        Building a startup is like chasing a rainbow. It is a journey full of
+        promise and possibility, but the closer you get, the further it seems
+        to move.
+      </p>
+
+      <p>
+        A little over ten years have passed since I graduated college in
+        Ireland. In that time I started three companies — two of them failed —
+        worked with five startups at varying stages, and somehow ended up
+        writing software, selling it, and supporting it, sometimes in the same
+        week. The career path has been everything but linear, and the three
+        years of my first company taught me more about myself, people, and
+        business than any other period of my life. Despite the pain of
+        shutting a business down, I have been crazy enough to attempt it
+        again.
+      </p>
+
+      <p>
+        That is the book. Not a playbook — there are enough of those, and the
+        people who write them tend to have won. This is the other account:
+        what it costs, what it teaches, and why anyone does it a second and a
+        third time.
+      </p>
+
+      <h2>Why I am writing it</h2>
+      <p>
+        When my first company failed I wrote a post announcing the shutdown
+        and detailing some of what had contributed to it. In Ireland at the
+        time, failure was rarely spoken about openly. Having already lost
+        everything, I figured I had nothing left to lose. I published it, shut
+        the laptop, and went for a walk.
+      </p>
+      <p>
+        What followed twenty-four hours later shocked me: a stream of job
+        offers, interview requests from media, founders emailing to share the
+        same experience. The thing I was most afraid to say out loud was the
+        thing other people most needed to hear. The book is that post, given
+        the length it deserved.
+      </p>
+
+      <h2>What it is held to</h2>
+      <p>
+        Four commitments, and they are the reason it is taking as long as it
+        is. Any chapter that cannot meet all four gets cut.
+      </p>
+      <dl class="facts">
+        {
+          commitments.map((commitment) => (
+            <>
+              <dt>{commitment.name}</dt>
+              <dd>{commitment.gloss}</dd>
+            </>
+          ))
+        }
+      </dl>
+
+      <h2>Where it is up to</h2>
+      <p>
+        Honestly: unfinished. A work in progress described honestly is more
+        interesting than one described vaguely, so the parts are listed with
+        the state each is actually in rather than a percentage.
+      </p>
+      <ul class="entries" style="margin-top: 20px;">
+        {
+          parts.map((part) => (
+            <li>
+              <div class="row">
+                <span class="name">{part.title}</span>
+                <span class="years">{part.status}</span>
+              </div>
+              <p class="blurb">{part.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>If you want to know when it lands</h2>
+      <p>
+        There is no list to join yet. Until there is,
+        <a href="mailto:hello@kevinholler.com">email me</a> and I will remember
+        — or read <a href="/new/writing/">the writing</a>, which is where the
+        chapters get tested first.
+      </p>
+    </div>
+
+    <div class="spread-side">
+      <dl class="notes">
+        {
+          facts.map((fact) => (
+            <>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </>
+          ))
+        }
+      </dl>
+      <p class="coverage">
+        <em>The essay this came from:</em>{' '}
+        <a href="/new/writing/chasing-rainbows/">Chasing rainbows</a>, 2024
+      </p>
+    </div>
+  </div>
+</Reading>

@@ -1,0 +1,24 @@
+---
+import Reading from '../../../layouts/Reading.astro';
+import ProjectList from '../../../components/ProjectList.astro';
+import { projectsOfKind } from '../../../data/projects';
+
+const ideas = projectsOfKind('idea');
+---
+<Reading
+  title="Ideas — Kevin Holler"
+  description="Things Kevin Holler has built or half-built that never became companies."
+  here="ideas"
+>
+  <h1>Ideas</h1>
+  <p class="stamp">Built, half-built, or still only argued for.</p>
+
+  <p class="lede">
+    Not everything becomes a company, and pretending otherwise is how a
+    portfolio page starts lying. This is the shelf for the rest: the things I
+    built far enough to learn something from, and the ones still sitting as a
+    long note I keep reopening.
+  </p>
+
+  <ProjectList entries={ideas} />
+</Reading>

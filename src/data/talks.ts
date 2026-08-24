@@ -11,9 +11,9 @@ import leaddevBerlin from '../assets/talks/leaddev-berlin.jpg';
   before it goes to the root — it should sound like you.
 
   The still is the LeadDev title card at 588 × 330, which is smaller than
-  the 44rem (704px) figure it sits in. The page caps its srcset at the
+  the 56rem (896px) figure it sits in. The page caps its srcset at the
   source width rather than upscaling, so it renders sharp but not at full
-  column width. A 1280 × 720 frame would fill it properly — worth asking
+  column width. A 1792 × 1008 frame would fill it properly — worth asking
   LeadDev for, or grabbing from the recording.
 
   To swap it: replace src/assets/talks/leaddev-berlin.jpg. Nothing else

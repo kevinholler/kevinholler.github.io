@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../../layouts/Reading.astro';
+import { projects, type Project } from '../../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+// The screenshot sits in the main column, which is --measure (36rem / 576px)
+// wide once the spread is on.
+const shotWidths = [576, 1152];
+const shotSizes = '(max-width: 960px) 100vw, 576px';
+
+// A page with nothing beside the text has no business being a spread — the
+// side column would just be an empty third of the screen.
+const hasSide = Boolean(project.facts?.length || project.links?.length || project.coverage?.length);
+---
+<Reading
+  title={`${project.name} — Kevin Holler`}
+  description={project.summary}
+  here={project.kind === 'idea' ? 'ideas' : 'startups'}
+  layout={hasSide ? 'spread' : 'single'}
+>
+  <div class={hasSide ? 'spread' : undefined}>
+    <div class={hasSide ? 'spread-main' : undefined}>
+      <a class="back" href="/new/projects/">← Projects</a>
+
+      <h1>{project.name}</h1>
+      {project.years && <p class="stamp">{project.years}</p>}
+
+      <p class="lede">{project.description}</p>
+
+      {
+        project.image && (
+          <figure class="figure">
+            <Image
+              src={project.image}
+              alt={`${project.name} — product screenshot`}
+              widths={shotWidths}
+              sizes={shotSizes}
+            />
+            {project.imageCaption && <figcaption>{project.imageCaption}</figcaption>}
+          </figure>
+        )
+      }
+
+      {
+        project.sections?.map((section) => (
+          <>
+            <h2>{section.heading}</h2>
+            {section.body.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </>
+        ))
+      }
+    </div>
+
+    {
+      hasSide && (
+        <div class="spread-side">
+          {project.facts && project.facts.length > 0 && (
+            <dl class="notes">
+              {project.facts.map((fact) => (
+                <>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </>
+              ))}
+            </dl>
+          )}
+
+          {project.links && project.links.length > 0 && (
+            <p class="links">
+              {project.links.map((link) => (
+                <a href={link.href}>{link.label}</a>
+              ))}
+            </p>
+          )}
+
+          {project.coverage && project.coverage.length > 0 && (
+            <p class="coverage">
+              <em>Written about:</em>{' '}
+              {project.coverage.map((item, i) => (
+                <>
+                  {i > 0 && ' · '}
+                  <a href={item.href}>{item.publication}</a>, {item.year}
+                </>
+              ))}
+            </p>
+          )}
+        </div>
+      )
+    }
+  </div>
+</Reading>

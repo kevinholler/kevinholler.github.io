@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../../layouts/Reading.astro';
+
+import landscaping from '../../../assets/portrait/landscaping.jpg';
+
+// The side column is 24rem (384px) at full page width.
+const sideWidths = [384, 768];
+const sideSizes = '(max-width: 960px) 100vw, 384px';
+
+/*
+  One manual project a year. The two named below are the two the about page
+  names — the wall and the orchard. Everything else is a placeholder, because
+  a list of jobs you have not done is the fastest way to make a page about
+  physical work read as fiction.
+
+  Add a year, and add a photograph with it. This is the one section of the
+  site where a paragraph without a picture is genuinely worse than no
+  paragraph: the whole claim is that the thing exists in the world.
+*/
+const projects = [
+  {
+    year: 'This year',
+    title: 'A small orchard',
+    note: 'The interesting part of it is four years away. TODO — how many trees, which varieties, and why those.',
+  },
+  {
+    year: 'Last year',
+    title: 'A dry-stone wall',
+    note: 'No mortar, so every stone has to earn its place twice — once for the face and once for the course behind it. TODO — length, how long it took, and what you would do differently.',
+  },
+  {
+    year: 'TODO',
+    title: 'TODO — an earlier project',
+    note: 'TODO — the rule is one a year, so there are more of these. Fill them in backwards until you run out of ones you remember properly.',
+  },
+];
+---
+<Reading
+  title="Gardening & Landscaping — Kevin Holler"
+  description="One manual project a year: the walls, beds, and built work in Kevin Holler's garden in Würzburg."
+  here="garden"
+  layout="spread"
+>
+  <div class="spread">
+    <div class="spread-main">
+      <h1>Gardening &amp; landscaping</h1>
+      <p class="stamp">One manual project a year, on purpose.</p>
+
+      <p class="lede">
+        Every year I take on a project that has nothing to do with screens.
+        Last year it was a dry-stone wall. This year, a small orchard.
+      </p>
+
+      <p>
+        The rule is deliberate and the reasoning is not complicated. Software
+        is finished in the sense that it stops changing when you stop touching
+        it, and it is never finished in any other sense. A wall is finished.
+        You stand back from it, and it is either standing or it is not, and no
+        amount of arguing about it in a document changes which.
+      </p>
+
+      <p>
+        It is also the only work I do where the mistakes are permanent and
+        cheap at the same time — the worst outcome is a season lost and a
+        weekend spent taking something apart, which is a rate of learning I
+        would take in any discipline.
+      </p>
+    </div>
+
+    <div class="spread-side">
+      <figure class="figure">
+        <Image
+          src={landscaping}
+          alt="Garden landscaping project — playhouse and bench."
+          widths={sideWidths}
+          sizes={sideSizes}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption>The garden · Würzburg</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="spread">
+    <div class="spread-main">
+      <h2>The projects</h2>
+      <p>
+        Newest first. What is planted rather than built is on
+        <a href="/new/food-and-wine/">food &amp; wine</a>, since most of it
+        ends up in the kitchen anyway.
+      </p>
+
+      <ul class="entries" style="margin-top: 20px;">
+        {
+          projects.map((project) => (
+            <li>
+              <div class="row">
+                <span class="name">{project.title}</span>
+                <span class="years">{project.year}</span>
+              </div>
+              <p class="blurb">{project.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>What I have learned doing it</h2>
+      <p>
+        TODO — three or four paragraphs. This is the section that makes the
+        page worth reading rather than worth glancing at, and it is the one
+        nobody else can write. Where the manual work has changed how you think
+        about the other work is the obvious thread, but only if it is actually
+        true rather than a neat ending.
+      </p>
+    </div>
+    <div class="spread-side"></div>
+  </div>
+</Reading>
