@@ -603,29 +603,56 @@ pre code {
   color: var(--ink);
 }
 
-/* A control, not a link — so no underline, and it moves on press rather
-   than on hover-underline like the nav does. */
+/* A control, not a link — so no underline. It's a mark rather than a word
+   because "Dark" is the only imperative on the page and it read as a nav
+   item that had lost its way. The hit area is padded out past the 18px
+   drawing so it's still a comfortable target on a phone. */
 .theme-toggle {
-  font: inherit;
-  font-size: 0.9375rem;
-  color: var(--ink-soft);
+  display: block;
+  align-self: center;
   background: none;
   border: 0;
-  border-bottom: 1px dotted var(--rule);
-  padding: 0 0 1px;
-  margin: 0;
+  /* 18px of drawing padded out to a 44px target, then pulled back by the
+     same amount so the icon still sits where the layout expects it. */
+  padding: 13px;
+  margin: -13px;
+  color: var(--ink-soft);
   cursor: pointer;
+  line-height: 0;
 }
 
 .theme-toggle:hover {
   color: var(--ink);
-  border-bottom-color: var(--ink-soft);
 }
 
 .theme-toggle:focus-visible {
   outline: 2px solid var(--link);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Hairlines, at the weight of every other rule on the site. */
+.theme-toggle .mark {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+/* Light is the default, so the moon — the way out of it — is what shows. */
+.theme-toggle .sun {
+  display: none;
+}
+
+:root[data-theme='dark'] .theme-toggle .moon {
+  display: none;
+}
+
+:root[data-theme='dark'] .theme-toggle .sun {
+  display: block;
 }
 
 .site-foot {
