@@ -556,33 +556,28 @@ pre code {
 }
 
 /* Sections come in groups — what I write, what I've built, what I do with
-   my hands. The wider gap between groups is the only thing marking them;
-   a row of ten evenly spaced items is a list, not a structure. */
+   my hands. A wider gap between groups used to be the only signal, and
+   whitespace alone doesn't read as structure — it reads as uneven spacing,
+   worse once "About" is a group of one sitting off on its own. A middot
+   marks the boundary explicitly instead, the way "Trackplan · ChangeX ·
+   Pampers" does in the facts on the about page: one uniform gap for the
+   whole row, and the mark itself carries the grouping. */
 .head-nav {
   margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 48px;
+  align-items: baseline;
+  gap: 6px 20px;
   font-size: 0.9375rem;
 }
 
-/* Three times the in-group gap, not twice. At 20/36 the difference read as
-   uneven spacing; at 16/48 it reads as what it is — four groups. */
-.nav-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
+.nav-sep {
+  color: var(--ink-soft);
 }
 
-/* Once the groups wrap onto separate lines the wide gap has nothing left to
-   separate, so the grouping goes and the row reads as one list again. */
 @media (max-width: 620px) {
   .head-nav {
-    gap: 4px 18px;
-  }
-
-  .nav-group {
-    gap: 4px 18px;
+    gap: 6px 18px;
   }
 }
 
