@@ -26,7 +26,7 @@ page.
 | Home | `pages/new/index.astro` | in the page, plus `src/content/blog/` and `src/data/talks.ts` |
 | Writing | `pages/new/writing/` | `src/content/blog/` |
 | Speaking | `pages/new/speaking/` | `src/data/talks.ts` |
-| About | `pages/new/about.astro` | in the page |
+| About | `pages/new/about.astro` | in the page, plus `src/data/career.ts` (the timeline) |
 
 Book, Reading, Startups, Ideas, Projects, Food & Wine, and Gardening are
 parked in `src/_archive/sections/`, which mirrors `src/` — move a file back to
@@ -63,8 +63,10 @@ taking the `wide` class — that is the only opt-out, and it is for listings.
 
 - The front page copy is a draft written for the redesign; rewrite it in your
   own voice before `/new/` moves to the root.
-- The about page's "Applied AI, suky.ai, and what's next" section still
-  describes the LaunchDarkly role. The facts at the bottom say CodeRabbit.
+- The one-line notes on the about page's timeline (`src/data/career.ts`)
+  are drafts written from the resume; rewrite them in your own voice.
+- The about page's opening still says "the last 12 years"; from 2011 it is
+  closer to 15.
 
 The previous site is parked in `src/_archive/` — nothing was deleted. Astro only
 routes files under `src/pages/`, so the archived pages, components, layouts,

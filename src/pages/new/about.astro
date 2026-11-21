@@ -1,210 +1,78 @@
 ---
 import { Image } from 'astro:assets';
 import Reading from '../../layouts/Reading.astro';
+import { career, TRACKS } from '../../data/career';
 
-// The prose on this page is the old site's about page, word for word. Only
-// the structure is this design's: the numbered section eyebrows ("/ 01
-// ORIGINS") dropped, the sidebar of facts moved to the end, and each
-// chapter's photographs moved into the side column beside it.
+// Three parts, in the order a visitor wants them:
 //
-// Do not rewrite the copy here. It is Kevin's, and it stays his — if a
-// section needs to change, it gets changed by him, not paraphrased.
+//   1. Now — who, where, what, and the portrait. The facts sit here rather
+//      than at the bottom, because they're what most people came for.
+//   2. The path — the whole career as a timeline, with a strip of squares
+//      per row showing which discipline each job was. The page's claim is
+//      "a nonlinear career"; this is where you can see it.
+//   3. The long version — the chapters, with their photographs set as rows
+//      between them instead of running down a side column.
+//
+// The prose in parts 1 and 3 is Kevin's, word for word, from the old about
+// page. Do not rewrite it — if a section needs to change, he changes it.
+// Two cuts were made, because they described a job he no longer has: the
+// last sentence of the opening paragraph ("These days I lead applied AI
+// work at LaunchDarkly and build suky.ai on the side.") and the whole
+// "Applied AI, suky.ai, and what's next" section. The timeline and the
+// facts now say what he does.
 import portraitMain from '../../assets/portrait/kevin-holler.jpg';
 import gettingStarted from '../../assets/portrait/getting-started.jpg';
 import linuxServers from '../../assets/portrait/linux-servers.jpg';
 import shakeTeam from '../../assets/portrait/shake-team.jpg';
 import shakeOffice from '../../assets/portrait/shake-office.jpg';
-import khSetup from '../../assets/portrait/kh-setup.jpg';
 import landscaping from '../../assets/portrait/landscaping.jpg';
 import portrait2 from '../../assets/portrait/kevin-holler-2.jpg';
 import ccc from '../../assets/portrait/ccc.jpg';
 
-// The side column is 24rem (384px) at full page width.
-const sideWidths = [384, 768];
-const sideSizes = '(max-width: 960px) 100vw, 384px';
+// Never ask for a width the source can't supply.
+const widthsFor = (img: { width: number }, wanted: number[]) =>
+  [...new Set([...wanted.filter((w) => w < img.width), Math.min(img.width, Math.max(...wanted))])];
+
+const pair = [
+  '(max-width: 620px) 50vw, 500px',
+  [400, 800],
+] as const;
+const trio = [
+  '(max-width: 620px) 50vw, 330px',
+  [330, 660],
+] as const;
 ---
 <Reading
   title="About — Kevin Holler"
-  description="Kevin Holler — a nonlinear career across engineering, sales, product, and data."
+  description="Kevin Holler — Field Engineering at CodeRabbit. A nonlinear career across engineering, sales, product, and data."
   here="about"
   layout="spread"
 >
-  <div class="spread">
-    <div class="spread-main">
+  <!-- ── Now ─────────────────────────────────────────────── -->
+  <section class="about-now">
+    <div class="about-now-text">
       <h1>A nonlinear career, chosen on purpose.</h1>
+      <p class="stamp">Field Engineering at CodeRabbit · Würzburg, Germany</p>
       <p>
-        German-Irish, based in Würzburg. Spent the last 12 years moving between
-        engineering, sales, product, and data — sometimes by plan, sometimes because
-        the company was on fire and someone had to do it. These days I lead applied AI
-        work at LaunchDarkly and build suky.ai on the side.
+        German-Irish, based in Würzburg. Spent the last 12 years moving
+        between engineering, sales, product, and data — sometimes by plan,
+        sometimes because the company was on fire and someone had to do it.
       </p>
       <p>
-        I write code, talk to customers, and try to be useful — usually in that order.
-        The thread connecting every job I've held is a stubborn belief that the most
-        interesting problems live in the seams between teams.
+        I write code, talk to customers, and try to be useful — usually in that
+        order. The thread connecting every job I've held is a stubborn belief
+        that the most interesting problems live in the seams between teams.
       </p>
-    </div>
-    <div class="spread-side">
-      <figure class="figure">
-        <Image src={portraitMain} alt="Kevin Holler." widths={sideWidths} sizes={sideSizes} loading="eager" fetchpriority="high" />
-      </figure>
-    </div>
-  </div>
 
-  <div class="spread">
-    <div class="spread-main">
-      <h2>How I got here</h2>
-      <p>
-        Born in Germany, raised in Ireland. My tech career began at 14 when I found
-        Eric Raymond's "How to Become a Hacker" — that was the unlock. Python, Linux,
-        building computers, freelancing as a product engineer while studying Creative
-        Computing in Dublin.
-      </p>
-      <p>
-        The pivotal moment was joining <strong>Contrast</strong>, a boutique software
-        shop run by the now co-founders of <strong>Intercom</strong>. That's where I
-        first saw startup culture up close — the iteration, the conviction, the comfort
-        with chaos. It set the trajectory for everything that came after.
-      </p>
-    </div>
-    <div class="spread-side">
-      <figure class="figure">
-        <Image src={gettingStarted} alt="Kevin at 14, at his first computer setup, 2004." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>2004 · the first setup</figcaption>
-      </figure>
-      <figure class="figure">
-        <Image src={linuxServers} alt="Home Linux server setup, mid-2000s." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>Building Linux boxes</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <div class="spread">
-    <div class="spread-main">
-      <h2>The unconventional path</h2>
-      <p>
-        At <strong>Engine Yard</strong>, I made the unusual choice to join sales
-        engineering instead of software development. Then to <strong>New Relic</strong>
-        as the first SE on their EMEA founding team. That experience was rocket fuel
-        for my first startup — <strong>Shake</strong> — a three-year journey that
-        started with €50K from friends and family and grew to $250K from Silicon Valley
-        investors.
-      </p>
-      <p>
-        Shake didn't make it. I took on €30K of personal debt to wind it down properly
-        and not leave anyone holding the bag. The whole experience taught me more about
-        myself, people, and business than any other point in my life.
-      </p>
-    </div>
-    <div class="spread-side">
-      <figure class="figure">
-        <Image src={shakeTeam} alt="The Shake founding team." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>The Shake team · Dublin</figcaption>
-      </figure>
-      <figure class="figure">
-        <Image src={shakeOffice} alt="The empty Shake office on the last day." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>Last day · Shake office</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <div class="spread">
-    <div class="spread-main">
-      <h2>The middle years</h2>
-      <p>
-        Post-Shake I moved into product management at <strong>ChangeX</strong>, then to
-        Munich as a Data Architect, building analytics systems for global enterprises
-        (including Pampers' loyalty app). My third venture, <strong>Trackplan</strong>,
-        came out of my own frustration with behavioral tracking. We had strong traction
-        and commitments for $750K of a planned $2M round — and lost the lead investor
-        in due diligence at the last hour.
-      </p>
-      <p>
-        The timing coincided with the birth of my son. What initially felt like a
-        setback turned out to be a profound recalibration.
-      </p>
-    </div>
-    <div class="spread-side"></div>
-  </div>
-
-  <div class="spread">
-    <div class="spread-main">
-      <!-- TODO (Kevin): this section still describes the LaunchDarkly role.
-           The facts at the bottom say CodeRabbit; the prose is yours to
-           rewrite, so it hasn't been touched. -->
-      <h2>Applied AI, suky.ai, and what's next</h2>
-      <p>
-        Today I'm <strong>Staff Solutions Engineer</strong> at
-        <strong>LaunchDarkly</strong>, where I lead our applied-AI motion across DACH —
-        helping enterprise teams ship LLM features behind feature flags, with the
-        experimentation and rollout discipline their other features get.
-      </p>
-      <p>
-        On the side, I'm building suky.ai — a guardrail
-        layer for behavioral event tracking. It's the tool I wish I'd had at every
-        previous job that touched data.
-      </p>
-    </div>
-    <div class="spread-side">
-      <figure class="figure">
-        <Image src={khSetup} alt="Workspace today." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>The desk, today</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <div class="spread">
-    <div class="spread-main">
-      <h2>The slow stuff</h2>
-      <p>
-        Sourdough, garden, landscaping. I take on a manual project every year that has
-        nothing to do with screens. Last year it was a dry-stone wall. This year, a
-        small orchard. The kitchen experiments have escalated to the point where I keep
-        a tasting journal.
-      </p>
-      <p>
-        The other constant is community. <strong>Chaos Communication Camp</strong>
-        every four years, a rotating dinner club, and the local Stammtisch — the people
-        I've collected along the way are the part of the career I'm proudest of.
-      </p>
-      <p>
-        If any of this sounds like a problem you have — or a problem I've had —
-        <a href="mailto:hello@kevinholler.com">say hello</a>.
-      </p>
-    </div>
-    <div class="spread-side">
-      <figure class="figure">
-        <Image src={landscaping} alt="Garden landscaping project — playhouse and bench." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>Garden project · Würzburg</figcaption>
-      </figure>
-      <figure class="figure">
-        <Image src={portrait2} alt="Cooking for friends at home." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>Sunday lunch · home</figcaption>
-      </figure>
-      <figure class="figure">
-        <Image src={ccc} alt="Chaos Communication Camp installation at dusk." widths={sideWidths} sizes={sideSizes} loading="lazy" />
-        <figcaption>CCC · the tribe</figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <div class="spread">
-    <div class="spread-main">
-      <dl class="facts">
-        <dt>Role</dt>
-        <dd>Field Engineering, CodeRabbit</dd>
-
-        <dt>Building</dt>
-        <dd>suky.ai — behavioral event contracts</dd>
+      <dl class="facts-now">
+        <dt>Now</dt>
+        <dd>Field Engineering, <a href="https://www.coderabbit.ai/" rel="noreferrer">CodeRabbit</a></dd>
 
         <dt>Based</dt>
         <dd>Würzburg, Germany</dd>
 
         <dt>Languages</dt>
         <dd>German &amp; English (native)</dd>
-
-        <dt>Previously</dt>
-        <dd>LaunchDarkly · Trackplan · ChangeX · Pampers · New Relic · Engine Yard · Contrast · Shake</dd>
 
         <dt>Stack</dt>
         <dd>TypeScript · React · Next.js · Python · dbt · SQL · AWS · Postgres</dd>
@@ -213,6 +81,156 @@ const sideSizes = '(max-width: 960px) 100vw, 384px';
         <dd>B.Sc. Creative Computing — IADT, Dublin</dd>
       </dl>
     </div>
-    <div class="spread-side"></div>
-  </div>
+    <figure class="about-portrait">
+      <Image
+        src={portraitMain}
+        alt="Kevin Holler."
+        widths={[400, 800]}
+        sizes="(max-width: 960px) 100vw, 400px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+  </section>
+
+  <!-- ── The path ────────────────────────────────────────── -->
+  <section class="path" aria-labelledby="path-title">
+    <div class="path-head">
+      <h2 id="path-title">The path</h2>
+      <p class="path-legend" aria-hidden="true">
+        {
+          TRACKS.map((t, i) => (
+            <span>
+              <span class="tl-tracks">
+                {TRACKS.map((_, j) => <i class:list={['sq', { on: i === j }]} />)}
+              </span>
+              {t}
+            </span>
+          ))
+        }
+      </p>
+    </div>
+
+    <ol class="timeline">
+      {
+        career.map((step) => (
+          <li class:list={[{ current: step.current }]}>
+            <span class="tl-years">{step.years}</span>
+            <span class="tl-tracks" role="img" aria-label={step.tracks.join(', ')}>
+              {TRACKS.map((t) => <i class:list={['sq', { on: step.tracks.includes(t) }]} title={t} />)}
+            </span>
+            <div class="tl-body">
+              <p class="tl-role">
+                {step.role} <span class="tl-org">· {step.org}</span>
+              </p>
+              <p class="tl-note">{step.note}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- ── The long version ─────────────────────────────────── -->
+  <section class="story">
+    <h2 class="group">The long version</h2>
+
+    <h3>How I got here</h3>
+    <p>
+      Born in Germany, raised in Ireland. My tech career began at 14 when I found
+      Eric Raymond's "How to Become a Hacker" — that was the unlock. Python, Linux,
+      building computers, freelancing as a product engineer while studying Creative
+      Computing in Dublin.
+    </p>
+    <p>
+      The pivotal moment was joining <strong>Contrast</strong>, a boutique software
+      shop run by the now co-founders of <strong>Intercom</strong>. That's where I
+      first saw startup culture up close — the iteration, the conviction, the comfort
+      with chaos. It set the trajectory for everything that came after.
+    </p>
+
+    <div class="photo-row two">
+      <figure>
+        <Image src={gettingStarted} alt="Kevin at 14, at his first computer setup, 2004." widths={widthsFor(gettingStarted, [...pair[1]])} sizes={pair[0]} loading="lazy" />
+        <figcaption>2004 · the first setup</figcaption>
+      </figure>
+      <figure>
+        <Image src={linuxServers} alt="Home Linux server setup, mid-2000s." widths={widthsFor(linuxServers, [...pair[1]])} sizes={pair[0]} loading="lazy" />
+        <figcaption>Building Linux boxes</figcaption>
+      </figure>
+    </div>
+
+    <h3>The unconventional path</h3>
+    <p>
+      At <strong>Engine Yard</strong>, I made the unusual choice to join sales
+      engineering instead of software development. Then to <strong>New Relic</strong>
+      as the first SE on their EMEA founding team. That experience was rocket fuel
+      for my first startup — <strong>Shake</strong> — a three-year journey that
+      started with €50K from friends and family and grew to $250K from Silicon Valley
+      investors.
+    </p>
+    <p>
+      Shake didn't make it. I took on €30K of personal debt to wind it down properly
+      and not leave anyone holding the bag. The whole experience taught me more about
+      myself, people, and business than any other point in my life.
+    </p>
+
+    <div class="photo-row two">
+      <figure>
+        <Image src={shakeTeam} alt="The Shake founding team." widths={widthsFor(shakeTeam, [...pair[1]])} sizes={pair[0]} loading="lazy" />
+        <figcaption>The Shake team · Dublin</figcaption>
+      </figure>
+      <figure>
+        <Image src={shakeOffice} alt="The empty Shake office on the last day." widths={widthsFor(shakeOffice, [...pair[1]])} sizes={pair[0]} loading="lazy" />
+        <figcaption>Last day · Shake office</figcaption>
+      </figure>
+    </div>
+
+    <h3>The middle years</h3>
+    <p>
+      Post-Shake I moved into product management at <strong>ChangeX</strong>, then to
+      Munich as a Data Architect, building analytics systems for global enterprises
+      (including Pampers' loyalty app). My third venture, <strong>Trackplan</strong>,
+      came out of my own frustration with behavioral tracking. We had strong traction
+      and commitments for $750K of a planned $2M round — and lost the lead investor
+      in due diligence at the last hour.
+    </p>
+    <p>
+      The timing coincided with the birth of my son. What initially felt like a
+      setback turned out to be a profound recalibration.
+    </p>
+
+    <h3>The slow stuff</h3>
+    <p>
+      Sourdough, garden, landscaping. I take on a manual project every year that has
+      nothing to do with screens. Last year it was a dry-stone wall. This year, a
+      small orchard. The kitchen experiments have escalated to the point where I keep
+      a tasting journal.
+    </p>
+    <p>
+      The other constant is community. <strong>Chaos Communication Camp</strong>
+      every four years, a rotating dinner club, and the local Stammtisch — the people
+      I've collected along the way are the part of the career I'm proudest of.
+    </p>
+
+    <div class="photo-row three">
+      <figure>
+        <Image src={landscaping} alt="Garden landscaping project — playhouse and bench." widths={widthsFor(landscaping, [...trio[1]])} sizes={trio[0]} loading="lazy" />
+        <figcaption>Garden project · Würzburg</figcaption>
+      </figure>
+      <figure>
+        <Image src={portrait2} alt="Cooking for friends at home." widths={widthsFor(portrait2, [...trio[1]])} sizes={trio[0]} loading="lazy" />
+        <figcaption>Sunday lunch · home</figcaption>
+      </figure>
+      <figure>
+        <Image src={ccc} alt="Chaos Communication Camp installation at dusk." widths={widthsFor(ccc, [...trio[1]])} sizes={trio[0]} loading="lazy" />
+        <figcaption>CCC · the tribe</figcaption>
+      </figure>
+    </div>
+
+    <p class="sign-off">
+      If any of this sounds like a problem you have — or a problem I've had —
+      <a href="mailto:hello@kevinholler.com">say hello</a>.
+    </p>
+  </section>
 </Reading>
