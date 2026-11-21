@@ -894,7 +894,7 @@ pre code {
   border-bottom: 0;
 }
 
-/* Numbered in the backdrop's own alphabet: 001, 010, 011, 100, 101. */
+/* Numbered in binary: 001, 010, 011, 100, 101. */
 .loop .stage {
   font-weight: 500;
 }
