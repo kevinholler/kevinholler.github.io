@@ -1,0 +1,280 @@
+---
+/*
+  The backdrop on the front page: Conway's Game of Life, drawn as a field
+  of binary digits. A live cell is a 1, a dead one is a 0, and a cell that
+  has just died stays a brighter 0 for a few generations, so the gliders
+  leave a wake instead of blinking — and the field gets the uneven, inked
+  texture of a page of printed binary rather than a flat grid.
+
+  It is meant to be noticed second. Everything about it is turned down —
+  a few generations a second, ink at a few percent, and a mask that thins
+  it further under the text column — so it reads as texture until you look
+  at it, and then it's alive.
+
+  - No dependencies, one canvas, a few kilobytes.
+  - Pauses when the tab is hidden.
+  - prefers-reduced-motion gets one still frame, settled for a while
+    first so it looks like the middle of something rather than noise.
+  - Follows the theme toggle: it reads --ink from the root each time the
+    theme changes.
+  - Moving a mouse over the page seeds a few cells under the pointer.
+*/
+---
+<canvas class="life" aria-hidden="true"></canvas>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('canvas.life');
+  const ctx = canvas?.getContext('2d');
+
+  if (canvas && ctx) {
+    const CELL = 16; // px per cell, CSS pixels
+    const TICK = 260; // ms per generation
+    const TRAIL = 5; // generations a dead cell keeps its fading 1
+    const LEVELS = 16; // alpha is quantised so each level is one batch
+
+    // How strong each state is drawn. The CSS mask thins all of this
+    // again under the column, so these are the values at the edges.
+    const ALPHA_DEAD = 0.1;
+    const ALPHA_LIVE = 0.36;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = document.documentElement;
+
+    let cols = 0;
+    let rows = 0;
+    let live = new Uint8Array(0);
+    let next = new Uint8Array(0);
+    let trail = new Uint8Array(0); // generations since death, 0 = never/expired
+    let grain = new Float32Array(0); // fixed per-cell variation, 0.45–1
+    let ink = '#14161a';
+    let generation = 0;
+    const history: number[] = [];
+
+    const readInk = () => {
+      ink = getComputedStyle(root).getPropertyValue('--ink').trim() || ink;
+    };
+
+    const idx = (x: number, y: number) =>
+      ((y + rows) % rows) * cols + ((x + cols) % cols);
+
+    const seed = (density = 0.22) => {
+      for (let i = 0; i < live.length; i++) live[i] = Math.random() < density ? 1 : 0;
+    };
+
+    const sprinkle = () => {
+      // A patch of random soup somewhere, to restart a field that has
+      // settled into still lifes and blinkers.
+      const w = 10;
+      const ox = Math.floor(Math.random() * cols);
+      const oy = Math.floor(Math.random() * rows);
+      for (let y = 0; y < w; y++)
+        for (let x = 0; x < w; x++) if (Math.random() < 0.38) live[idx(ox + x, oy + y)] = 1;
+    };
+
+    const glider = () => {
+      const shape = [
+        [1, 0],
+        [2, 1],
+        [0, 2],
+        [1, 2],
+        [2, 2],
+      ];
+      const fx = Math.random() < 0.5 ? 1 : -1;
+      const fy = Math.random() < 0.5 ? 1 : -1;
+      const ox = Math.floor(Math.random() * cols);
+      const oy = Math.floor(Math.random() * rows);
+      for (const [x, y] of shape) live[idx(ox + x * fx, oy + y * fy)] = 1;
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const c = Math.ceil(w / CELL);
+      const r = Math.ceil(h / CELL);
+      if (c === cols && r === rows) return draw();
+
+      // Keep whatever overlaps, seed whatever is new.
+      const old = { live, trail, cols, rows };
+      cols = c;
+      rows = r;
+      live = new Uint8Array(c * r);
+      next = new Uint8Array(c * r);
+      trail = new Uint8Array(c * r);
+      grain = new Float32Array(c * r);
+      for (let i = 0; i < grain.length; i++) grain[i] = 0.45 + Math.random() * 0.55;
+      seed();
+      for (let y = 0; y < Math.min(r, old.rows); y++)
+        for (let x = 0; x < Math.min(c, old.cols); x++) {
+          live[y * c + x] = old.live[y * old.cols + x];
+          trail[y * c + x] = old.trail[y * old.cols + x];
+        }
+      draw();
+    };
+
+    const step = () => {
+      let population = 0;
+      for (let y = 0; y < rows; y++) {
+        const up = ((y - 1 + rows) % rows) * cols;
+        const mid = y * cols;
+        const down = ((y + 1) % rows) * cols;
+        for (let x = 0; x < cols; x++) {
+          const l = (x - 1 + cols) % cols;
+          const r = (x + 1) % cols;
+          const n =
+            live[up + l] + live[up + x] + live[up + r] +
+            live[mid + l] + live[mid + r] +
+            live[down + l] + live[down + x] + live[down + r];
+          const i = mid + x;
+          const alive = live[i] ? n === 2 || n === 3 : n === 3;
+          next[i] = alive ? 1 : 0;
+          if (alive) {
+            population++;
+            trail[i] = 0;
+          } else if (live[i]) {
+            trail[i] = 1;
+          } else if (trail[i]) {
+            trail[i] = trail[i] >= TRAIL ? 0 : trail[i] + 1;
+          }
+        }
+      }
+      [live, next] = [next, live];
+      generation++;
+
+      // Life on a small torus settles. When the population has stopped
+      // moving, or thinned out, put some disorder back in.
+      history.push(population);
+      if (history.length > 40) history.shift();
+      const settled =
+        history.length === 40 && Math.max(...history) - Math.min(...history) < cols * 0.04;
+      if (settled || population < live.length * 0.04) {
+        for (let k = 0; k < 3; k++) sprinkle();
+        history.length = 0;
+      }
+      if (generation % 24 === 0) glider();
+    };
+
+    // Two glyphs × LEVELS alpha steps; each bucket is drawn with one
+    // globalAlpha so the canvas state only changes 2 × LEVELS times a frame.
+    const buckets: number[][] = Array.from({ length: LEVELS * 2 }, () => []);
+
+    const draw = () => {
+      for (const b of buckets) b.length = 0;
+      for (let i = 0; i < live.length; i++) {
+        let a: number;
+        let one: number;
+        if (live[i]) {
+          a = ALPHA_LIVE;
+          one = 1;
+        } else if (trail[i]) {
+          const t = 1 - trail[i] / (TRAIL + 1);
+          a = ALPHA_DEAD + (ALPHA_LIVE - ALPHA_DEAD) * t * 0.75;
+          one = 0;
+        } else {
+          a = ALPHA_DEAD;
+          one = 0;
+        }
+        a *= grain[i];
+        const level = Math.min(LEVELS - 1, Math.round((a / ALPHA_LIVE) * (LEVELS - 1)));
+        buckets[one * LEVELS + level].push(i);
+      }
+
+      ctx.clearRect(0, 0, cols * CELL, rows * CELL);
+      ctx.fillStyle = ink;
+      ctx.font = `500 ${Math.round(CELL * 0.72)}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      for (let b = 0; b < buckets.length; b++) {
+        const cells = buckets[b];
+        if (!cells.length) continue;
+        const glyph = b >= LEVELS ? '1' : '0';
+        ctx.globalAlpha = ((b % LEVELS) / (LEVELS - 1)) * ALPHA_LIVE;
+        for (const i of cells) {
+          const x = i % cols;
+          const y = (i / cols) | 0;
+          ctx.fillText(glyph, x * CELL + CELL / 2, y * CELL + CELL / 2 + 1);
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    // ── Running ──────────────────────────────────────────────
+    let timer: number | undefined;
+    const start = () => {
+      if (timer === undefined) timer = window.setInterval(() => (step(), draw()), TICK);
+    };
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    readInk();
+    resize();
+
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 150);
+    });
+
+    new MutationObserver(() => (readInk(), draw())).observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    if (reduce) {
+      for (let k = 0; k < 80; k++) step();
+      draw();
+    } else {
+      start();
+      document.addEventListener('visibilitychange', () =>
+        document.hidden ? stop() : start(),
+      );
+
+      // A pointer leaves a few live cells behind it. Fine pointers only —
+      // on a phone a touch is a scroll, not an invitation.
+      if (window.matchMedia('(pointer: fine)').matches) {
+        window.addEventListener(
+          'pointermove',
+          (e) => {
+            const cx = Math.floor(e.clientX / CELL);
+            const cy = Math.floor(e.clientY / CELL);
+            for (let k = 0; k < 2; k++) {
+              live[idx(cx + Math.round(Math.random() * 2 - 1), cy + Math.round(Math.random() * 2 - 1))] = 1;
+            }
+          },
+          { passive: true },
+        );
+      }
+    }
+  }
+</script>
+
+<style>
+  .life {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    /* Thinner under the reading column, full strength at the edges. The
+       column sits left of centre, so the quiet patch does too. */
+    mask-image: radial-gradient(
+      ellipse 70% 85% at 38% 45%,
+      rgb(0 0 0 / 0.22) 0%,
+      rgb(0 0 0 / 0.5) 55%,
+      #000 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 85% at 38% 45%,
+      rgb(0 0 0 / 0.22) 0%,
+      rgb(0 0 0 / 0.5) 55%,
+      #000 100%
+    );
+  }
+</style>

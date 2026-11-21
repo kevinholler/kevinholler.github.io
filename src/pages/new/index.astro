@@ -1,10 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Reading from '../../layouts/Reading.astro';
+import { talks } from '../../data/talks';
+
+/*
+  The front page is about one thing: the work at CodeRabbit, and what an
+  AI-native software lifecycle looks like from the field — plus what the
+  same shift is doing to the rest of life.
+
+  DRAFT COPY. Every sentence on this page was written for the redesign,
+  not by Kevin. It is built only from what the repository already says
+  (Field Engineering at CodeRabbit, the LeadDev talk's argument about
+  separating deployment from release, the garden and the kitchen), and
+  makes no claims beyond that — but it should be rewritten in his voice
+  before /new/ moves to the root.
+*/
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+  .slice(0, 3);
 
 const fmt = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -12,39 +27,78 @@ const fmt = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
 });
 
-/*
-  The site is nine sections wide now, and the header alone is a poor
-  introduction to nine things — it can say what they are called and nothing
-  about what is in them. So the front page says it once, in a line each.
+// Each stage is numbered in binary, the backdrop's alphabet.
+const loop = [
+  {
+    stage: 'Intent',
+    line: 'The spec, the ticket, the prompt. When code is cheap, a vague intent is the expensive part.',
+  },
+  {
+    stage: 'Generate',
+    line: 'Agents and copilots write the first draft. Volume stops being the constraint.',
+  },
+  {
+    stage: 'Review',
+    line: 'Where the bottleneck moved. Every change still needs a reader who understands it — human, machine, ideally both.',
+  },
+  {
+    stage: 'Release',
+    line: 'Deployment separated from release, so shipping faster doesn’t mean exposing customers to more risk.',
+  },
+  {
+    stage: 'Learn',
+    line: 'What happened in production goes back into the next intent — and into the context the agents work from.',
+  },
+].map((s, i) => ({ ...s, bits: (i + 1).toString(2).padStart(3, '0') }));
 
-  This duplicates the header on purpose. The header is for someone who
-  already knows where they are going; this is for someone who has just
-  arrived.
-*/
-const sections = [
-  { label: 'Writing', href: '/new/writing/', line: 'Essays, mostly about startups and the parts nobody posts about.' },
-  { label: 'Book', href: '/new/book/', line: 'Chasing Rainbows — three companies, two of them failed. In progress.' },
-  { label: 'Reading', href: '/new/reading/', line: 'Books, essays, and the people I read every week, with reasons.' },
-  { label: 'Startups', href: '/new/startups/', line: 'Shake, Trackplan, Suky — what each was and what happened to it.' },
-  { label: 'Ideas', href: '/new/ideas/', line: "What I've built that never became a company." },
-  { label: 'Talks', href: '/new/talks/', line: 'Recordings where they exist.' },
-  { label: 'Food & Wine', href: '/new/food-and-wine/', line: 'Cooking, sourdough, growing, and a first go at wine.' },
-  { label: 'Gardening & Landscaping', href: '/new/gardening/', line: 'One manual project a year. Last year a wall, this year an orchard.' },
-];
+const talk = talks[0];
 ---
-<Reading title="Kevin Holler" description="Kevin Holler — writing, a book in progress, startups, and the work that happens away from a screen." here="index">
+<Reading
+  title="Kevin Holler"
+  description="Kevin Holler — Field Engineering at CodeRabbit. Notes from the field on the AI-native software lifecycle, and on what AI is changing outside work."
+  here="index"
+  backdrop
+>
   <!-- The header wordmark already says the name; repeating it as a visible
        title just stutters. Kept for screen readers and search. -->
   <h1 class="vh">Kevin Holler</h1>
 
-  <!-- TODO: replace with two or three sentences in your own words. -->
+  <p class="intro">
+    I work in Field Engineering at <a href="https://www.coderabbit.ai/" rel="noreferrer">CodeRabbit</a>,
+    helping engineering teams work out what their software lifecycle looks like
+    once AI writes a large share of the code.
+  </p>
   <p>
-    Two or three sentences about what you work on and what you write about here.
-    Long enough to say something, short enough that nobody scrolls past it.
+    This site is where I write that down — what I see in the field, what I’m
+    unlearning, and how the same tools are quietly rearranging the rest of my
+    life.
   </p>
 
-  <h2 class="group wide">Latest writing</h2>
-  <ul class="entries wide" style="margin-top: 4px;">
+  <h2 class="group wide">The AI-native SDLC</h2>
+  <p class="lede">
+    Writing code stopped being the slow part. The work moved to either side of
+    it: being precise about what you want, and being sure about what you got.
+  </p>
+  <ol class="loop wide">
+    {
+      loop.map((s) => (
+        <li>
+          <span class="stage" data-bits={s.bits}>{s.stage}</span>
+          <p>{s.line}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <h2 class="group wide">Outside work</h2>
+  <p>
+    The same shift is happening at home, just more quietly — in how I learn,
+    plan the garden, cook, and keep track of the hundred small things a
+    family runs on. I write about that too, including where it doesn’t help.
+  </p>
+
+  <h2 class="group wide">Writing</h2>
+  <ul class="entries wide">
     {
       posts.map((post) => (
         <li>
@@ -57,18 +111,37 @@ const sections = [
       ))
     }
   </ul>
+  <p class="links"><a href="/new/writing/">All writing</a></p>
 
-  <h2 class="group wide">The rest of it</h2>
-  <ul class="entries wide" style="margin-top: 4px;">
-    {
-      sections.map((section) => (
-        <li>
-          <div class="row">
-            <a href={section.href}>{section.label}</a>
+  {
+    talk && (
+      <>
+        <h2 class="group wide">Speaking</h2>
+        <div class="talk-feature wide">
+          {talk.still && talk.video && (
+            <a class="still" href={talk.video} rel="noreferrer">
+              <Image
+                src={talk.still}
+                alt={`${talk.title} — title card from the recording`}
+                widths={[Math.min(talk.still.width, 560), talk.still.width].filter((w, i, a) => a.indexOf(w) === i)}
+                sizes="(max-width: 620px) 100vw, 320px"
+              />
+              <span class="play" aria-hidden="true" />
+            </a>
+          )}
+          <div>
+            <p class="name">{talk.title}</p>
+            <p class="when">
+              {talk.event}
+              {talk.year && ` · ${talk.year}`}
+            </p>
+            <p class="links">
+              {talk.video && <a href={talk.video} rel="noreferrer">Watch on YouTube</a>}
+              <a href="/new/speaking/">All talks</a>
+            </p>
           </div>
-          <p class="blurb">{section.line}</p>
-        </li>
-      ))
-    }
-  </ul>
+        </div>
+      </>
+    )
+  }
 </Reading>

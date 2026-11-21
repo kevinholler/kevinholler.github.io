@@ -16,27 +16,31 @@ nofollow` and stays out of the sitemap until it moves to the root.
 
 ### Sections
 
-Ten sections, grouped in the masthead. The list lives in `src/data/nav.ts`
-and nothing else reads it, so adding a section means adding it there and
-adding the page.
+The site is about one thing: Field Engineering at CodeRabbit, the AI-native
+software lifecycle, and what AI is changing outside work. Three sections,
+listed in `src/data/nav.ts` — adding one means adding it there and adding the
+page.
 
 | Section | Page | Data |
 | --- | --- | --- |
+| Home | `pages/new/index.astro` | in the page, plus `src/content/blog/` and `src/data/talks.ts` |
 | Writing | `pages/new/writing/` | `src/content/blog/` |
-| Book | `pages/new/book/` | `src/data/book.ts` |
-| Reading | `pages/new/reading/` | `src/data/reading.ts` |
-| Startups | `pages/new/startups/` | `src/data/projects.ts` (`kind: 'startup'`) |
-| Ideas | `pages/new/ideas/` | `src/data/projects.ts` (`kind: 'idea'`) |
-| Projects | `pages/new/projects/` | `src/data/projects.ts` |
-| Talks | `pages/new/talks/` | `src/data/talks.ts` |
-| Food & Wine | `pages/new/food-and-wine/` | in the page |
-| Gardening & Landscaping | `pages/new/gardening/` | in the page |
+| Speaking | `pages/new/speaking/` | `src/data/talks.ts` |
 | About | `pages/new/about.astro` | in the page |
 
-Every project has a page of its own at `/new/projects/<id>/`, generated from
-`projects.ts` by `pages/new/projects/[id].astro`. Startups and Ideas are
-filtered views of the same list — there is one source of truth for the work,
-not three.
+Book, Reading, Startups, Ideas, Projects, Food & Wine, and Gardening are
+parked in `src/_archive/sections/`, which mirrors `src/` — move a file back to
+the same path under `src/` and its relative imports work again.
+
+### The backdrop
+
+The front page sits on Conway's Game of Life, drawn as binary digits
+(`src/components/LifeField.astro`): live cells are 1s, dead cells 0s, and
+cells that have just died stay a brighter 0 for a few generations. It is a
+single canvas with no dependencies; it pauses in a hidden tab, renders one
+still frame under `prefers-reduced-motion`, follows the theme toggle, and
+seeds cells under a mouse pointer. It is opt-in per page with
+`<Reading backdrop>`; only the front page uses it.
 
 ### Widths
 
@@ -56,11 +60,10 @@ taking the `wide` class — that is the only opt-out, and it is for listings.
 
 ### TODOs
 
-Several pages carry visible `TODO` copy where this repository held no facts
-to write from — Pluto, the book's chapter list, most of the reading list, and
-the specifics on the food and gardening pages. They are deliberate: they read
-as gaps rather than as filler, and they are the list of what to write before
-`/new/` moves to the root.
+- The front page copy is a draft written for the redesign; rewrite it in your
+  own voice before `/new/` moves to the root.
+- The about page's "Applied AI, suky.ai, and what's next" section still
+  describes the LaunchDarkly role. The facts at the bottom say CodeRabbit.
 
 The previous site is parked in `src/_archive/` — nothing was deleted. Astro only
 routes files under `src/pages/`, so the archived pages, components, layouts,

@@ -4,6 +4,7 @@ import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/site.css';
 import SiteHead from '../components/SiteHead.astro';
 import SiteFoot from '../components/SiteFoot.astro';
+import LifeField from '../components/LifeField.astro';
 import type { NavId } from '../data/nav';
 
 interface Props {
@@ -14,9 +15,12 @@ interface Props {
   /** 'spread' widens the page and turns on the two-column grid. Reading
    *  pages stay 'single' — an essay has nothing to put beside itself. */
   layout?: 'single' | 'spread';
+  /** The Game of Life field behind the page. Front page only by default —
+   *  an essay deserves a still page to be read on. */
+  backdrop?: boolean;
 }
 
-const { title, description, here, layout = 'single' } = Astro.props;
+const { title, description, here, layout = 'single', backdrop = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
@@ -51,6 +55,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
+    {backdrop && <LifeField />}
     <SiteHead here={here} />
     <main id="main">
       <div class="col">
