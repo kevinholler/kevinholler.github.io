@@ -529,11 +529,9 @@ pre code {
   padding: 24px var(--gutter) 0;
 }
 
-/* Two rows, not one. Ten sections will not share a line with the name
-   without either wrapping into a shape that changes on every page or
-   shrinking to a size nobody reads. So the name and the one control take
-   the top line, and the sections get a line of their own underneath —
-   a masthead and its section list. */
+/* One row: the name on the left, three sections and the theme mark on the
+   right. It was two rows while there were ten sections; three share a line
+   with the name comfortably, and wrap under it on a phone. */
 .head-inner {
   padding-bottom: 14px;
   border-bottom: 1px solid var(--rule);
@@ -555,15 +553,15 @@ pre code {
   padding-bottom: 0;
 }
 
-/* Sections come in groups — what I write, what I've built, what I do with
-   my hands. A wider gap between groups used to be the only signal, and
-   whitespace alone doesn't read as structure — it reads as uneven spacing,
-   worse once "About" is a group of one sitting off on its own. A middot
-   marks the boundary explicitly instead, the way "Trackplan · ChangeX ·
-   Pampers" does in the facts on the about page: one uniform gap for the
-   whole row, and the mark itself carries the grouping. */
+.head-right {
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+}
+
+/* A middot marks the boundary between groups — what I write and say, then
+   about — so one uniform gap does for the whole row. */
 .head-nav {
-  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -853,6 +851,120 @@ pre code {
   font-size: 0.9375rem;
   color: var(--ink-soft);
   white-space: nowrap;
+}
+
+/* ── The front page ───────────────────────────────────── */
+
+/* The opening statement. Larger than a lede, smaller than a title — the
+   wordmark already says who; this says what. */
+.intro {
+  font-size: clamp(1.375rem, 3.2vw, 1.75rem);
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+.intro + p {
+  margin-top: 24px;
+  color: var(--ink-soft);
+}
+
+/* The loop, one stage a row. The stage name sits where a date sits in the
+   writing index, and the line beside it is the argument for that stage. */
+.loop {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.col > .loop {
+  max-width: var(--wide);
+}
+
+.loop li {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, var(--measure));
+  gap: 0 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.loop li:last-child {
+  border-bottom: 0;
+}
+
+/* Numbered in the backdrop's own alphabet: 001, 010, 011, 100, 101. */
+.loop .stage {
+  font-weight: 500;
+}
+
+.loop .stage::before {
+  content: attr(data-bits);
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-bottom: 2px;
+}
+
+.loop p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .loop li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* A paragraph straight under a group heading sits closer to it than to the
+   section before — it belongs to the heading. */
+.group + p {
+  margin-top: 16px;
+}
+
+.lede + .loop {
+  margin-top: 12px;
+}
+
+.entries + .links {
+  margin-top: 10px;
+}
+
+/* One talk on the front page: the still beside its title, not above it —
+   it's a pointer to the Speaking page, not the page itself. */
+.talk-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 18px 28px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.talk-feature .still img {
+  display: block;
+  border: 1px solid var(--rule);
+}
+
+.talk-feature .name {
+  margin: 0;
+}
+
+.talk-feature .when {
+  margin: 6px 0 0;
+  white-space: normal;
+}
+
+@media (max-width: 620px) {
+  .talk-feature {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Prose from markdown ──────────────────────────────── */
