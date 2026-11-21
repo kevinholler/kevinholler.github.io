@@ -9,7 +9,7 @@
   few generations, so gliders leave a short wake instead of blinking.
 
   It is meant to be noticed second. Everything about it is turned down —
-  a few generations a second, ink at a few percent, and a mask that thins
+  under two generations a second, ink at a few percent, and a mask that thins
   it further under the text column — so it reads as texture until you look
   at it, and then it's alive.
 
@@ -32,14 +32,14 @@
   if (canvas && ctx) {
     const CELL = 14; // grid pitch, CSS pixels
     const GAP = 2; // gutter between squares
-    const TICK = 220; // ms per generation
+    const TICK = 600; // ms per generation
     const TRAIL = 3; // generations a dead cell takes to fade back to empty
     const LEVELS = 12; // alpha is quantised so each level is one fill()
 
     // How strong each state is drawn. The CSS mask thins all of this
     // again under the column, so these are the values at the edges.
-    const ALPHA_EMPTY = 0.035;
-    const ALPHA_LIVE = 0.24;
+    const ALPHA_EMPTY = 0.018;
+    const ALPHA_LIVE = 0.11;
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.documentElement;
@@ -258,14 +258,14 @@
        column sits left of centre, so the quiet patch does too. */
     mask-image: radial-gradient(
       ellipse 70% 85% at 38% 45%,
-      rgb(0 0 0 / 0.22) 0%,
-      rgb(0 0 0 / 0.5) 55%,
+      rgb(0 0 0 / 0.12) 0%,
+      rgb(0 0 0 / 0.4) 55%,
       #000 100%
     );
     -webkit-mask-image: radial-gradient(
       ellipse 70% 85% at 38% 45%,
-      rgb(0 0 0 / 0.22) 0%,
-      rgb(0 0 0 / 0.5) 55%,
+      rgb(0 0 0 / 0.12) 0%,
+      rgb(0 0 0 / 0.4) 55%,
       #000 100%
     );
   }
