@@ -34,10 +34,11 @@ the same path under `src/` and its relative imports work again.
 
 ### The backdrop
 
-The front page sits on Conway's Game of Life, drawn as binary digits
-(`src/components/LifeField.astro`): live cells are 1s, dead cells 0s, and
-cells that have just died stay a brighter 0 for a few generations. It is a
-single canvas with no dependencies; it pauses in a hidden tab, renders one
+The front page sits on Conway's Game of Life
+(`src/components/LifeField.astro`), drawn as a grid of square cells: empty
+cells are a barely-there square, so the page reads as graph paper; live
+cells are solid; cells that have just died fade back over a few
+generations. It is a single canvas with no dependencies; it pauses in a hidden tab, renders one
 still frame under `prefers-reduced-motion`, follows the theme toggle, and
 seeds cells under a mouse pointer. It is opt-in per page with
 `<Reading backdrop>`; only the front page uses it.

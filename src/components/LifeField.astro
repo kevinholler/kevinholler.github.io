@@ -1,10 +1,12 @@
 ---
 /*
-  The backdrop on the front page: Conway's Game of Life, drawn as a field
-  of binary digits. A live cell is a 1, a dead one is a 0, and a cell that
-  has just died stays a brighter 0 for a few generations, so the gliders
-  leave a wake instead of blinking — and the field gets the uneven, inked
-  texture of a page of printed binary rather than a flat grid.
+  The backdrop on the front page: Conway's Game of Life, drawn the way it
+  is usually drawn — a grid of square cells, filled when alive.
+
+  Every cell in the field is drawn, empty ones as a barely-there square, so
+  the page reads as graph paper with something growing on it. A live cell
+  is a solid square; a cell that has just died fades back to empty over a
+  few generations, so gliders leave a short wake instead of blinking.
 
   It is meant to be noticed second. Everything about it is turned down —
   a few generations a second, ink at a few percent, and a mask that thins
@@ -12,7 +14,8 @@
   at it, and then it's alive.
 
   - No dependencies, one canvas, a few kilobytes.
-  - Pauses when the tab is hidden.
+  - Repaints once per generation, not every frame, and pauses when the tab
+    is hidden.
   - prefers-reduced-motion gets one still frame, settled for a while
     first so it looks like the middle of something rather than noise.
   - Follows the theme toggle: it reads --ink from the root each time the
@@ -27,15 +30,16 @@
   const ctx = canvas?.getContext('2d');
 
   if (canvas && ctx) {
-    const CELL = 16; // px per cell, CSS pixels
-    const TICK = 260; // ms per generation
-    const TRAIL = 5; // generations a dead cell keeps its fading 1
-    const LEVELS = 16; // alpha is quantised so each level is one batch
+    const CELL = 14; // grid pitch, CSS pixels
+    const GAP = 2; // gutter between squares
+    const TICK = 220; // ms per generation
+    const TRAIL = 3; // generations a dead cell takes to fade back to empty
+    const LEVELS = 12; // alpha is quantised so each level is one fill()
 
     // How strong each state is drawn. The CSS mask thins all of this
     // again under the column, so these are the values at the edges.
-    const ALPHA_DEAD = 0.1;
-    const ALPHA_LIVE = 0.36;
+    const ALPHA_EMPTY = 0.035;
+    const ALPHA_LIVE = 0.24;
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = document.documentElement;
@@ -44,8 +48,7 @@
     let rows = 0;
     let live = new Uint8Array(0);
     let next = new Uint8Array(0);
-    let trail = new Uint8Array(0); // generations since death, 0 = never/expired
-    let grain = new Float32Array(0); // fixed per-cell variation, 0.45–1
+    let trail = new Uint8Array(0); // generations since death; 0 = empty
     let ink = '#14161a';
     let generation = 0;
     const history: number[] = [];
@@ -57,13 +60,13 @@
     const idx = (x: number, y: number) =>
       ((y + rows) % rows) * cols + ((x + cols) % cols);
 
-    const seed = (density = 0.22) => {
+    const seed = (density = 0.2) => {
       for (let i = 0; i < live.length; i++) live[i] = Math.random() < density ? 1 : 0;
     };
 
+    // A patch of random soup somewhere, to restart a field that has
+    // settled into still lifes and blinkers.
     const sprinkle = () => {
-      // A patch of random soup somewhere, to restart a field that has
-      // settled into still lifes and blinkers.
       const w = 10;
       const ox = Math.floor(Math.random() * cols);
       const oy = Math.floor(Math.random() * rows);
@@ -84,36 +87,6 @@
       const ox = Math.floor(Math.random() * cols);
       const oy = Math.floor(Math.random() * rows);
       for (const [x, y] of shape) live[idx(ox + x * fx, oy + y * fy)] = 1;
-    };
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const c = Math.ceil(w / CELL);
-      const r = Math.ceil(h / CELL);
-      if (c === cols && r === rows) return draw();
-
-      // Keep whatever overlaps, seed whatever is new.
-      const old = { live, trail, cols, rows };
-      cols = c;
-      rows = r;
-      live = new Uint8Array(c * r);
-      next = new Uint8Array(c * r);
-      trail = new Uint8Array(c * r);
-      grain = new Float32Array(c * r);
-      for (let i = 0; i < grain.length; i++) grain[i] = 0.45 + Math.random() * 0.55;
-      seed();
-      for (let y = 0; y < Math.min(r, old.rows); y++)
-        for (let x = 0; x < Math.min(c, old.cols); x++) {
-          live[y * c + x] = old.live[y * old.cols + x];
-          trail[y * c + x] = old.trail[y * old.cols + x];
-        }
-      draw();
     };
 
     const step = () => {
@@ -158,48 +131,67 @@
       if (generation % 24 === 0) glider();
     };
 
-    // Two glyphs × LEVELS alpha steps; each bucket is drawn with one
-    // globalAlpha so the canvas state only changes 2 × LEVELS times a frame.
-    const buckets: number[][] = Array.from({ length: LEVELS * 2 }, () => []);
+    // Cells are bucketed by alpha, and each bucket is one path and one
+    // fill() — a dozen draw calls a generation rather than thousands.
+    const buckets: number[][] = Array.from({ length: LEVELS }, () => []);
+    const SIZE = CELL - GAP;
 
     const draw = () => {
       for (const b of buckets) b.length = 0;
       for (let i = 0; i < live.length; i++) {
         let a: number;
-        let one: number;
-        if (live[i]) {
-          a = ALPHA_LIVE;
-          one = 1;
-        } else if (trail[i]) {
+        if (live[i]) a = ALPHA_LIVE;
+        else if (trail[i]) {
           const t = 1 - trail[i] / (TRAIL + 1);
-          a = ALPHA_DEAD + (ALPHA_LIVE - ALPHA_DEAD) * t * 0.75;
-          one = 0;
-        } else {
-          a = ALPHA_DEAD;
-          one = 0;
-        }
-        a *= grain[i];
+          a = ALPHA_EMPTY + (ALPHA_LIVE - ALPHA_EMPTY) * t * 0.4;
+        } else a = ALPHA_EMPTY;
         const level = Math.min(LEVELS - 1, Math.round((a / ALPHA_LIVE) * (LEVELS - 1)));
-        buckets[one * LEVELS + level].push(i);
+        buckets[level].push(i);
       }
 
       ctx.clearRect(0, 0, cols * CELL, rows * CELL);
       ctx.fillStyle = ink;
-      ctx.font = `500 ${Math.round(CELL * 0.72)}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      for (let b = 0; b < buckets.length; b++) {
-        const cells = buckets[b];
+      for (let level = 0; level < LEVELS; level++) {
+        const cells = buckets[level];
         if (!cells.length) continue;
-        const glyph = b >= LEVELS ? '1' : '0';
-        ctx.globalAlpha = ((b % LEVELS) / (LEVELS - 1)) * ALPHA_LIVE;
+        ctx.globalAlpha = (level / (LEVELS - 1)) * ALPHA_LIVE;
+        ctx.beginPath();
         for (const i of cells) {
           const x = i % cols;
           const y = (i / cols) | 0;
-          ctx.fillText(glyph, x * CELL + CELL / 2, y * CELL + CELL / 2 + 1);
+          ctx.rect(x * CELL + GAP / 2, y * CELL + GAP / 2, SIZE, SIZE);
         }
+        ctx.fill();
       }
       ctx.globalAlpha = 1;
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const c = Math.ceil(w / CELL);
+      const r = Math.ceil(h / CELL);
+      if (c === cols && r === rows) return draw();
+
+      // Keep whatever overlaps, seed whatever is new.
+      const old = { live, trail, cols, rows };
+      cols = c;
+      rows = r;
+      live = new Uint8Array(c * r);
+      next = new Uint8Array(c * r);
+      trail = new Uint8Array(c * r);
+      seed();
+      for (let y = 0; y < Math.min(r, old.rows); y++)
+        for (let x = 0; x < Math.min(c, old.cols); x++) {
+          live[y * c + x] = old.live[y * old.cols + x];
+          trail[y * c + x] = old.trail[y * old.cols + x];
+        }
+      draw();
     };
 
     // ── Running ──────────────────────────────────────────────
