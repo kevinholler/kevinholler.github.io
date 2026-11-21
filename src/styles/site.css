@@ -8,14 +8,14 @@
    ───────────────────────────────────────────────────────── */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  --paper: #f4f5f6;
-  --paper-in: #eceef0;
-  --ink: #14161a;
-  --ink-soft: #5a6069;
-  --rule: #cfd3d8;
-  --link: #1f4e79;
+  --paper: #16181a;
+  --paper-in: #1d2023;
+  --ink: #e8eaec;
+  --ink-soft: #979ca3;
+  --rule: #2c3034;
+  --link: #93b8dc;
 
   --serif: 'Newsreader Variable', Newsreader, Georgia, 'Times New Roman', serif;
 
@@ -45,17 +45,17 @@
   --col-cap: var(--measure);
 }
 
-/* Light is the default, whatever the operating system says. Dark is opted
+/* Dark is the default, whatever the operating system says. Light is opted
    into with the toggle and remembered in localStorage. */
-:root[data-theme='dark'] {
-  color-scheme: dark;
+:root[data-theme='light'] {
+  color-scheme: light;
 
-  --paper: #16181a;
-  --paper-in: #1d2023;
-  --ink: #e8eaec;
-  --ink-soft: #979ca3;
-  --rule: #2c3034;
-  --link: #93b8dc;
+  --paper: #f4f5f6;
+  --paper-in: #eceef0;
+  --ink: #14161a;
+  --ink-soft: #5a6069;
+  --rule: #cfd3d8;
+  --link: #1f4e79;
 }
 
 :root[data-layout='spread'] {
@@ -637,16 +637,16 @@ pre code {
   stroke-linecap: round;
 }
 
-/* Light is the default, so the moon — the way out of it — is what shows. */
-.theme-toggle .sun {
+/* Dark is the default, so the sun — the way out of it — is what shows. */
+.theme-toggle .moon {
   display: none;
 }
 
-:root[data-theme='dark'] .theme-toggle .moon {
+:root[data-theme='light'] .theme-toggle .sun {
   display: none;
 }
 
-:root[data-theme='dark'] .theme-toggle .sun {
+:root[data-theme='light'] .theme-toggle .moon {
   display: block;
 }
 

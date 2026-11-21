@@ -39,10 +39,10 @@ const { here } = Astro.props;
           </nav>
           <!-- Both marks ship; CSS shows the one that matches the current
                theme, so the icon is right on first paint with no JS. Each is
-               the destination, not the current state: a moon means "go dark".
+               the destination, not the current state: a sun means "go light".
                Drawn as hairlines, like the play mark on the speaking page —
                the only other piece of interface chrome on the site. -->
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
             <svg class="mark moon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
               <path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" />
             </svg>
@@ -61,7 +61,7 @@ const { here } = Astro.props;
             // Which mark is visible is CSS's job now. All this has to keep
             // in step is the label the button announces.
             function sync() {
-              var dark = root.dataset.theme === 'dark';
+              var dark = root.dataset.theme !== 'light';
               btn.setAttribute(
                 'aria-label',
                 dark ? 'Switch to light theme' : 'Switch to dark theme',
@@ -69,9 +69,9 @@ const { here } = Astro.props;
             }
             sync();
             btn.addEventListener('click', function () {
-              var dark = root.dataset.theme === 'dark';
-              if (dark) delete root.dataset.theme;
-              else root.dataset.theme = 'dark';
+              var dark = root.dataset.theme !== 'light';
+              if (dark) root.dataset.theme = 'light';
+              else delete root.dataset.theme;
               try {
                 localStorage.setItem('theme', dark ? 'light' : 'dark');
               } catch (e) {}

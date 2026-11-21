@@ -27,11 +27,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 <html lang="en" data-layout={layout === 'spread' ? 'spread' : undefined}>
   <head>
     <script is:inline>
-      // Before first paint, so a returning dark-theme reader never sees a
-      // flash of light. No stored choice means light, whatever the OS says.
+      // Before first paint, so a returning light-theme reader never sees a
+      // flash of dark. No stored choice means dark, whatever the OS says.
       try {
-        if (localStorage.getItem('theme') === 'dark') {
-          document.documentElement.dataset.theme = 'dark';
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.dataset.theme = 'light';
         }
       } catch (e) {}
     </script>
@@ -41,9 +41,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <!-- Light, so the initial canvas matches the default before CSS lands.
-         The `color-scheme` property on [data-theme='dark'] overrides it. -->
-    <meta name="color-scheme" content="light" />
+    <!-- Dark, so the initial canvas matches the default before CSS lands.
+         The `color-scheme` property on [data-theme='light'] overrides it. -->
+    <meta name="color-scheme" content="dark" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
