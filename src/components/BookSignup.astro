@@ -3,7 +3,7 @@
   The book signup. A plain HTML form that posts to Kit, so it works with
   JavaScript off and stores nothing on this site. Kit handles the rest:
   the confirmation email, then the email with the chapters, then — after
-  the form's "redirect" setting — sends the browser to /book/thanks/.
+  the form's "redirect" setting — sends the browser to /chasing-rainbows/thanks/.
 
   Until a Kit form ID is configured in src/data/book.ts, this renders an
   email link instead, so the page never shows a form that goes nowhere.
@@ -37,8 +37,8 @@ const noteId = `${id}-note`;
         <button type="submit">Send me the chapters</button>
       </div>
       <p class="signup-note" id={noteId}>
-        You’ll get a confirmation email, then {book.freebie}, and one more
-        when the book is out. Nothing else. Unsubscribe any time.
+        Confirm your address and the chapters follow straight away. No spam;
+        unsubscribe any time.
       </p>
     </form>
   ) : (

@@ -6,8 +6,8 @@
   gets made — and the masthead says so by not offering ten other doors.
   The sections that used to sit here (Reading, Startups, Ideas, Projects,
   Food & Wine, Gardening, and the old Book page) are parked in
-  src/_archive/sections/. Book came back as /book/ — at the root, not under
-  /new/, because it is public and being promoted now.
+  src/_archive/sections/. Book came back as /chasing-rainbows/ — at the root,
+  not under /new/, because it is public and being promoted now.
 
   One group. The header still takes groups (and marks a boundary between
   them with a middot) so it doesn't change shape if sections come back —
@@ -28,7 +28,7 @@ export interface NavLink {
 export const navGroups: NavLink[][] = [
   [
     { id: 'writing', label: 'Writing', href: '/new/writing/' },
-    { id: 'book', label: 'Book', href: '/book/' },
+    { id: 'book', label: 'Book', href: '/chasing-rainbows/' },
     { id: 'speaking', label: 'Speaking', href: '/new/speaking/' },
     { id: 'about', label: 'About', href: '/new/about/' },
   ],

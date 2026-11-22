@@ -1267,84 +1267,422 @@ pre code {
 }
 
 /* ── Book ───────────────────────────────────────────────
-   /book/ exists to turn a visit into a subscriber, so the offer is the
-   one boxed thing on the site: a hairline frame around the form, at the
-   top beside the cover and again at the foot. */
+   /chasing-rainbows/ is the one page on the site built to convert: a
+   visit into a subscriber. It borrows the shape of a good book page —
+   hero band with the cover and the offer, proof, what's inside, why,
+   the author, and the offer again — and keeps the site's own voice:
+   one serif, hairlines, and colour only where the cover brings it.
 
-.book-kicker {
-  margin: 0 0 10px;
+   Bands run the full width of the window. The tint is painted with a
+   spread box-shadow and clipped to the sides, so it bleeds to the edges
+   without a 100vw element that would overflow past the scrollbar. */
+
+.col > .bk {
+  max-width: none;
+}
+
+.bk {
+  display: flex;
+  flex-direction: column;
+}
+
+.bk-band {
+  position: relative;
+  background: var(--paper-in);
+  box-shadow: 0 0 0 100vmax var(--paper-in);
+  clip-path: inset(0 -100vmax);
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+/* 1 · Hero. Cover left, everything you need to say yes on the right. */
+.bk-hero {
+  margin-top: calc(-1 * clamp(40px, 6vw, 64px));
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 0 clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.bk-cover {
+  margin: 0;
+}
+
+.bk-cover img,
+.bk-close-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 24px 48px -16px rgb(0 0 0 / 0.5);
+}
+
+.bk-kicker {
+  margin: 0 0 12px;
   font-size: 0.8125rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
 
-.book-hero h1 {
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+.bk-hero h1 {
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
 }
 
-.book-sub {
+.bk-sub {
   margin: 10px 0 0;
-  font-size: 1.1875rem;
+  font-size: 1.25rem;
   font-style: italic;
   color: var(--ink-soft);
 }
 
-.book-hero .lede {
+.bk-pitch {
+  margin: 22px 0 0;
+  font-size: 1.0625rem;
+  max-width: var(--measure);
+}
+
+.bk-offer {
   margin-top: 28px;
-}
-
-/* The cover keeps its place while the pitch scrolls past it. */
-.book-cover {
-  margin: 0;
-  position: sticky;
-  top: 32px;
-}
-
-.book-cover img {
-  display: block;
-  width: 100%;
-  height: auto;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 18px 40px -12px rgb(0 0 0 / 0.45);
-}
-
-@media (max-width: 960px) {
-  /* On a phone the cover comes first, smaller, so the offer is still
-     within a thumb or two of the top. */
-  .book-hero .spread-side {
-    order: -1;
-    margin: 0 0 32px;
-  }
-
-  .book-cover {
-    position: static;
-    width: min(62%, 260px);
-  }
-}
-
-.offer {
-  margin-top: 36px;
-  padding: 24px 24px 20px;
+  padding: 22px 24px 20px;
+  background: var(--paper);
   border: 1px solid var(--rule);
-  background: var(--paper-in);
+  max-width: 34rem;
 }
 
-.offer h2 {
+.bk-offer h2 {
   margin: 0;
+  font-size: 1.25rem;
 }
 
-.offer > p {
-  margin: 8px 0 0;
-  font-size: 1rem;
+/* Hairline ticks, drawn — the same weight as every other mark on the site. */
+.bk-checks {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 0.9375rem;
+}
+
+.bk-checks li {
+  position: relative;
+  padding-left: 24px;
+  margin-top: 6px;
+}
+
+.bk-checks li::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0.42em;
+  width: 10px;
+  height: 5px;
+  border-left: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 760px) {
+  .bk-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-cover {
+    width: min(58%, 240px);
+    margin: 0 auto 28px;
+  }
+
+  .bk-hero-text {
+    text-align: left;
+  }
+}
+
+/* Section titles, centred: this page is a sequence of panels, not a
+   column of prose. */
+.bk-title {
+  margin: 0;
+  font-size: clamp(1.625rem, 3.4vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-align: center;
+}
+
+.bk-section {
+  padding-block: clamp(48px, 7vw, 88px);
+}
+
+.bk-intro {
+  margin: 10px auto 0;
+  text-align: center;
+  font-style: italic;
   color: var(--ink-soft);
 }
 
-.offer-end {
-  margin-top: 56px;
+/* 2 · The numbers. A title set between two rules, then four figures. */
+.bk-numbers {
+  padding-top: clamp(40px, 6vw, 64px);
 }
 
+.bk-rule-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.bk-rule-title::before,
+.bk-rule-title::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--rule);
+}
+
+.bk-numbers dl {
+  margin: 28px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.bk-numbers dt {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums;
+}
+
+.bk-numbers dd {
+  margin: 6px 0 0;
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .bk-numbers dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+}
+
+/* 3 · What you'll read. Numbered, two columns, read down then across. */
+.bk-beats {
+  list-style: none;
+  counter-reset: beat;
+  margin: 36px auto 0;
+  padding: 0;
+  max-width: 50rem;
+  columns: 2;
+  column-gap: 48px;
+}
+
+.bk-beats li {
+  counter-increment: beat;
+  break-inside: avoid;
+  position: relative;
+  padding: 0 0 18px 44px;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+
+.bk-beats li::before {
+  content: counter(beat, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .bk-beats {
+    columns: 1;
+  }
+}
+
+/* 4 · Why. Prose at the measure, centred; then the four commitments. */
+.bk-prose {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.bk-why .bk-prose {
+  margin-top: 20px;
+}
+
+.bk-subtitle {
+  margin: 48px 0 0;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.bk-pillars {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.bk-pillars li {
+  padding: 18px 18px 20px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+
+.bk-pillar-name {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.bk-pillar-gloss {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 860px) {
+  .bk-pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .bk-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bk-origin {
+  margin: 28px 0 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* 5 · Early readers. */
+.bk-praise {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 16px;
+}
+
+.bk-praise li {
+  padding: 22px;
+  border: 1px solid var(--rule);
+}
+
+.bk-praise blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.125rem;
+  font-style: normal;
+  color: var(--ink);
+}
+
+.bk-praise-name {
+  margin: 14px 0 0;
+  font-weight: 500;
+}
+
+.bk-praise-role {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+/* 6 · About the author. */
+.bk-author {
+  display: grid;
+  grid-template-columns: 160px minmax(0, var(--measure));
+  justify-content: center;
+  gap: 0 36px;
+  align-items: start;
+}
+
+.bk-author .bk-title {
+  text-align: left;
+  font-size: 1.5rem;
+}
+
+.bk-author p {
+  margin-top: 14px;
+}
+
+.bk-author-photo {
+  display: block;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  object-position: 58% 30%;
+  border-radius: 50%;
+}
+
+.bk-more {
+  font-size: 0.9375rem;
+  font-style: italic;
+}
+
+@media (max-width: 620px) {
+  .bk-author {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-author-photo {
+    width: 112px;
+    height: 112px;
+    margin-bottom: 20px;
+  }
+}
+
+/* 7 · Closing band. The cover small, the offer again. */
+.bk-close {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 34rem);
+  justify-content: center;
+  gap: 0 40px;
+  align-items: center;
+  margin-bottom: calc(-1 * clamp(56px, 8vw, 88px));
+}
+
+.bk-close h2 {
+  margin: 0;
+}
+
+.bk-close-text > p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .bk-close {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-close-cover {
+    width: 110px;
+    margin-bottom: 24px;
+  }
+}
+
+/* The form, used in the hero and the closing band. */
 .signup {
   margin: 18px 0 0;
 }
@@ -1415,18 +1753,6 @@ pre code {
 
 .signup-fallback {
   font-size: 1rem;
-}
-
-.book-origin {
-  margin-top: 40px;
-}
-
-/* The commitments follow their heading directly, without the rule-and-gap
-   .facts carries as the last thing on a page. */
-h2 + .facts {
-  margin-top: 16px;
-  padding-top: 0;
-  border-top: 0;
 }
 
 /* ── Prose from markdown ──────────────────────────────── */

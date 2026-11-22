@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import Reading from '../../layouts/Reading.astro';
+import BookSignup from '../../components/BookSignup.astro';
+import {
+  book,
+  beats,
+  commitments,
+  freeChapters,
+  numbers,
+  praise,
+} from '../../data/book';
+import cover from '../../assets/book/cover.png';
+import portrait from '../../assets/portrait/kevin-holler.jpg';
+
+/*
+  /chasing-rainbows/ — the book page. Public, indexed, and built to do one
+  thing: turn a visit into a subscriber. /book/ redirects here.
+
+  The structure follows the pattern of a good book page (jamesclear.com/
+  atomic-habits is the reference), adapted for a book that isn't out yet —
+  so the call to action is the free chapters, not retailers, and the proof
+  is the story's own numbers rather than sales figures:
+
+    1. Hero band — cover, title, pitch, and the offer with the form.
+    2. The numbers — four figures that are the story in brief.
+    3. What you'll read — the beats of the book, numbered, two columns.
+    4. Why I'm writing it — the origin, and the four commitments.
+    5. Early readers — appears once `praise` in src/data/book.ts has a quote.
+    6. About the author — portrait, short bio, link to the about page.
+    7. Closing band — the cover again, and the form again.
+
+  DRAFT COPY. The facts are Kevin's (the about page and two essays); the
+  phrasing of the pitch, the beats and the bio was written for this page.
+*/
+
+const description = `${book.title} — ${book.subtitle.toLowerCase()}. A book by Kevin Holler. Read ${book.freebie} free.`;
+const coverAlt = `Cover of ${book.title}, ${book.subtitle}, by Kevin Holler: the title in heavy black capitals over a row of rainbow-coloured bars that fall away to the right.`;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+---
+<Reading
+  title={`${book.title}: ${book.subtitle} — Kevin Holler`}
+  description={description}
+  here="book"
+  indexed
+  image={cover}
+  imageAlt={coverAlt}
+>
+  <div class="bk">
+    <!-- 1 · Hero ─────────────────────────────────────────── -->
+    <section class="bk-band bk-hero">
+      <figure class="bk-cover">
+        <Image
+          src={cover}
+          alt={coverAlt}
+          widths={[320, 640, 1060]}
+          sizes="(max-width: 760px) 60vw, 380px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+
+      <div class="bk-hero-text">
+        <p class="bk-kicker">A memoir · in progress</p>
+        <h1>{book.title}</h1>
+        <p class="bk-sub">{book.subtitle}</p>
+        <p class="bk-pitch">
+          Building a startup is like chasing a rainbow: the closer you get,
+          the further it seems to move. This is the story of my first company
+          — what it cost, what it taught me, and why I went back and did it
+          again.
+        </p>
+
+        <div class="bk-offer" id="chapters">
+          <h2>Read {book.freebie} free</h2>
+          <ul class="bk-checks">
+            {
+              freeChapters.length
+                ? freeChapters.map((c) => (
+                    <li>
+                      <strong>{c.title}</strong>
+                      {c.line && <span> — {c.line}</span>}
+                    </li>
+                  ))
+                : <li>{cap(book.freebie)}, sent the moment you confirm your email</li>
+            }
+            <li>One note on the day the book launches</li>
+          </ul>
+          <BookSignup id="top" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · The numbers ──────────────────────────────────── -->
+    <section class="bk-numbers" aria-labelledby="bk-numbers-title">
+      <h2 class="bk-rule-title" id="bk-numbers-title"><span>The story in four numbers</span></h2>
+      <dl>
+        {
+          numbers.map((n) => (
+            <div>
+              <dt>{n.figure}</dt>
+              <dd>{n.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <!-- 3 · What you'll read ─────────────────────────────── -->
+    <section class="bk-section" aria-labelledby="bk-beats-title">
+      <h2 class="bk-title" id="bk-beats-title">What you’ll read</h2>
+      <p class="bk-intro">Not a playbook. The other account — in order, as it happened:</p>
+      <ol class="bk-beats">
+        {beats.map((b) => <li>{b}</li>)}
+      </ol>
+    </section>
+
+    <!-- 4 · Why ──────────────────────────────────────────── -->
+    <section class="bk-band bk-why" aria-labelledby="bk-why-title">
+      <h2 class="bk-title" id="bk-why-title">Why I’m writing it</h2>
+      <div class="bk-prose">
+        <p>
+          When my first company failed, I wrote a blog post announcing we were
+          shutting down. In Ireland at the time, failure was rarely spoken
+          about openly. Having already lost everything, I figured I had nothing
+          left to lose. I published the post, shut my laptop, and went for a
+          walk.
+        </p>
+        <p>
+          What followed twenty-four hours later shocked me: job offers,
+          interview requests, founders emailing to share the same experience.
+          The thing I was most afraid to say out loud was the thing other
+          people most needed to hear. This book is that post, given the length
+          it deserved.
+        </p>
+      </div>
+
+      <h3 class="bk-subtitle">What it’s held to</h3>
+      <ul class="bk-pillars">
+        {
+          commitments.map((c) => (
+            <li>
+              <span class="bk-pillar-name">{c.name}</span>
+              <span class="bk-pillar-gloss">{c.gloss}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="bk-origin">
+        Where it started: the essay <a href="/new/writing/chasing-rainbows/">Chasing rainbows</a>.
+      </p>
+    </section>
+
+    <!-- 5 · Early readers (only once there are some) ──────── -->
+    {
+      praise.length > 0 && (
+        <section class="bk-section" aria-labelledby="bk-praise-title">
+          <h2 class="bk-title" id="bk-praise-title">From early readers</h2>
+          <ul class="bk-praise">
+            {praise.map((p) => (
+              <li>
+                <blockquote>“{p.quote}”</blockquote>
+                <p class="bk-praise-name">{p.name}</p>
+                {p.role && <p class="bk-praise-role">{p.role}</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- 6 · About the author ─────────────────────────────── -->
+    <section class="bk-section bk-author" aria-labelledby="bk-author-title">
+      <Image
+        class="bk-author-photo"
+        src={portrait}
+        alt="Kevin Holler."
+        widths={[240, 480]}
+        sizes="240px"
+        loading="lazy"
+      />
+      <div>
+        <h2 class="bk-title" id="bk-author-title">About the author</h2>
+        <p>
+          Kevin Holler works in Field Engineering at CodeRabbit. For fifteen
+          years he has moved between engineering, sales, product, and data —
+          four times as the first technical hire in a company’s EMEA team — and
+          started three companies. Two of them failed. German-Irish, he lives in
+          Würzburg, Germany.
+        </p>
+        <p class="bk-more"><a href="/new/about/">More about me</a></p>
+      </div>
+    </section>
+
+    <!-- 7 · Closing offer ────────────────────────────────── -->
+    <section class="bk-band bk-close" aria-labelledby="bk-close-title">
+      <Image
+        class="bk-close-cover"
+        src={cover}
+        alt=""
+        widths={[160, 320]}
+        sizes="160px"
+        loading="lazy"
+      />
+      <div class="bk-close-text">
+        <h2 id="bk-close-title">Start with {book.freebie}</h2>
+        <p>Free, by email — and one note when the book is out.</p>
+        <BookSignup id="end" />
+      </div>
+    </section>
+  </div>
+</Reading>

@@ -2,6 +2,8 @@
 import '@fontsource-variable/newsreader/wght.css';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/site.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import SiteHead from '../components/SiteHead.astro';
 import SiteFoot from '../components/SiteFoot.astro';
 import LifeField from '../components/LifeField.astro';
@@ -22,6 +24,9 @@ interface Props {
    *  until the rebuild moves to the root; a page that is public now (the
    *  book) opts in. */
   indexed?: boolean;
+  /** The picture shown when the page is shared (og:image). */
+  image?: ImageMetadata;
+  imageAlt?: string;
 }
 
 const {
@@ -31,7 +36,13 @@ const {
   layout = 'single',
   backdrop = false,
   indexed = false,
+  image,
+  imageAlt,
 } = Astro.props;
+
+const ogImage = image
+  ? new URL((await getImage({ src: image, width: 800, format: 'jpg' })).src, Astro.site).toString()
+  : undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
@@ -59,6 +70,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
 
     <!-- Work in progress. Nothing under /new/ should be indexed or crawled
          until it replaces the site at the root; public pages opt out. -->

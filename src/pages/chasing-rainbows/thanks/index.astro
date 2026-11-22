@@ -1,10 +1,10 @@
 ---
 import Reading from '../../../layouts/Reading.astro';
-import { book } from '../../../data/book';
+import { book, bookPath } from '../../../data/book';
 
 /*
   Where Kit sends the browser after someone submits the book signup — set
-  as the form's redirect URL in Kit (https://kevinholler.com/book/thanks/).
+  as the form's redirect URL in Kit (https://kevinholler.com/chasing-rainbows/thanks/).
   Not indexed: it only makes sense straight after the form.
 */
 ---
@@ -20,5 +20,5 @@ import { book } from '../../../data/book';
     and if it’s still missing, <a href="mailto:hello@kevinholler.com?subject=Chasing%20Rainbows">email me</a>
     and I’ll send the chapters myself.
   </p>
-  <p><a href="/book/">← Back to the book</a></p>
+  <p><a href={bookPath}>← Back to the book</a></p>
 </Reading>
