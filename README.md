@@ -34,46 +34,40 @@ page are parked in `src/_archive/sections/`, which mirrors `src/` — move a
 file back to the same path under `src/` and its relative imports work again.
 (The archived `data/book.ts` would now clash with the live one.)
 
+### The book
+
+The book page is public and indexed now, ahead of the rest of the rebuild,
+so it can be promoted. Everything it says lives in `src/data/book.ts`, and
+**the rules at the top of that file govern every word**: no real names but
+Kevin's and institutions', no private details (investor amounts, family
+finances, health, letters), and nothing that gives away the ending.
+
+The title is a working title. `title` and `slug` in `src/data/book.ts` are
+the only places it is set: the page (`src/pages/[book]/`), its URL, the
+thank-you page, the nav and the homepage link all follow. `/book/` is a
+short link that always forwards to the current URL.
+
+Shared links show the cover (`og:image`). Early-reader quotes (`praise`)
+and the free chapters' titles (`freeChapters`) appear once filled in.
+
 ### The book signup
 
-`/chasing-rainbows/` is the one page that is public and indexed now, ahead
-of the rest of the rebuild, so it can be promoted. The URL is the book's
-title; `/book/` redirects to it as a short link. Shared links show the
-cover (`og:image`). Its job is to swap the opening
-chapters for an email address. The list lives in [Kit](https://kit.com);
-the form posts straight to Kit, with no JavaScript and nothing stored here.
-
-To switch it on:
+The form posts straight to [Kit](https://kit.com): no JavaScript, nothing
+stored here. To switch it on:
 
 1. In Kit, create a **form** (any template; only its settings matter).
 2. Under the form's **Incentive** settings, turn on the incentive email and
-   attach the chapters (PDF and/or EPUB). That email is the confirmation:
-   it only reaches people who confirm, so every subscriber is real.
+   attach the opening chapters (PDF and/or EPUB) once they're ready. Until
+   then the confirmation email simply puts people on the list.
 3. Under **After subscribing**, choose *Redirect to an external page* and
-   set `https://kevinholler.com/chasing-rainbows/thanks/`.
+   set `https://kevinholler.com/<slug>/thanks/` — today,
+   `https://kevinholler.com/chasing-rainbows/thanks/`.
 4. Copy the form's numeric ID from its embed code
    (`https://app.kit.com/forms/<ID>/subscriptions`) into `kitFormId` in
    `src/data/book.ts`.
 
 Until `kitFormId` is set, the page shows an email link instead of a form.
-`/chasing-rainbows/thanks/` is not indexed and is left out of the sitemap.
-
-Optional sections in `src/data/book.ts`: `freeChapters` (titles of the free
-chapters, shown in the offer) and `praise` (early-reader quotes; the section
-appears once there is one).
-
-
-
-### The backdrop
-
-The front page sits on Conway's Game of Life
-(`src/components/LifeField.astro`), drawn as a grid of square cells: empty
-cells are a barely-there square, so the page reads as graph paper; live
-cells are solid; cells that have just died fade back over a few
-generations. It is a single canvas with no dependencies; it pauses in a hidden tab, renders one
-still frame under `prefers-reduced-motion`, follows the theme toggle, and
-seeds cells under a mouse pointer. It is opt-in per page with
-`<Reading backdrop>`; only the front page uses it.
+The thank-you page is not indexed and is left out of the sitemap.
 
 ### Widths
 

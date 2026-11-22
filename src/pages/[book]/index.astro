@@ -4,39 +4,52 @@ import Reading from '../../layouts/Reading.astro';
 import BookSignup from '../../components/BookSignup.astro';
 import {
   book,
-  beats,
-  commitments,
+  bars,
   freeChapters,
-  numbers,
+  moments,
+  parts,
+  pitch,
   praise,
+  promises,
 } from '../../data/book';
 import cover from '../../assets/book/cover.png';
 import portrait from '../../assets/portrait/kevin-holler.jpg';
 
 /*
-  /chasing-rainbows/ — the book page. Public, indexed, and built to do one
-  thing: turn a visit into a subscriber. /book/ redirects here.
+  The book page. Its URL is the book's title, set once in src/data/book.ts
+  (`slug`), so a new title is a one-line change. /book/ redirects here.
 
-  The structure follows the pattern of a good book page (jamesclear.com/
-  atomic-habits is the reference), adapted for a book that isn't out yet —
-  so the call to action is the free chapters, not retailers, and the proof
-  is the story's own numbers rather than sales figures:
+  One job: turn a visit into a subscriber. The shape follows a strong book
+  landing page, adapted for a book that isn't out:
 
     1. Hero band — cover, title, pitch, and the offer with the form.
-    2. The numbers — four figures that are the story in brief.
-    3. What you'll read — the beats of the book, numbered, two columns.
-    4. Why I'm writing it — the origin, and the four commitments.
-    5. Early readers — appears once `praise` in src/data/book.ts has a quote.
-    6. About the author — portrait, short bio, link to the about page.
-    7. Closing band — the cover again, and the form again.
+    2. The shape — sixteen chapters in three parts, drawn as the cover's
+       bars.
+    3. What you'll read — moments from the book, in order.
+    4. How it's written — why, and four promises from the style guide.
+    5. Early readers — appears once `praise` has a quote.
+    6. About the author.
+    7. Closing band — the offer again.
 
-  DRAFT COPY. The facts are Kevin's (the about page and two essays); the
-  phrasing of the pitch, the beats and the bio was written for this page.
+  Every word on it obeys the rules at the top of src/data/book.ts — above
+  all: no private details, and nothing that gives away the ending.
 */
 
-const description = `${book.title} — ${book.subtitle.toLowerCase()}. A book by Kevin Holler. Read ${book.freebie} free.`;
+export function getStaticPaths() {
+  return [{ params: { book: book.slug } }];
+}
+
+const description = `${book.title} — ${book.subtitle.toLowerCase()}. A memoir by Kevin Holler. Read ${book.freebie} free.`;
 const coverAlt = `Cover of ${book.title}, ${book.subtitle}, by Kevin Holler: the title in heavy black capitals over a row of rainbow-coloured bars that fall away to the right.`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Which part each bar belongs to, for the part labels under the chart.
+let start = 0;
+const partSpans = parts.map((p) => {
+  const span = { ...p, from: start + 1, to: start + p.chapters };
+  start += p.chapters;
+  return span;
+});
 ---
 <Reading
   title={`${book.title}: ${book.subtitle} — Kevin Holler`}
@@ -64,12 +77,7 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
         <p class="bk-kicker">A memoir · in progress</p>
         <h1>{book.title}</h1>
         <p class="bk-sub">{book.subtitle}</p>
-        <p class="bk-pitch">
-          Building a startup is like chasing a rainbow: the closer you get,
-          the further it seems to move. This is the story of my first company
-          — what it cost, what it taught me, and why I went back and did it
-          again.
-        </p>
+        {pitch.map((p) => <p class="bk-pitch">{p}</p>)}
 
         <div class="bk-offer" id="chapters">
           <h2>Read {book.freebie} free</h2>
@@ -82,7 +90,7 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
                       {c.line && <span> — {c.line}</span>}
                     </li>
                   ))
-                : <li>{cap(book.freebie)}, sent the moment you confirm your email</li>
+                : <li>{cap(book.freebie)}, by email</li>
             }
             <li>One note on the day the book launches</li>
           </ul>
@@ -91,54 +99,60 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       </div>
     </section>
 
-    <!-- 2 · The numbers ──────────────────────────────────── -->
-    <section class="bk-numbers" aria-labelledby="bk-numbers-title">
-      <h2 class="bk-rule-title" id="bk-numbers-title"><span>The story in four numbers</span></h2>
-      <dl>
+    <!-- 2 · The shape ────────────────────────────────────── -->
+    <section class="bk-shape" aria-labelledby="bk-shape-title">
+      <h2 class="bk-rule-title" id="bk-shape-title"><span>Sixteen chapters, three parts</span></h2>
+      <p class="vh">
+        The book runs from 2014 to 2016 in three parts:
+        {partSpans.map((p) => `${p.name} (${p.years}, ${p.chapters} chapters). `)}
+      </p>
+      <div class="bk-bars" aria-hidden="true">
+        {bars.map((b) => <i style={`--h:${b.height}%;--c:${b.color}`} />)}
+      </div>
+      <ol class="bk-parts" aria-hidden="true">
         {
-          numbers.map((n) => (
-            <div>
-              <dt>{n.figure}</dt>
-              <dd>{n.label}</dd>
-            </div>
+          partSpans.map((p, i) => (
+            <li style={`--span:${p.chapters}`}>
+              <span class="bk-part-no">Part {['One', 'Two', 'Three'][i]}</span>
+              <span class="bk-part-name">{p.name}</span>
+              <span class="bk-part-years">{p.years}</span>
+            </li>
           ))
         }
-      </dl>
+      </ol>
     </section>
 
     <!-- 3 · What you'll read ─────────────────────────────── -->
     <section class="bk-section" aria-labelledby="bk-beats-title">
       <h2 class="bk-title" id="bk-beats-title">What you’ll read</h2>
-      <p class="bk-intro">Not a playbook. The other account — in order, as it happened:</p>
+      <p class="bk-intro">Not a playbook. The other account, in the order it happened:</p>
       <ol class="bk-beats">
-        {beats.map((b) => <li>{b}</li>)}
+        {moments.map((m) => <li>{m}</li>)}
       </ol>
     </section>
 
-    <!-- 4 · Why ──────────────────────────────────────────── -->
+    <!-- 4 · How it's written ─────────────────────────────── -->
     <section class="bk-band bk-why" aria-labelledby="bk-why-title">
       <h2 class="bk-title" id="bk-why-title">Why I’m writing it</h2>
       <div class="bk-prose">
         <p>
           When my first company failed, I wrote a blog post announcing we were
           shutting down. In Ireland at the time, failure was rarely spoken
-          about openly. Having already lost everything, I figured I had nothing
-          left to lose. I published the post, shut my laptop, and went for a
+          about openly. I published the post, shut my laptop, and went for a
           walk.
         </p>
         <p>
-          What followed twenty-four hours later shocked me: job offers,
-          interview requests, founders emailing to share the same experience.
-          The thing I was most afraid to say out loud was the thing other
-          people most needed to hear. This book is that post, given the length
-          it deserved.
+          Twenty-four hours later there were job offers, interview requests,
+          and founders emailing to say the same thing had happened to them.
+          Almost every startup memoir is written by someone who won. This one
+          isn’t.
         </p>
       </div>
 
-      <h3 class="bk-subtitle">What it’s held to</h3>
+      <h3 class="bk-subtitle">How it’s written</h3>
       <ul class="bk-pillars">
         {
-          commitments.map((c) => (
+          promises.map((c) => (
             <li>
               <span class="bk-pillar-name">{c.name}</span>
               <span class="bk-pillar-gloss">{c.gloss}</span>
@@ -146,9 +160,6 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
           ))
         }
       </ul>
-      <p class="bk-origin">
-        Where it started: the essay <a href="/new/writing/chasing-rainbows/">Chasing rainbows</a>.
-      </p>
     </section>
 
     <!-- 5 · Early readers (only once there are some) ──────── -->
@@ -182,13 +193,12 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       <div>
         <h2 class="bk-title" id="bk-author-title">About the author</h2>
         <p>
-          Kevin Holler works in Field Engineering at CodeRabbit. For fifteen
-          years he has moved between engineering, sales, product, and data —
-          four times as the first technical hire in a company’s EMEA team — and
-          started three companies. Two of them failed. German-Irish, he lives in
-          Würzburg, Germany.
+          Kevin Holler grew up in Ireland and graduated in Dublin in 2011,
+          into a country exporting its young. Before the company in this book
+          he was the first sales engineer in Europe for Engine Yard and then
+          New Relic. Today he works in Field Engineering at CodeRabbit and
+          lives in Würzburg, Germany.
         </p>
-        <p class="bk-more"><a href="/new/about/">More about me</a></p>
       </div>
     </section>
 

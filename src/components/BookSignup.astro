@@ -3,7 +3,7 @@
   The book signup. A plain HTML form that posts to Kit, so it works with
   JavaScript off and stores nothing on this site. Kit handles the rest:
   the confirmation email, then the email with the chapters, then — after
-  the form's "redirect" setting — sends the browser to /chasing-rainbows/thanks/.
+  the form's "redirect" setting — sends the browser to the book's thanks page.
 
   Until a Kit form ID is configured in src/data/book.ts, this renders an
   email link instead, so the page never shows a form that goes nowhere.
@@ -37,14 +37,14 @@ const noteId = `${id}-note`;
         <button type="submit">Send me the chapters</button>
       </div>
       <p class="signup-note" id={noteId}>
-        Confirm your address and the chapters follow straight away. No spam;
-        unsubscribe any time.
+        Confirm your address and the chapters will reach you by email. No
+        spam; unsubscribe any time.
       </p>
     </form>
   ) : (
     <p class="signup signup-fallback">
       The list opens shortly. Until then,{' '}
-      <a href="mailto:hello@kevinholler.com?subject=Chasing%20Rainbows">email me</a> and I’ll
+      <a href={`mailto:hello@kevinholler.com?subject=${encodeURIComponent(book.title)}`}>email me</a> and I’ll
       send {book.freebie} myself.
     </p>
   )

@@ -1,0 +1,23 @@
+---
+/*
+  /book/ — the short link for the book. It forwards to the book's own page,
+  whose address follows the working title in src/data/book.ts, so this link
+  never has to change.
+*/
+import { book, bookPath } from '../../data/book';
+
+const target = new URL(bookPath, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{book.title} — Kevin Holler</title>
+    <meta http-equiv="refresh" content={`0;url=${bookPath}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={target} />
+  </head>
+  <body>
+    <a href={bookPath}>{book.title}</a>
+  </body>
+</html>

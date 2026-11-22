@@ -2,9 +2,14 @@
 import Reading from '../../../layouts/Reading.astro';
 import { book, bookPath } from '../../../data/book';
 
+export function getStaticPaths() {
+  return [{ params: { book: book.slug } }];
+}
+
 /*
   Where Kit sends the browser after someone submits the book signup — set
-  as the form's redirect URL in Kit (https://kevinholler.com/chasing-rainbows/thanks/).
+  as the form's redirect URL in Kit (https://kevinholler.com/<slug>/thanks/ —
+  with today's title, https://kevinholler.com/chasing-rainbows/thanks/).
   Not indexed: it only makes sense straight after the form.
 */
 ---
@@ -13,11 +18,12 @@ import { book, bookPath } from '../../../data/book';
   <p class="stamp">One more step.</p>
   <p class="lede">
     I’ve sent you an email to confirm your address. Click the button in it and
-    {book.freebie} of <em>{book.title}</em> will follow straight away.
+    you’re on the list: {book.freebie} of <em>{book.title}</em> will follow by
+    email.
   </p>
   <p>
     Nothing there after a few minutes? Check your spam or promotions folder —
-    and if it’s still missing, <a href="mailto:hello@kevinholler.com?subject=Chasing%20Rainbows">email me</a>
+    and if it’s still missing, <a href={`mailto:hello@kevinholler.com?subject=${encodeURIComponent(book.title)}`}>email me</a>
     and I’ll send the chapters myself.
   </p>
   <p><a href={bookPath}>← Back to the book</a></p>
