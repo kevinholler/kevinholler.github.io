@@ -1417,8 +1417,11 @@ pre code {
   color: var(--ink-soft);
 }
 
-/* 2 · The numbers. A title set between two rules, then four figures. */
-.bk-numbers {
+/* 2 · The shape. The cover's sixteen bars, one per chapter, red to
+   violet, shrinking as the story runs down — with the three parts marked
+   underneath. Colour lives only in the bars, as the brand sheet says:
+   bars and marks only, never behind text. */
+.bk-shape {
   padding-top: clamp(40px, 6vw, 64px);
 }
 
@@ -1441,32 +1444,71 @@ pre code {
   border-top: 1px solid var(--rule);
 }
 
-.bk-numbers dl {
-  margin: 28px 0 0;
+.bk-bars,
+.bk-parts {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-  text-align: center;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 0 6px;
 }
 
-.bk-numbers dt {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: lining-nums;
+.bk-bars {
+  margin-top: 28px;
+  height: clamp(96px, 14vw, 160px);
+  align-items: end;
 }
 
-.bk-numbers dd {
-  margin: 6px 0 0;
-  font-size: 0.9375rem;
-  font-style: italic;
+.bk-bars i {
+  display: block;
+  height: var(--h);
+  background: var(--c);
+}
+
+.bk-parts {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.bk-parts li {
+  grid-column: span var(--span);
+  padding-top: 10px;
+  border-top: 1px solid var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bk-part-no {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.bk-part-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.bk-part-years {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.8125rem;
   color: var(--ink-soft);
 }
 
 @media (max-width: 620px) {
-  .bk-numbers dl {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
+  .bk-bars,
+  .bk-parts {
+    gap: 0 3px;
+  }
+
+  .bk-part-no {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .bk-part-name {
+    font-size: 0.9375rem;
   }
 }
 
