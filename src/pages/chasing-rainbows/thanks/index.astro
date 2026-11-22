@@ -1,0 +1,24 @@
+---
+import Reading from '../../../layouts/Reading.astro';
+import { book, bookPath } from '../../../data/book';
+
+/*
+  Where Kit sends the browser after someone submits the book signup — set
+  as the form's redirect URL in Kit (https://kevinholler.com/chasing-rainbows/thanks/).
+  Not indexed: it only makes sense straight after the form.
+*/
+---
+<Reading title={`Check your inbox — ${book.title}`} description="Confirm your email to get the chapters." here="book">
+  <h1>Check your inbox</h1>
+  <p class="stamp">One more step.</p>
+  <p class="lede">
+    I’ve sent you an email to confirm your address. Click the button in it and
+    {book.freebie} of <em>{book.title}</em> will follow straight away.
+  </p>
+  <p>
+    Nothing there after a few minutes? Check your spam or promotions folder —
+    and if it’s still missing, <a href="mailto:hello@kevinholler.com?subject=Chasing%20Rainbows">email me</a>
+    and I’ll send the chapters myself.
+  </p>
+  <p><a href={bookPath}>← Back to the book</a></p>
+</Reading>

@@ -27,11 +27,25 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
-  redirects: Object.fromEntries(retiredPaths.map((path) => [path, '/'])),
+  redirects: {
+    ...Object.fromEntries(retiredPaths.map((path) => [path, '/'])),
+    // The book's short link. The page itself lives at its title.
+    '/book/': '/chasing-rainbows/',
+  },
   integrations: [
     // /new/ is the rebuild in progress. It ships so it can be looked at,
     // but it stays out of the sitemap and carries noindex until it moves
     // to the root.
-    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/new/') }),
+    // The thanks page only makes sense straight after the signup form, and
+    // /book/ is only a redirect.
+    sitemap({
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        return (
+          !path.startsWith('/new/') &&
+          !['/book/', '/chasing-rainbows/thanks/'].includes(path)
+        );
+      },
+    }),
   ],
 });
