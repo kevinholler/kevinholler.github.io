@@ -1266,6 +1266,169 @@ pre code {
   border-top: 1px solid var(--rule);
 }
 
+/* ── Book ───────────────────────────────────────────────
+   /book/ exists to turn a visit into a subscriber, so the offer is the
+   one boxed thing on the site: a hairline frame around the form, at the
+   top beside the cover and again at the foot. */
+
+.book-kicker {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.book-hero h1 {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.book-sub {
+  margin: 10px 0 0;
+  font-size: 1.1875rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.book-hero .lede {
+  margin-top: 28px;
+}
+
+/* The cover keeps its place while the pitch scrolls past it. */
+.book-cover {
+  margin: 0;
+  position: sticky;
+  top: 32px;
+}
+
+.book-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 18px 40px -12px rgb(0 0 0 / 0.45);
+}
+
+@media (max-width: 960px) {
+  /* On a phone the cover comes first, smaller, so the offer is still
+     within a thumb or two of the top. */
+  .book-hero .spread-side {
+    order: -1;
+    margin: 0 0 32px;
+  }
+
+  .book-cover {
+    position: static;
+    width: min(62%, 260px);
+  }
+}
+
+.offer {
+  margin-top: 36px;
+  padding: 24px 24px 20px;
+  border: 1px solid var(--rule);
+  background: var(--paper-in);
+}
+
+.offer h2 {
+  margin: 0;
+}
+
+.offer > p {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+.offer-end {
+  margin-top: 56px;
+}
+
+.signup {
+  margin: 18px 0 0;
+}
+
+.signup-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.signup input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+.signup input::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.signup input:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 1px;
+}
+
+/* The only filled button on the site: ink on paper, so it inverts with
+   the theme rather than introducing a colour. */
+.signup button {
+  flex: 0 0 auto;
+  padding: 11px 18px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.signup button:hover {
+  opacity: 0.88;
+}
+
+.signup button:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  .signup button {
+    flex: 1 1 100%;
+  }
+}
+
+.signup-note {
+  margin: 10px 0 0;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.signup-fallback {
+  font-size: 1rem;
+}
+
+.book-origin {
+  margin-top: 40px;
+}
+
+/* The commitments follow their heading directly, without the rule-and-gap
+   .facts carries as the last thing on a page. */
+h2 + .facts {
+  margin-top: 16px;
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ── Prose from markdown ──────────────────────────────── */
 .prose ul,
 .prose ol {

@@ -32,6 +32,12 @@ export default defineConfig({
     // /new/ is the rebuild in progress. It ships so it can be looked at,
     // but it stays out of the sitemap and carries noindex until it moves
     // to the root.
-    sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/new/') }),
+    // /book/thanks/ only makes sense straight after the signup form.
+    sitemap({
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        return !path.startsWith('/new/') && path !== '/book/thanks/';
+      },
+    }),
   ],
 });

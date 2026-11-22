@@ -25,12 +25,38 @@ page.
 | --- | --- | --- |
 | Home | `pages/new/index.astro` | in the page, plus `src/content/blog/` and `src/data/talks.ts` |
 | Writing | `pages/new/writing/` | `src/content/blog/` |
+| Book | `pages/book/` (public, at the root) | `src/data/book.ts` |
 | Speaking | `pages/new/speaking/` | `src/data/talks.ts` |
 | About | `pages/new/about.astro` | in the page, plus `src/data/career.ts` (the timeline) |
 
-Book, Reading, Startups, Ideas, Projects, Food & Wine, and Gardening are
-parked in `src/_archive/sections/`, which mirrors `src/` — move a file back to
-the same path under `src/` and its relative imports work again.
+Reading, Startups, Ideas, Projects, Food & Wine, Gardening, and the old Book
+page are parked in `src/_archive/sections/`, which mirrors `src/` — move a
+file back to the same path under `src/` and its relative imports work again.
+(The archived `data/book.ts` would now clash with the live one.)
+
+### The book signup
+
+`/book/` is the one page that is public and indexed now, ahead of the rest
+of the rebuild, so it can be promoted. Its job is to swap the opening
+chapters for an email address. The list lives in [Kit](https://kit.com);
+the form posts straight to Kit, with no JavaScript and nothing stored here.
+
+To switch it on:
+
+1. In Kit, create a **form** (any template; only its settings matter).
+2. Under the form's **Incentive** settings, turn on the incentive email and
+   attach the chapters (PDF and/or EPUB). That email is the confirmation:
+   it only reaches people who confirm, so every subscriber is real.
+3. Under **After subscribing**, choose *Redirect to an external page* and
+   set `https://kevinholler.com/book/thanks/`.
+4. Copy the form's numeric ID from its embed code
+   (`https://app.kit.com/forms/<ID>/subscriptions`) into `kitFormId` in
+   `src/data/book.ts`.
+
+Until `kitFormId` is set, the page shows an email link instead of a form.
+`/book/thanks/` is not indexed and is left out of the sitemap.
+
+
 
 ### The backdrop
 

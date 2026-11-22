@@ -18,9 +18,20 @@ interface Props {
   /** The Game of Life field behind the page. Front page only by default —
    *  an essay deserves a still page to be read on. */
   backdrop?: boolean;
+  /** Let search engines index the page. Everything under /new/ is hidden
+   *  until the rebuild moves to the root; a page that is public now (the
+   *  book) opts in. */
+  indexed?: boolean;
 }
 
-const { title, description, here, layout = 'single', backdrop = false } = Astro.props;
+const {
+  title,
+  description,
+  here,
+  layout = 'single',
+  backdrop = false,
+  indexed = false,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
@@ -49,9 +60,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
 
-    <!-- Work in progress. Nothing under /new/ should be indexed
-         or crawled until it replaces the site at the root. -->
-    <meta name="robots" content="noindex, nofollow" />
+    <!-- Work in progress. Nothing under /new/ should be indexed or crawled
+         until it replaces the site at the root; public pages opt out. -->
+    {!indexed && <meta name="robots" content="noindex, nofollow" />}
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

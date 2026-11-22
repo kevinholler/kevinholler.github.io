@@ -1,0 +1,51 @@
+---
+/*
+  The book signup. A plain HTML form that posts to Kit, so it works with
+  JavaScript off and stores nothing on this site. Kit handles the rest:
+  the confirmation email, then the email with the chapters, then — after
+  the form's "redirect" setting — sends the browser to /book/thanks/.
+
+  Until a Kit form ID is configured in src/data/book.ts, this renders an
+  email link instead, so the page never shows a form that goes nowhere.
+*/
+import { book, kitAction } from '../data/book';
+
+interface Props {
+  /** Distinguishes the two forms on the page, for label/input ids. */
+  id: string;
+}
+
+const { id } = Astro.props;
+const inputId = `${id}-email`;
+const noteId = `${id}-note`;
+---
+{
+  book.kitFormId ? (
+    <form class="signup" action={kitAction(book.kitFormId)} method="post">
+      <label class="vh" for={inputId}>Email address</label>
+      <div class="signup-row">
+        <input
+          id={inputId}
+          type="email"
+          name="email_address"
+          required
+          autocomplete="email"
+          inputmode="email"
+          placeholder="you@example.com"
+          aria-describedby={noteId}
+        />
+        <button type="submit">Send me the chapters</button>
+      </div>
+      <p class="signup-note" id={noteId}>
+        You’ll get a confirmation email, then {book.freebie}, and one more
+        when the book is out. Nothing else. Unsubscribe any time.
+      </p>
+    </form>
+  ) : (
+    <p class="signup signup-fallback">
+      The list opens shortly. Until then,{' '}
+      <a href="mailto:hello@kevinholler.com?subject=Chasing%20Rainbows">email me</a> and I’ll
+      send {book.freebie} myself.
+    </p>
+  )
+}
